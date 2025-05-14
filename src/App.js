@@ -1,5 +1,12 @@
 // src/App.jsx
+import { useContext } from "react";
 import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { AuthContext } from "./Context/AuthContext";
+
+// General landing page
+import GeneralHome from "./Pages/GeneralHome"; // ✅ New component you’ll create
+
+// Login
 import Login from "./Pages/Login";
 
 // Admin pages
@@ -21,17 +28,15 @@ import ChildDashboard from "./Features/Child/ChildDashboard";
 import Games from "./Features/Child/Games";
 import Videos from "./Features/Child/Videos";
 
-import { useContext } from "react";
-import { AuthContext } from "./Context/AuthContext";
-
 function App() {
-  const { user } = useContext(AuthContext); // this comes from your context/provider
+  const { user } = useContext(AuthContext);
 
   return (
     <Router>
       <Routes>
-        {/* Public Route */}
-        <Route path="/" element={<Login />} />
+        {/* 👇 New public landing page route */}
+        <Route path="/" element={<GeneralHome />} />
+        <Route path="/login" element={<Login />} />
 
         {/* Admin Routes */}
         {user?.role === "admin" && (
