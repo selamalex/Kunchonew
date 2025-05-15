@@ -1,0 +1,110 @@
+.child-accounts-section {
+  padding: 1.5rem 2rem;
+  margin-top: -70px;
+
+  margin-top: -30px; /* Adjust this value to reduce space at the top */
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: medium;
+  color: #431b06;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.section-title::after {
+  content: "";
+  width: 50px;
+  height: 4px;
+  background-color: #f5a12b;
+  display: block;
+  margin-top: 0.4rem;
+  border-radius: 2px;
+}
+
+.card-container {
+  display: flex;
+  gap: 5rem;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.child-card {
+  flex: 1;
+  max-width: 250px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid #eee;
+  transition: transform 0.3s;
+}
+
+.child-card:hover {
+  transform: translateY(-5px);
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.login-btn {
+  margin-top: 1rem;
+  background-color: #f5a12b;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #e08c1e;
+}
+
+.add-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #f5a12b;
+  border: 2px dashed #f5a12b;
+  background-color: #fff7eb;
+  cursor: pointer;
+  padding: 2rem;
+  border-radius: 16px;
+  transition: background-color 0.3s;
+  height: 220px;
+  width: 100%;
+  max-width: 250px;
+}
+
+.add-card:hover {
+  background-color: #ffeed3;
+}
+
+.add-icon {
+  font-size: 3rem;
+  margin-bottom: 0.8rem;
+}
+
+.add-card p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.more-icon {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #431b06;
+  margin-top: 1rem;
+  cursor: pointer;
+}

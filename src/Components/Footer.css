@@ -1,0 +1,92 @@
+.footer {
+  background: #222;
+  color: white;
+  padding: 40px 20px;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1000px;
+  margin: 0 auto;
+  gap: 50px;
+}
+
+.footer-left {
+  flex: 1;
+  text-align: left;
+  margin-left: -70px;
+}
+
+.footer-logo {
+  width: 120px;
+  margin-bottom: 10px;
+}
+
+.footer-text {
+  font-size: 14px;
+  max-width: 250px;
+}
+
+.footer-links {
+  flex: 1;
+  text-align: center;
+  margin-left: 120px;
+}
+
+.footer-links h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  text-align: left; /* Align list items to the left */
+  display: inline-block; /* Ensure list items stay aligned within the centered title */
+}
+
+.footer-links ul li {
+  margin: 5px 0;
+}
+
+.footer-links ul li a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links ul li a:hover {
+  color: #f1c40f;
+}
+
+.footer-social {
+  flex: 1;
+  text-align: left;
+  margin-left: 200px;
+  margin-right: 0px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.social-icons a {
+  color: white;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #f1c40f;
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  border-top: 1px solid #444;
+  padding-top: 10px;
+  font-size: 14px;
+  text-align: center;
+}

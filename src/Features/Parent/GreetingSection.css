@@ -1,0 +1,102 @@
+.back-arrow {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #431b06;
+  font-weight: 600;
+  margin: 1rem 2rem 0;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.back-icon {
+  font-size: 1rem;
+}
+
+.greeting-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  margin: 1rem 2rem;
+  gap: 2rem;
+  flex-wrap: wrap; /* Responsive wrapping */
+}
+
+.greeting-text h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #431b06;
+}
+
+.greeting-text p {
+  margin: 0.5rem 0 0;
+  color: #555;
+  font-size: 1rem;
+}
+
+.greeting-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: -50px;
+  margin-bottom: 25px;
+}
+
+.search-bar {
+  position: relative;
+}
+
+.search-bar input {
+  padding: 0.5rem 2rem 0.5rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  width: 180px;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.notification-icon {
+  font-size: 1.4rem;
+  color: #431b06;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.notification-icon:hover {
+  color: #f5a12b;
+}
+
+.start-time-btn {
+  background-color: #f5a12b;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.start-time-btn:hover {
+  background-color: #e08c1e;
+}

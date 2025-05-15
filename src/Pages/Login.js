@@ -1,24 +1,24 @@
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../Context/AuthContext';
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../Context/AuthContext";
 
 const Login = () => {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (username.startsWith('admin')) {
-      setUser({ role: 'admin', username });
-      navigate('/admin/dashboard');
-    } else if (username.startsWith('child')) {
-      setUser({ role: 'child', username, age: parseInt(password) });
-      navigate('/child/dashboard');
+    if (username.startsWith("admin")) {
+      setUser({ role: "admin", username });
+      navigate("/admin/dashboard");
+    } else if (username.startsWith("child")) {
+      setUser({ role: "child", username, age: parseInt(password) });
+      navigate("/child/dashboard");
     } else {
-      setUser({ role: 'parent', username });
-      navigate('/parent/dashboard');
+      setUser({ role: "parent", username });
+      navigate("/parent/dashboard");
     }
   };
 

@@ -1,6 +1,11 @@
 // src/App.jsx
 import { useContext } from "react";
-import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 import { AuthContext } from "./Context/AuthContext";
 
 // General landing page
@@ -53,7 +58,10 @@ function App() {
         {user?.role === "parent" && (
           <>
             <Route path="/parent/dashboard" element={<ParentDashboard />} />
-            <Route path="/parent/subaccounts" element={<SubAccountManagement />} />
+            <Route
+              path="/parent/subaccounts"
+              element={<SubAccountManagement />}
+            />
             <Route path="/parent/screentime" element={<ScreenTimeReport />} />
           </>
         )}

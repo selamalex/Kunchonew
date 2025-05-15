@@ -1,0 +1,68 @@
+.screen-time-section {
+  padding: 2rem;
+  margin-top: -20px;
+}
+
+.subtitle {
+  margin-top: 30px;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: #666;
+}
+
+.screen-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.screen-card {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  background-color: #fff;
+  transition: box-shadow 0.3s;
+}
+
+.screen-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.child-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.child-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.child-name {
+  font-weight: 600;
+  color: #431b06;
+}
+
+.time-box {
+  text-align: right;
+}
+
+.time-label {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0;
+}
+
+.time-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #f5a12b;
+  margin: 0;
+}

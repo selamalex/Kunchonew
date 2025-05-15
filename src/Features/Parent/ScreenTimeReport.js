@@ -1,5 +1,6 @@
+import ScreenTime from "./ScreenTime";
 const ScreenTimeReport = () => {
-  return <h2 className="p-4 text-xl">Screentime</h2>;
+  return <ScreenTime />;
 };
 
 export default ScreenTimeReport;
