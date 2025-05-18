@@ -1,5 +1,158 @@
 /* Games.css */
-body {
+
+.games-dashboard {
+    padding: 20px;
+    font-family: 'Comic Sans MS', 'Poppins', cursive;
+    background: #fff8f0;
+    min-height: 100vh;
+}
+
+.games-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: #431B06;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.games-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 2rem;
+    color: #431B06;
+    font-weight: bold;
+}
+
+.trending-game {
+    background-size: cover;
+    background-position: center;
+    border-radius: 16px;
+    height: 250px;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 30px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 8px 16px rgba(67, 27, 6, 0.2);
+}
+
+.trending-content {
+    background: rgba(255, 255, 255, 0.08);
+    /* way more transparent */
+    backdrop-filter: blur(2px);
+    /* adds that soft glass-like blur effect */
+    border-radius: 12px;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.game-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #431B06;
+}
+
+.play-now {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #431B06;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.play-now:hover {
+    background-color: #321103;
+}
+
+.others-title {
+    font-size: 1.5rem;
+    color: #431B06;
+    margin-bottom: 10px;
+}
+
+.games-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.games-carousel::-webkit-scrollbar {
+    height: 8px;
+}
+
+.games-carousel::-webkit-scrollbar-thumb {
+    background-color: #d3a17a;
+    border-radius: 10px;
+}
+
+.game-card {
+    flex: 0 0 auto;
+    width: 220px;
+    /* increased from 160px */
+    background-color: #fffefc;
+    border-radius: 14px;
+    box-shadow: 0 6px 12px rgba(67, 27, 6, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+
+.game-card:hover {
+    transform: scale(1.05);
+}
+
+.game-img {
+    width: 100%;
+    height: 160px;
+    object-fit: scale-down;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+
+.game-info {
+    padding: 10px;
+    font-weight: 600;
+    color: #431B06;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Games.css */
+/* body {
     background: #f0f8ff;
     font-family: 'Comic Sans MS', cursive, sans-serif;
 }
@@ -68,9 +221,9 @@ body {
 
 .end-screen {
     animation: pop 0.6s ease-in-out;
-}
+} */
 
-@keyframes pop {
+/* @keyframes pop {
     0% {
         transform: scale(0.8);
         opacity: 0;
@@ -80,4 +233,4 @@ body {
         transform: scale(1);
         opacity: 1;
     }
-}
+} */

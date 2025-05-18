@@ -1,0 +1,19 @@
+/* Games.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.game-container {
+    background-image: url('../../Assets/images/animals.jpg');
+    /* or use an imported one in JS */
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    overflow: hidden;
+}

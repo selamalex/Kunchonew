@@ -27,10 +27,13 @@ import ScreenTimeReport from "./Features/Parent/ScreenTimeReport";
 import SubAccountManagement from "./Features/Parent/SubAccountManagement";
 
 // Child pages
+import Animals from "./Features/Child/Animals";
 import Audios from "./Features/Child/Audios";
 import Books from "./Features/Child/Books";
 import ChildDashboard from "./Features/Child/ChildDashboard";
 import Games from "./Features/Child/Games";
+import Objects from "./Features/Child/Objects";
+import Vegetables from "./Features/Child/Vegetables";
 import Videos from "./Features/Child/Videos";
 
 function App() {
@@ -74,6 +77,11 @@ function App() {
             <Route path="/child/books" element={<Books />} />
             <Route path="/child/audios" element={<Audios />} />
             <Route path="/child/games" element={<Games />} />
+<Route path="/child/games/animal" element={<Animals />} />
+<Route path="/child/games/vegetable" element={<Vegetables />} />
+<Route path="/child/games/object" element={<Objects />} />
+
+
           </>
         )}
 

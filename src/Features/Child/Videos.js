@@ -32,7 +32,7 @@ const Videos = () => {
           <nav className="navbar">
           <div className="navbar-left">
             <div className="menu-icon">☰</div>
-            <h1 className="title">Dashboard</h1>
+            {/* <h1 className="title">Dashboard</h1> */}
           </div>
           <div className="navbar-right">
             <input type="text" className="search-input" placeholder="Search..." />
