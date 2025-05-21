@@ -1,22 +1,31 @@
 .navbar {
     display: flex;
     justify-content: space-between;
+    /* Distributes space between items */
     align-items: center;
     padding: 10px 20px;
+    max-width: 1200px;
+    /* Set a max width to prevent overflow */
+    margin: 0 auto;
     background-color: #431B06;
-    color: white;
+    /* Centers the navbar within the viewport */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-left {
+.navbar-left,
+.navbar-right {
     display: flex;
     align-items: center;
+    gap: 1rem;
+    /* Space between items */
 }
 
-.menu-icon {
-    font-size: 24px;
-    margin-right: 15px;
-    cursor: pointer;
+.navbar-left {
+    /* No margin here to keep it aligned */
+}
+
+.navbar-right {
+    /* No margin here to keep it aligned */
 }
 
 .title {
@@ -24,10 +33,10 @@
     font-weight: bold;
 }
 
-.navbar-right {
+/* .navbar-right {
     display: flex;
     align-items: center;
-}
+} */
 
 .search-input {
     padding: 8px;
@@ -39,7 +48,7 @@
 }
 
 .search-icon {
-    margin-right: 15px;
+    margin-right: 35px;
     cursor: pointer;
 }
 

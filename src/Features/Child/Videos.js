@@ -19,11 +19,11 @@ const Videos = () => {
           <div className="sidebar">
             <div className="logo">Kuncho</div>
             <ul>
-              <li>Dashboard</li>
-              <li><Link to="/videos">Videos</Link></li>
-              <li><Link to="/books">Books</Link></li>
-              <li><Link to="/audio">Audio</Link></li>
-              <li><Link to="/games">Games</Link></li>
+              <li><Link to="/child/dashboard">Dashboard</Link></li>
+              <li>Videos</li>
+             <li><Link to="/child/books">Books</Link></li>
+          <li><Link to="/child/audio">Audio</Link></li>
+          <li><Link to="/child/games">Games</Link></li>
             </ul>
             <button className="logout-button">Logout</button>
           </div>
@@ -32,7 +32,7 @@ const Videos = () => {
           <nav className="navbar">
           <div className="navbar-left">
             <div className="menu-icon">☰</div>
-            {/* <h1 className="title">Dashboard</h1> */}
+            <h1 className="title">Videos</h1>
           </div>
           <div className="navbar-right">
             <input type="text" className="search-input" placeholder="Search..." />

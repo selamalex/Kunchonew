@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import Abush from '../../Assets/images/Abush.png';
 import Bitiko from '../../Assets/images/Bitiko.png';
 import Mitu from '../../Assets/images/Mitu.png';
-import './ChildDashboard.css';
+import './ChildDashboard.css'; // Optional for styling
 // import './ChildDshboard.css'; // Optional for styling
 
-const ChildDashboard = () => {
+const ChildDashboard = ({ pageTitle, username = "Ruhama Belay" }) => {
   return (
     
     <div className="dashboard-container">
@@ -26,7 +26,7 @@ const ChildDashboard = () => {
       <nav className="navbar">
       <div className="navbar-left">
         <div className="menu-icon">☰</div>
-        {/* <h1 className="title">Dashboard</h1> */}
+        <h1 className="title">Dashboard</h1>
       </div>
       <div className="navbar-right">
         <input type="text" className="search-input" placeholder="Search..." />

@@ -33,6 +33,7 @@ import Books from "./Features/Child/Books";
 import ChildDashboard from "./Features/Child/ChildDashboard";
 import Games from "./Features/Child/Games";
 import Objects from "./Features/Child/Objects";
+import SlideBook from "./Features/Child/SlideBook";
 import Vegetables from "./Features/Child/Vegetables";
 import Videos from "./Features/Child/Videos";
 
@@ -80,6 +81,8 @@ function App() {
 <Route path="/child/games/animal" element={<Animals />} />
 <Route path="/child/games/vegetable" element={<Vegetables />} />
 <Route path="/child/games/object" element={<Objects />} />
+<Route path="/child/books/:bookId" element={<SlideBook />} />
+
 
 
           </>

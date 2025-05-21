@@ -1,7 +1,8 @@
 /* src/features/child/Games.jsx */
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import anim from '../../Assets/images/lion.png';
 import bg from '../../Assets/images/trendinganim.jpg';
+
 import './Games.css';
 
 const Games = () => {
@@ -17,11 +18,34 @@ const Games = () => {
 
   return (
     <div className="games-dashboard">
-      <div className="games-header">
+      <div className="sidebar">
         <button className="back-button" onClick={handleBack}>⬅ Back</button>
-        <h1 className="games-title">Let's Play Game</h1>
-      </div>
-
+            <div className="logo">Kuncho</div>
+            <ul>
+              <li><Link to="/child/dashboard">Dashboard</Link></li>
+              <li>Videos</li>
+             <li><Link to="/child/books">Books</Link></li>
+          <li><Link to="/child/audio">Audio</Link></li>
+          <li><Link to="/child/games">Games</Link></li>
+            </ul>
+            <button className="logout-button">Logout</button>
+          </div>
+        <div>
+         <nav className="navbar">
+          <div className="navbar-left">
+            <div className="menu-icon">☰</div>
+            <h1 className="title">Games</h1>
+          </div>
+          <div className="navbar-right">
+            <input type="text" className="search-input" placeholder="Search..." />
+            <span className="search-icon">🔍</span>
+            <div className="profile">
+              <span className="username">Ruhama Belay</span>
+              <div className="profile-icon">👤</div>
+            </div>
+          </div>
+        </nav>
+     </div>
       {/* Trending Game Section */}
       <div className="trending-game" style={{ backgroundImage: `url(${bg})` }}>
         <div className="trending-content">
