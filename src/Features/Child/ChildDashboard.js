@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import Abush from '../../Assets/images/Abush.png';
 import Bitiko from '../../Assets/images/Bitiko.png';
 import Mitu from '../../Assets/images/Mitu.png';
+import Navbar from '../../Components/Navbar'; // Import the Navbar component
 import './ChildDashboard.css'; // Optional for styling
 // import './ChildDshboard.css'; // Optional for styling
 
-const ChildDashboard = ({ pageTitle, username = "Ruhama Belay" }) => {
+const ChildDashboard = () => {
   return (
     
     <div className="dashboard-container">
@@ -23,7 +24,7 @@ const ChildDashboard = ({ pageTitle, username = "Ruhama Belay" }) => {
       </div>
       
       <div className="main-content">
-      <nav className="navbar">
+      {/* <nav className="navbar">
       <div className="navbar-left">
         <div className="menu-icon">☰</div>
         <h1 className="title">Dashboard</h1>
@@ -36,7 +37,8 @@ const ChildDashboard = ({ pageTitle, username = "Ruhama Belay" }) => {
           <div className="profile-icon">👤</div>
         </div>
       </div>
-    </nav>
+    </nav> */}
+     <Navbar pageName="Dashboard" />
 
         <h1>Hello, Ruhama</h1>
         <p>Explore fun videos, exciting books, cool music, and awesome games.</p>

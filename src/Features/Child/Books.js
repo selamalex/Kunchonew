@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import booksImg from "../../Assets/images/entertainment.png";
 import gamesImg from "../../Assets/images/games.png";
+import Navbar from '../../Components/Navbar'; // Import the Navbar component
 // import "../../Components/CardsSection.css"; // Import the CSS file for cards
 import './Books.css'; // Make sure to create this CSS file
 
@@ -44,7 +45,7 @@ const Books = () => {
       {/* Main Content */}
       <div className="main-content">
         {/* Navbar */}
-        <nav className="navbar">
+        {/* <nav className="navbar">
           <div className="navbar-left">
             <div className="menu-icon">☰</div>
             <h1 className="title">Books</h1>
@@ -57,7 +58,9 @@ const Books = () => {
               <div className="profile-icon">👤</div>
             </div>
           </div>
-        </nav>
+        </nav> */}
+
+         <Navbar pageName="Dashboard" />
 
         {/* Book Cards */}
         <section className="cards-wrapper">

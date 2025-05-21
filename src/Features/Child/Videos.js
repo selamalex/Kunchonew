@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 // Optional for styling
+import Navbar from '../../Components/Navbar'; // Import the Navbar component
 import '../Child/Videos.css';
 
 const Videos = () => {
@@ -29,7 +30,7 @@ const Videos = () => {
           </div>
           
           <div className="main-content">
-          <nav className="navbar">
+          {/* <nav className="navbar">
           <div className="navbar-left">
             <div className="menu-icon">☰</div>
             <h1 className="title">Videos</h1>
@@ -42,7 +43,9 @@ const Videos = () => {
               <div className="profile-icon">👤</div>
             </div>
           </div>
-        </nav>
+        </nav> */}
+
+         <Navbar pageName="Videos" />
     <div className="featured-video">
           <div className="video-player">
             <div className="player-placeholder">Video Player</div>
