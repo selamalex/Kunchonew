@@ -15,5 +15,6 @@
     text-align: center;
     position: relative;
     font-family: 'Comic Sans MS', cursive, sans-serif;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
