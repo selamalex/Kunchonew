@@ -62,7 +62,10 @@ function App() {
         {user?.role === "parent" && (
           <>
             <Route path="/parent/dashboard" element={<ParentDashboard />} />
-            <Route path="/parent/subaccounts" element={<SubAccountManagement />} />
+            <Route
+              path="/parent/subaccounts"
+              element={<SubAccountManagement />}
+            />
             <Route path="/parent/screentime" element={<ScreenTimeReport />} />
           </>
         )}
@@ -82,6 +85,18 @@ function App() {
             <Route path="/child/books/:bookId" element={<SlideBook />} />
           </>
         )}
+
+        {/* Add this catch-all route for child dashboard */}
+        <Route
+          path="/child"
+          element={
+            user?.role === "child" ? (
+              <Navigate to="/child/dashboard" replace />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
 
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" />} />
