@@ -9,7 +9,7 @@ import {
 import { AuthContext } from "./Context/AuthContext";
 
 // General landing page
-import GeneralHome from "./Pages/GeneralHome"; // ✅ New component you’ll create
+import GeneralHome from "./Pages/GeneralHome";
 
 // Login
 import Login from "./Pages/Login";
@@ -34,8 +34,9 @@ import ChildDashboard from "./Features/Child/ChildDashboard";
 import Games from "./Features/Child/Games";
 import Objects from "./Features/Child/Objects";
 import SlideBook from "./Features/Child/SlideBook";
+import SpecificVid from "./Features/Child/SpecificVid"; // ✅ Video detail page
 import Vegetables from "./Features/Child/Vegetables";
-import Videos from "./Features/Child/Videos";
+import Videos from "./Features/Child/Videos"; // ✅ Video list page
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -43,7 +44,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* 👇 New public landing page route */}
+        {/* Public landing page */}
         <Route path="/" element={<GeneralHome />} />
         <Route path="/login" element={<Login />} />
 
@@ -62,10 +63,7 @@ function App() {
         {user?.role === "parent" && (
           <>
             <Route path="/parent/dashboard" element={<ParentDashboard />} />
-            <Route
-              path="/parent/subaccounts"
-              element={<SubAccountManagement />}
-            />
+            <Route path="/parent/subaccounts" element={<SubAccountManagement />} />
             <Route path="/parent/screentime" element={<ScreenTimeReport />} />
           </>
         )}
@@ -75,20 +73,18 @@ function App() {
           <>
             <Route path="/child/dashboard" element={<ChildDashboard />} />
             <Route path="/child/videos" element={<Videos />} />
+            <Route path="/child/videos/:videoId" element={<SpecificVid />} /> {/* ✅ Shows 1 vid */}
             <Route path="/child/books" element={<Books />} />
             <Route path="/child/audios" element={<Audios />} />
             <Route path="/child/games" element={<Games />} />
-<Route path="/child/games/animal" element={<Animals />} />
-<Route path="/child/games/vegetable" element={<Vegetables />} />
-<Route path="/child/games/object" element={<Objects />} />
-<Route path="/child/books/:bookId" element={<SlideBook />} />
-
-
-
+            <Route path="/child/games/animal" element={<Animals />} />
+            <Route path="/child/games/vegetable" element={<Vegetables />} />
+            <Route path="/child/games/object" element={<Objects />} />
+            <Route path="/child/books/:bookId" element={<SlideBook />} />
           </>
         )}
 
-        {/* Fallback */}
+        {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

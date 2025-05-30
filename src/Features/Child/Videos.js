@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-// Optional for styling
 import Navbar from '../../Components/Navbar'; // Import the Navbar component
 import '../Child/Videos.css';
 
@@ -12,41 +11,26 @@ const Videos = () => {
     { id: 4, title: 'መሃረቤን ያያችሁ እንዴት እንጫወት', views: '32', duration: '32:10', thumbnail: 'images/Abush.png' },
     { id: 5, title: 'ኢትዮጲያን እንወቅ', views: '21', duration: '5:22', thumbnail: 'images/Abush.png' },
     { id: 6, title: 'አኳኩሉ', views: '87', duration: '2:37', thumbnail: 'images/Abush.png' },
-];
+  ];
 
   return (
-     <div className="dashboard-container">
-    
-          <div className="sidebar">
-            <div className="logo">Kuncho</div>
-            <ul>
-              <li><Link to="/child/dashboard">Dashboard</Link></li>
-              <li>Videos</li>
-             <li><Link to="/child/books">Books</Link></li>
+    <div className="dashboard-container">
+      <div className="sidebar">
+        <div className="logo">Kuncho</div>
+        <ul>
+          <li><Link to="/child/dashboard">Dashboard</Link></li>
+          <li>Videos</li>
+          <li><Link to="/child/books">Books</Link></li>
           <li><Link to="/child/audio">Audio</Link></li>
           <li><Link to="/child/games">Games</Link></li>
-            </ul>
-            <button className="logout-button">Logout</button>
-          </div>
-          
-          <div className="main-content">
-          {/* <nav className="navbar">
-          <div className="navbar-left">
-            <div className="menu-icon">☰</div>
-            <h1 className="title">Videos</h1>
-          </div>
-          <div className="navbar-right">
-            <input type="text" className="search-input" placeholder="Search..." />
-            <span className="search-icon">🔍</span>
-            <div className="profile">
-              <span className="username">Ruhama Belay</span>
-              <div className="profile-icon">👤</div>
-            </div>
-          </div>
-        </nav> */}
+        </ul>
+        <button className="logout-button">Logout</button>
+      </div>
 
-         <Navbar pageName="Videos" />
-    <div className="featured-video">
+      <div className="main-content">
+        <Navbar pageName="Videos" />
+
+        <div className="featured-video">
           <div className="video-player">
             <div className="player-placeholder">Video Player</div>
             <div className="video-info">
@@ -63,29 +47,27 @@ const Videos = () => {
         {/* Video Grid */}
         <h3 className="section-title">Recommended Videos</h3>
         <div className="video-grid">
-            {videos.map((video) => (
-                <div key={video.id} className="video-card">
-                    <div className="thumbnail-container">
-                        <Link to={`/video/${video.id}`}> {/* Adjust the link based on your routing */}
-                            <img
-                                src={video.thumbnail}
-                                alt={video.title}
-                                className="video-thumbnail"
-                            />
-                            <div className="video-duration">{video.duration}</div>
-                        </Link>
-                    </div>
-                    <div className="video-details">
-                        <h4 className="video-title">{video.title}</h4>
-                        <p className="video-views">{video.views} views</p>
-                    </div>
-                </div>
-            ))}
+          {videos.map((video) => (
+            <div key={video.id} className="video-card">
+              <div className="thumbnail-container">
+                <Link to={`/child/videos/${video.id}`}>
+                  <img
+                    src={video.thumbnail}
+                    alt={video.title}
+                    className="video-thumbnail"
+                  />
+                  <div className="video-duration">{video.duration}</div>
+                </Link>
+              </div>
+              <div className="video-details">
+                <h4 className="video-title">{video.title}</h4>
+                <p className="video-views">{video.views} views</p>
+              </div>
+            </div>
+          ))}
         </div>
-           
-          </div>
-        </div>
-    
+      </div>
+    </div>
   );
 };
 
