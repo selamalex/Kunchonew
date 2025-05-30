@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useContext } from "react";
 import {
   Navigate,
@@ -14,12 +13,12 @@ import GeneralHome from "./Pages/GeneralHome";
 // Login
 import Login from "./Pages/Login";
 
-// Admin pages
-import AdminDashboard from "./Features/Admin/AdminDashboard";
-import ContentManagement from "./Features/Admin/ContentManagement";
-import Reports from "./Features/Admin/Reports";
-import Settings from "./Features/Admin/Settings";
-import UserManagement from "./Features/Admin/UserManagement";
+// Admin pages (fixed paths ✅)
+import ContentManagement from "./Features/Admin/pages/ContentManagement";
+import AdminDashboard from "./Features/Admin/pages/Overview";
+import Reports from "./Features/Admin/pages/Reports";
+import Settings from "./Features/Admin/pages/Settings";
+import UserManagement from "./Features/Admin/pages/UserManagement";
 
 // Parent pages
 import ParentDashboard from "./Features/Parent/ParentDashboard";
@@ -34,9 +33,9 @@ import ChildDashboard from "./Features/Child/ChildDashboard";
 import Games from "./Features/Child/Games";
 import Objects from "./Features/Child/Objects";
 import SlideBook from "./Features/Child/SlideBook";
-import SpecificVid from "./Features/Child/SpecificVid"; // ✅ Video detail page
+import SpecificVid from "./Features/Child/SpecificVid";
 import Vegetables from "./Features/Child/Vegetables";
-import Videos from "./Features/Child/Videos"; // ✅ Video list page
+import Videos from "./Features/Child/Videos";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -73,7 +72,7 @@ function App() {
           <>
             <Route path="/child/dashboard" element={<ChildDashboard />} />
             <Route path="/child/videos" element={<Videos />} />
-            <Route path="/child/videos/:videoId" element={<SpecificVid />} /> {/* ✅ Shows 1 vid */}
+            <Route path="/child/videos/:videoId" element={<SpecificVid />} />
             <Route path="/child/books" element={<Books />} />
             <Route path="/child/audios" element={<Audios />} />
             <Route path="/child/games" element={<Games />} />
