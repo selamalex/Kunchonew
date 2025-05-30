@@ -13,7 +13,7 @@ import GeneralHome from "./Pages/GeneralHome";
 // Login
 import Login from "./Pages/Login";
 
-// Admin pages (fixed paths ✅)
+// Admin pages
 import ContentManagement from "./Features/Admin/pages/ContentManagement";
 import AdminDashboard from "./Features/Admin/pages/Overview";
 import Reports from "./Features/Admin/pages/Reports";
@@ -75,7 +75,7 @@ function App() {
           <>
             <Route path="/child/dashboard" element={<ChildDashboard />} />
             <Route path="/child/videos" element={<Videos />} />
-            <Route path="/child/videos/:videoId" element={<SpecificVid />} />
+            <Route path="/child/videos/:id" element={<SpecificVid />} />
             <Route path="/child/books" element={<Books />} />
             <Route path="/child/audios" element={<Audios />} />
             <Route path="/child/games" element={<Games />} />

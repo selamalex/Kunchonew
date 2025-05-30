@@ -17,7 +17,7 @@ const ChildDashboard = () => {
           <li>Dashboard</li>
           <li><Link to="/child/videos">Videos</Link></li>
           <li><Link to="/child/books">Books</Link></li>
-          <li><Link to="/child/audios">Audio</Link></li>
+          <li><Link to="/child/audios">Audios</Link></li>
           <li><Link to="/child/games">Games</Link></li>
         </ul>
         <button className="logout-button">Logout</button>
