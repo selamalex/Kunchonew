@@ -8,20 +8,11 @@ const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("parent");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (role === "admin") {
-      setUser({ role: "admin", username });
-      navigate("/admin/dashboard");
-    } else if (role === "child") {
-      setUser({ role: "child", username });
-      navigate("/child/dashboard");
-    } else {
-      setUser({ role: "parent", username });
-      navigate("/parent/dashboard");
-    }
+    setUser({ role: "parent", username });
+    navigate("/parent/dashboard");
   };
 
   return (
@@ -29,16 +20,7 @@ const Login = () => {
       <div className="left-panel"></div>
       <div className="right-panel">
         <form className="login-form" onSubmit={handleSubmit}>
-          <h3>Sign In</h3>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="input-field"
-          >
-            <option value="parent">Login as Parent</option>
-            <option value="admin">Login as Admin</option>
-            <option value="child">Login as Child</option>
-          </select>
+          <h3>Parent Sign In</h3>
           <input
             type="text"
             placeholder="Username or email"
