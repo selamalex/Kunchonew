@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import "./SlideBook.css"; // You'll create this for styling
+import { useNavigate, useParams } from "react-router-dom";
+import "./SlideBook.css";
 
 const SlideBook = () => {
   const { bookId } = useParams();
+  const navigate = useNavigate();
   const [imagePaths, setImagePaths] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
 
   useEffect(() => {
     const loadImages = async () => {
@@ -37,21 +40,63 @@ const SlideBook = () => {
     setCurrentIndex((prev) => (prev === imagePaths.length - 1 ? 0 : prev + 1));
   };
 
+  const handleRating = (selectedRating) => {
+    setRating(selectedRating);
+    // Here you would typically send the rating to your backend
+    console.log(`Rated book ${bookId} with ${selectedRating} stars`);
+  };
+
   if (imagePaths.length === 0) return <div className="loader">Loading book...</div>;
 
   return (
     <div className="slidebook-container">
-      <button className="nav-arrow left" onClick={prevSlide}>⬅</button>
+      {/* Back Button */}
+      <button className="back-button" onClick={() => navigate(-1)}>
+        ← Back to Books
+      </button>
 
-      <div className="slidebook-image-wrapper">
-        <img
-          src={imagePaths[currentIndex]}
-          alt={`Page ${currentIndex + 1}`}
-          className="slidebook-image"
-        />
+      {/* Rating System */}
+      <div className="rating-container">
+        <p>Rate this book:</p>
+        <div className="stars">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <span
+              key={star}
+              className={`star ${star <= (hoverRating || rating) ? "filled" : ""}`}
+              onClick={() => handleRating(star)}
+              onMouseEnter={() => setHoverRating(star)}
+              onMouseLeave={() => setHoverRating(0)}
+            >
+              {star <= (hoverRating || rating) ? "★" : "☆"}
+            </span>
+          ))}
+        </div>
+        <p className="rating-text">
+          {rating > 0 ? `You rated this ${rating} star${rating > 1 ? "s" : ""}` : "Not rated yet"}
+        </p>
       </div>
 
-      <button className="nav-arrow right" onClick={nextSlide}>➡</button>
+      {/* Book Slides */}
+      <div className="slider-wrapper">
+        <button className="nav-arrow left" onClick={prevSlide}>
+          ⬅
+        </button>
+
+        <div className="slidebook-image-wrapper">
+          <img
+            src={imagePaths[currentIndex]}
+            alt={`Page ${currentIndex + 1}`}
+            className="slidebook-image"
+          />
+          <div className="page-indicator">
+            Page {currentIndex + 1} of {imagePaths.length}
+          </div>
+        </div>
+
+        <button className="nav-arrow right" onClick={nextSlide}>
+          ➡
+        </button>
+      </div>
     </div>
   );
 };
