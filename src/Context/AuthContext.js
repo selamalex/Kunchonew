@@ -1,20 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+// AuthContext.js
+import { createContext, useContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
+  const [user, setUser] = useState(null);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
@@ -23,11 +13,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Add this custom hook
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

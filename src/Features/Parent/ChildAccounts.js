@@ -1,42 +1,105 @@
-import React, { useState } from "react";
 import ChildCard from "./ChildCard";
 import { FaEllipsisH, FaPlus, FaTimes } from "react-icons/fa";
 import "./ChildAccounts.css";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../Context/AuthContext"; // adjust path if needed
+import axios from "axios";
 
-const childrenData = [
-  { name: "Mimi", age: 6 },
-  { name: "Lulu", age: 7 },
-];
+// Import statements unchanged...
 
 const ChildAccounts = () => {
-  const [children, setChildren] = useState(childrenData);
+  const { user } = useContext(AuthContext);
+  const [children, setChildren] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
     age: "",
+    userGroup: "",
+    screentime: "",
+    avatarPath: "", // optional
   });
+
+  useEffect(() => {
+    const fetchChildren = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/parent/childs`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+              "Content-Type": "application/json",
+            },
+            params: { parentId: user.id },
+          }
+        );
+        setChildren(response.data);
+      } catch (error) {
+        console.error("Failed to fetch children:", error);
+      }
+    };
+
+    if (user?.id && user?.token) {
+      fetchChildren();
+    }
+  }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add the new child to the list
-    setChildren([...children, formData]);
-    // Reset form
-    setFormData({
-      name: "",
-      age: "",
-    });
-    // Close modal
-    setShowModal(false);
-    // Show success alert
-    alert("Child registered successfully!");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/parent/childs",
+        {
+          ...formData,
+          parentId: user.id, // Automatically set from token context
+          avatarPath: "/avatars/avatar1.png", // Default avatar
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      alert(response.data.message);
+
+      // Clear form and close modal
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        age: "",
+        userGroup: "",
+        screentime: "",
+        avatarPath: "",
+      });
+      setShowModal(false);
+
+      // Refresh child list
+      const refreshed = await axios.get(
+        `http://localhost:3000/api/parent/childs`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+          params: { parentId: user.id },
+        }
+      );
+      setChildren(refreshed.data);
+    } catch (error) {
+      console.error("Error creating child:", error);
+      alert(error.response?.data?.error || "Failed to create child");
+    }
   };
 
   return (
@@ -44,40 +107,67 @@ const ChildAccounts = () => {
       <h3 className="section-title">Children's Account</h3>
       <div className="card-container">
         {children.map((child, index) => (
-          <ChildCard key={index} {...child} />
+          <ChildCard
+            key={index}
+            name={`${child.User?.firstName} ${child.User?.lastName}`}
+            age={child.age}
+            userGroup={child.userGroup}
+          />
         ))}
-        <div
-          className="child-card add-card"
-          onClick={() => setShowModal(true)}
-          style={{ backgroundColor: "#f5a12b20", borderColor: "#f5a12b" }}
-        >
-          <FaPlus className="add-icon" style={{ color: "#f5a12b" }} />
-          <p style={{ color: "#f5a12b" }}>Add Child</p>
+        <div className="child-card add-card" onClick={() => setShowModal(true)}>
+          <FaPlus className="add-icon" />
+          <p>Add Child</p>
         </div>
       </div>
-      <div className="more-icon">
-        <FaEllipsisH />
-      </div>
 
-      {/* Modal Popup */}
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button
-              className="close-btn"
-              onClick={() => setShowModal(false)}
-              style={{ color: "#f5a12b" }}
-            >
+        <div
+          className="modal-overlay"
+          onClick={() => setShowModal(false)}
+          style={{ overflowY: "auto" }}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowModal(false)}>
               <FaTimes />
             </button>
-            <h2 style={{ color: "#f5a12b" }}>Add New Child</h2>
+            <h2>Add New Child</h2>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>Child's Name</label>
+                <label>First Name</label>
                 <input
                   type="text"
-                  name="name"
-                  value={formData.name}
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
                   onChange={handleInputChange}
                   required
                 />
@@ -92,6 +182,30 @@ const ChildAccounts = () => {
                   required
                   min="1"
                   max="18"
+                />
+              </div>
+              <div className="form-group">
+                <label>User Group</label>
+                <select
+                  name="userGroup"
+                  value={formData.userGroup}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select Group</option>
+                  <option value="1">Group 1</option>
+                  <option value="2">Group 2</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Screentime (minutes/day)</label>
+                <input
+                  type="number"
+                  name="screentime"
+                  value={formData.screentime}
+                  onChange={handleInputChange}
+                  required
+                  min="0"
                 />
               </div>
               <button
