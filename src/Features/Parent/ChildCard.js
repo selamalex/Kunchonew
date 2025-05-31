@@ -7,35 +7,32 @@ const ChildCard = ({ name = "", userGroup, age }) => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
+  const firstName = name.split(" ")[0]; // Only take the first word as the first name
+
   const handleLogin = async () => {
     const childUser = {
       role: "child",
-      //username: name.toLowerCase().replace(/\s+/g, "-"),
-      //displayName: name,
-      userGroup: userGroup,
-      age: age,
+      userGroup,
+      age,
     };
 
-    // Set user and wait for state to update
     await setUser(childUser);
-
-    // Navigate after state is updated
     navigate("/child/dashboard", { replace: true });
   };
 
   return (
     <div className="child-card">
       <div className="child-avatar" style={{ backgroundColor: "#f5a12b" }}>
-        {name.charAt(0).toUpperCase()}
+        {firstName.charAt(0).toUpperCase()}
       </div>
-      <h4>{name}</h4>
+      <h4>{firstName}</h4>
       <p>Age: {age}</p>
       <button
         className="login-btn"
         onClick={handleLogin}
         style={{ backgroundColor: "#f5a12b" }}
       >
-        Login as {name.split(" ")[0]}
+        Login as {firstName}
       </button>
     </div>
   );

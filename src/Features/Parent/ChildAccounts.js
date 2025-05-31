@@ -109,7 +109,7 @@ const ChildAccounts = () => {
         {children.map((child, index) => (
           <ChildCard
             key={index}
-            name={`${child.User?.firstName} ${child.User?.lastName}`}
+            name={child.childUser?.firstName || "Unknown"}
             age={child.age}
             userGroup={child.userGroup}
           />
