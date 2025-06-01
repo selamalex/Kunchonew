@@ -2,7 +2,8 @@ import ChildCard from "./ChildCard";
 import { FaEllipsisH, FaPlus, FaTimes } from "react-icons/fa";
 import "./ChildAccounts.css";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../Context/AuthContext"; // adjust path if needed
+import { AuthContext } from "../../Context/AuthContext";
+import defaultAvatar from "../../Assets/images/avatar1.png";
 import axios from "axios";
 
 // Import statements unchanged...
@@ -60,7 +61,7 @@ const ChildAccounts = () => {
         {
           ...formData,
           parentId: user.id, // Automatically set from token context
-          avatarPath: "/avatars/avatar1.png", // Default avatar
+          avatarPath: "frontend/src/Assets/images/avatar1.png", // Default avatar
         },
         {
           headers: {
@@ -69,8 +70,6 @@ const ChildAccounts = () => {
           },
         }
       );
-
-      alert(response.data.message);
 
       // Clear form and close modal
       setFormData({

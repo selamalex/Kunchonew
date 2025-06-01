@@ -28,7 +28,14 @@ const Login = () => {
 
       // Decode token to get user role or send user info in the response too
       const decoded = JSON.parse(atob(token.split(".")[1]));
-
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          role: decoded.role,
+          id: decoded.id,
+          token,
+        })
+      );
       // Set user context
       setUser({
         role: decoded.role,

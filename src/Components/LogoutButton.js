@@ -1,14 +1,14 @@
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../Context/AuthContext';
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
 export default function LogoutButton() {
-  const { setUser } = useContext(AuthContext);
+  const { setUser } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setUser(null);
-    navigate('/');
+    localStorage.removeItem("user");
+    navigate("/");
   };
 
   return (
