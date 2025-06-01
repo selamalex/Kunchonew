@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     if (username.startsWith("admin")) {
       setUser({ role: "admin", username });
-      navigate("/admin/dashboard");
+      navigate("/Admin/Overview]");
     } else if (username.startsWith("child")) {
       setUser({ role: "child", username, age: parseInt(password) });
       navigate("/child/dashboard");

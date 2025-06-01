@@ -9,17 +9,18 @@ import {
 import { AuthContext } from "./Context/AuthContext";
 
 // General landing page
-import GeneralHome from "./Pages/GeneralHome"; // ✅ New component you’ll create
+import GeneralHome from "./Pages/GeneralHome";
 
 // Login
 import Login from "./Pages/Login";
 
 // Admin pages
-import AdminDashboard from "./Features/Admin/AdminDashboard";
+
 import ContentManagement from "./Features/Admin/ContentManagement";
 import Reports from "./Features/Admin/Reports";
 import Settings from "./Features/Admin/Settings";
 import UserManagement from "./Features/Admin/UserManagement";
+import Overview from "./Features/Admin/Overview"; // ✅ Added
 
 // Parent pages
 import ParentDashboard from "./Features/Parent/ParentDashboard";
@@ -39,14 +40,15 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* 👇 New public landing page route */}
+        {/* Public Routes */}
         <Route path="/" element={<GeneralHome />} />
         <Route path="/login" element={<Login />} />
 
         {/* Admin Routes */}
         {user?.role === "admin" && (
           <>
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+           
+            <Route path="/admin/overview" element={<Overview />} /> {/* ✅ */}
             <Route path="/admin/users" element={<UserManagement />} />
             <Route path="/admin/content" element={<ContentManagement />} />
             <Route path="/admin/settings" element={<Settings />} />
@@ -58,10 +60,7 @@ function App() {
         {user?.role === "parent" && (
           <>
             <Route path="/parent/dashboard" element={<ParentDashboard />} />
-            <Route
-              path="/parent/subaccounts"
-              element={<SubAccountManagement />}
-            />
+            <Route path="/parent/subaccounts" element={<SubAccountManagement />} />
             <Route path="/parent/screentime" element={<ScreenTimeReport />} />
           </>
         )}
@@ -77,7 +76,7 @@ function App() {
           </>
         )}
 
-        {/* Fallback */}
+        {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
