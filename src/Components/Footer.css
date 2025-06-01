@@ -32,7 +32,8 @@
 .footer-links {
   flex: 1;
   text-align: center;
-  margin-left: 120px;
+  margin-right: 300px;
+  margin-top: 20px;
 }
 
 .footer-links h3 {
@@ -58,28 +59,6 @@
 }
 
 .footer-links ul li a:hover {
-  color: #f1c40f;
-}
-
-.footer-social {
-  flex: 1;
-  text-align: left;
-  margin-left: 200px;
-  margin-right: 0px;
-}
-
-.social-icons {
-  display: flex;
-  gap: 10px;
-}
-
-.social-icons a {
-  color: white;
-  font-size: 20px;
-  transition: color 0.3s;
-}
-
-.social-icons a:hover {
   color: #f1c40f;
 }
 

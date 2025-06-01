@@ -32,24 +32,6 @@ function Footer() {
             </li>
           </ul>
         </div>
-
-        <div className="footer-social">
-          <h3>Follow Us</h3>
-          <div className="social-icons">
-            <a href="#">
-              <FaFacebook />
-            </a>
-            <a href="#">
-              <FaTwitter />
-            </a>
-            <a href="#">
-              <FaInstagram />
-            </a>
-            <a href="#">
-              <FaLinkedin />
-            </a>
-          </div>
-        </div>
       </div>
 
       <div className="footer-bottom">
