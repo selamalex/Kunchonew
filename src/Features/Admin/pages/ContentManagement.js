@@ -4,36 +4,7 @@ import { AuthContext } from "../../../Context/AuthContext";
 const Contents = () => {
   const { user } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("all");
-  const [contents, setContents] = useState([
-    {
-      id: 1,
-      title: "Introduction to Math",
-      category: "Books",
-      ageGroup: "Published",
-      date: "2023-05-15",
-    },
-    {
-      id: 2,
-      title: "Classical Music Collection",
-      category: "Music",
-      ageGroup: "Published",
-      date: "2023-06-20",
-    },
-    {
-      id: 3,
-      title: "Science Experiments",
-      category: "Videos",
-      ageGroup: "Draft",
-      date: "2023-07-10",
-    },
-    {
-      id: 4,
-      title: "History Timeline",
-      category: "Others",
-      ageGroup: "Published",
-      date: "2023-08-05",
-    },
-  ]);
+  const [contents, setContents] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({
@@ -43,9 +14,68 @@ const Contents = () => {
     date: "",
     filePath: "",
   });
+  useEffect(() => {
+    const fetchContents = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/admin/content/",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
 
-  const handleDeleteContent = (id) => {
-    setContents(contents.filter((content) => content.id !== id));
+        const data = await response.json();
+
+        if (response.ok) {
+          const formatted = data.map((item) => ({
+            id: item.id,
+            title: item.title,
+            category: item.type, // mapping `type` to `category`
+            ageGroup: item.ageGroup,
+            date: new Date(item.createdAt).toISOString().split("T")[0], // format to YYYY-MM-DD
+          }));
+          setContents(formatted);
+        } else {
+          alert(
+            "Failed to load contents: " + (data.message || "Unknown error")
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching contents:", error);
+        alert("An error occurred while fetching content.");
+      }
+    };
+
+    fetchContents();
+  }, [user.token]);
+
+  const handleDeleteContent = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/admin/content/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        setContents(contents.filter((content) => content.id !== id));
+      } else {
+        const error = await response.json();
+        alert(
+          "Failed to delete content: " + (error.message || "Unknown error")
+        );
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("An error occurred while deleting the content.");
+    }
   };
 
   const handleInputChange = (e) => {
