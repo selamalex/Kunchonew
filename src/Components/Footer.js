@@ -27,9 +27,7 @@ function Footer() {
             <li>
               <a href="#services">Services</a>
             </li>
-            <li>
-              <a href="#testimonies">Testimonies</a>
-            </li>
+
             <li>
               <a href="#contact">Contact</a>
             </li>
