@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom"; // ✅ Add useLocation
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./SpacificVid.css";
 
 const SpecificVid = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { state: video } = useLocation(); // ✅ Get video data from route state
+  const { state: video } = useLocation();
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -13,7 +13,7 @@ const SpecificVid = () => {
   const [hoverRating, setHoverRating] = useState(0);
 
   if (!video) {
-    return <div className="specific-vid-container">Video not found.</div>; // fallback
+    return <div className="specific-vid-container">Video not found.</div>;
   }
 
   const togglePlay = () => {
