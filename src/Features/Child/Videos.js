@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../Components/Navbar";
 import "../Child/Videos.css";
+import { useNavigate } from "react-router-dom";
 
 const Videos = () => {
   const [videos, setVideos] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -78,21 +80,21 @@ const Videos = () => {
         <h3 className="section-title">Recommended Videos</h3>
         <div className="video-grid">
           {videos.map((video) => (
-            <div key={video.id} className="video-card">
+            <div
+              key={video.id}
+              className="video-card"
+              onClick={() =>
+                navigate(`/child/videos/${video.id}`, { state: video })
+              }
+            >
               <div className="thumbnail-container">
-                <a
-                  href={video.filePath}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src={"/images/video-placeholder.png"} // Placeholder until you have thumbnails
-                    alt={video.title}
-                    className="video-thumbnail"
-                  />
-                  <div className="video-duration">--:--</div>{" "}
-                  {/* Duration unknown in API */}
-                </a>
+                <img
+                  src={"/images/video-placeholder.png"} // Placeholder until you have thumbnails
+                  alt={video.title}
+                  className="video-thumbnail"
+                />
+                <div className="video-duration">--:--</div>{" "}
+                {/* Duration unknown in API */}
               </div>
               <div className="video-details">
                 <h4 className="video-title">{video.title}</h4>

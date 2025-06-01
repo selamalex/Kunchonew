@@ -1,7 +1,7 @@
-import React from "react";
+import { React, useContext } from "react";
 import { Link } from "react-router-dom";
 import LogoutButton from "../../Components/LogoutButton";
-
+import { AuthContext } from "../../Context/AuthContext";
 import "./Sidebar.css";
 import {
   FaTachometerAlt,
@@ -14,6 +14,8 @@ import {
 import logo from "../../Assets/images/logo.png";
 
 const ParentDashboard = () => {
+  const { user } = useContext(AuthContext);
+  console.log(user.firstName);
   return (
     <div className="dashboard-container">
       <div className="sidebar">
@@ -41,7 +43,7 @@ const ParentDashboard = () => {
           {" "}
           <div className="greeting-section">
             <div className="greeting-text">
-              <h2>Hello Tsedi,</h2>
+              <h2>Hello {user.firstName},</h2>
               <p>Your Child activities and progress are updated here</p>
             </div>
           </div>

@@ -1,68 +1,126 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../Context/AuthContext";
 
 const Contents = () => {
-  const [activeTab, setActiveTab] = useState("all")
+  const { user } = useContext(AuthContext);
+  const [activeTab, setActiveTab] = useState("all");
   const [contents, setContents] = useState([
-    { id: 1, title: "Introduction to Math", category: "Books", status: "Published", date: "2023-05-15" },
-    { id: 2, title: "Classical Music Collection", category: "Music", status: "Published", date: "2023-06-20" },
-    { id: 3, title: "Science Experiments", category: "Videos", status: "Draft", date: "2023-07-10" },
-    { id: 4, title: "History Timeline", category: "Others", status: "Published", date: "2023-08-05" },
-  ])
+    {
+      id: 1,
+      title: "Introduction to Math",
+      category: "Books",
+      ageGroup: "Published",
+      date: "2023-05-15",
+    },
+    {
+      id: 2,
+      title: "Classical Music Collection",
+      category: "Music",
+      ageGroup: "Published",
+      date: "2023-06-20",
+    },
+    {
+      id: 3,
+      title: "Science Experiments",
+      category: "Videos",
+      ageGroup: "Draft",
+      date: "2023-07-10",
+    },
+    {
+      id: 4,
+      title: "History Timeline",
+      category: "Others",
+      ageGroup: "Published",
+      date: "2023-08-05",
+    },
+  ]);
 
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({
     title: "",
     category: "Books",
-    status: "Draft",
+    ageGroup: "1", // updated from ageGroup
     date: "",
-    file: null,
-  })
+    filePath: "",
+  });
 
   const handleDeleteContent = (id) => {
-    setContents(contents.filter((content) => content.id !== id))
-  }
+    setContents(contents.filter((content) => content.id !== id));
+  };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setNewContent((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleFileChange = (e) => {
     setNewContent((prev) => ({
       ...prev,
       file: e.target.files[0],
-    }))
-  }
+    }));
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!newContent.title || !newContent.date) {
-      alert("Please fill in Title and Date")
-      return
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!newContent.title || !newContent.date || !newContent.filePath) {
+      alert("Please fill in Title, Date, and File Link");
+      return;
     }
-    const newId = contents.length ? Math.max(...contents.map(c => c.id)) + 1 : 1
-    setContents((prev) => [
-      ...prev,
-      {
-        id: newId,
-        title: newContent.title,
-        category: newContent.category,
-        status: newContent.status,
-        date: newContent.date,
-      },
-    ])
-    setNewContent({
-      title: "",
-      category: "Books",
-      status: "Draft",
-      date: "",
-      file: null,
-    })
-    setShowModal(false)
-  }
+
+    try {
+      const response = await fetch("http://localhost:3000/api/admin/content", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: newContent.category,
+          title: newContent.title,
+          description: "",
+          ageGroup: parseInt(newContent.ageGroup, 10),
+          filePath: newContent.filePath,
+        }),
+      });
+
+      const savedContent = await response.json();
+
+      if (response.ok) {
+        const newId = contents.length
+          ? Math.max(...contents.map((c) => c.id)) + 1
+          : 1;
+        setContents((prev) => [
+          ...prev,
+          {
+            id: newId,
+            title: savedContent.title,
+            category: savedContent.type,
+            ageGroup: newContent.ageGroup,
+            date: newContent.date,
+          },
+        ]);
+        setNewContent({
+          title: "",
+          category: "Books",
+          ageGroup: "Draft",
+          date: "",
+          filePath: "",
+        });
+        setShowModal(false);
+      } else {
+        alert(
+          "Failed to save content: " + (savedContent.error || "Unknown error")
+        );
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Error saving content");
+    }
+  };
 
   return (
     <div className="page-container">
@@ -89,38 +147,93 @@ const Contents = () => {
 
       <div className="tab-container">
         <div className="tabs">
-          <div className={`tab ${activeTab === "all" ? "active" : ""}`} onClick={() => setActiveTab("all")}>All</div>
-          <div className={`tab ${activeTab === "books" ? "active" : ""}`} onClick={() => setActiveTab("books")}>Books</div>
-          <div className={`tab ${activeTab === "music" ? "active" : ""}`} onClick={() => setActiveTab("music")}>Music</div>
-          <div className={`tab ${activeTab === "videos" ? "active" : ""}`} onClick={() => setActiveTab("videos")}>Videos</div>
-          <div className={`tab ${activeTab === "others" ? "active" : ""}`} onClick={() => setActiveTab("others")}>Others</div>
+          <div
+            className={`tab ${activeTab === "all" ? "active" : ""}`}
+            onClick={() => setActiveTab("all")}
+          >
+            All
+          </div>
+          <div
+            className={`tab ${activeTab === "books" ? "active" : ""}`}
+            onClick={() => setActiveTab("books")}
+          >
+            Books
+          </div>
+          <div
+            className={`tab ${activeTab === "music" ? "active" : ""}`}
+            onClick={() => setActiveTab("music")}
+          >
+            Music
+          </div>
+          <div
+            className={`tab ${activeTab === "videos" ? "active" : ""}`}
+            onClick={() => setActiveTab("videos")}
+          >
+            Videos
+          </div>
+          <div
+            className={`tab ${activeTab === "others" ? "active" : ""}`}
+            onClick={() => setActiveTab("others")}
+          >
+            Others
+          </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
-          <button className="button button-primary" onClick={() => setShowModal(true)}>Add New Content</button>
-          <input type="text" className="search-input" placeholder="Search" style={{ width: "250px" }} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "20px",
+          }}
+        >
+          <button
+            className="button button-primary"
+            onClick={() => setShowModal(true)}
+          >
+            Add New Content
+          </button>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search"
+            style={{ width: "250px" }}
+          />
         </div>
 
         <table className="table">
           <thead>
             <tr>
-              <th><input type="checkbox" /></th>
+              <th>
+                <input type="checkbox" />
+              </th>
               <th>Title</th>
               <th>Category</th>
-              <th>Status</th>
+              <th>ageGroup</th>
               <th>Date</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {contents
-              .filter((content) => activeTab === "all" ? true : content.category.toLowerCase() === activeTab)
+              .filter((content) =>
+                activeTab === "all"
+                  ? true
+                  : content.category.toLowerCase() === activeTab
+              )
               .map((content) => (
                 <tr key={content.id}>
-                  <td><input type="checkbox" /></td>
+                  <td>
+                    <input type="checkbox" />
+                  </td>
                   <td>{content.title}</td>
                   <td>{content.category}</td>
-                  <td><span className={`status-badge ${content.status.toLowerCase()}`}>{content.status}</span></td>
+                  <td>
+                    <span
+                      className={`status-badge ${content.ageGroup.toLowerCase()}`}
+                    >
+                      {content.ageGroup}
+                    </span>
+                  </td>
                   <td>{content.date}</td>
                   <td>
                     <button
@@ -134,7 +247,9 @@ const Contents = () => {
                         cursor: "pointer",
                         marginRight: "5px",
                       }}
-                    >Edit</button>
+                    >
+                      Edit
+                    </button>
                     <button
                       className="action-button"
                       onClick={() => handleDeleteContent(content.id)}
@@ -146,7 +261,9 @@ const Contents = () => {
                         borderRadius: "3px",
                         cursor: "pointer",
                       }}
-                    >Delete</button>
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -200,23 +317,23 @@ const Contents = () => {
                   onChange={handleInputChange}
                   style={{ width: "100%", padding: "8px" }}
                 >
-                  <option value="Books">Books</option>
-                  <option value="Music">Music</option>
-                  <option value="Videos">Videos</option>
-                  <option value="Others">Others</option>
+                  <option value="book">Books</option>
+                  <option value="music">Music</option>
+                  <option value="video">Videos</option>
+                  <option value="other">Others</option>
                 </select>
               </div>
 
               <div style={{ marginBottom: "12px" }}>
-                <label>Status</label>
+                <label>Age Group</label>
                 <select
-                  name="status"
-                  value={newContent.status}
+                  name="ageGroup"
+                  value={newContent.ageGroup}
                   onChange={handleInputChange}
                   style={{ width: "100%", padding: "8px" }}
                 >
-                  <option value="Draft">Draft</option>
-                  <option value="Published">Published</option>
+                  <option value="1">Group 1</option>
+                  <option value="2">Group 2</option>
                 </select>
               </div>
 
@@ -233,15 +350,31 @@ const Contents = () => {
               </div>
 
               <div style={{ marginBottom: "12px" }}>
-                <label>Upload File</label>
-                <input type="file" onChange={handleFileChange} />
+                <label>Google Drive File Link</label>
+                <input
+                  type="text"
+                  name="filePath"
+                  value={newContent.filePath || ""}
+                  onChange={handleInputChange}
+                  placeholder="https://drive.google.com/..."
+                  style={{ width: "100%", padding: "8px" }}
+                  required
+                />
               </div>
 
               <div style={{ textAlign: "right" }}>
-                <button type="submit" className="button button-primary" style={{ marginRight: "10px" }}>
+                <button
+                  type="submit"
+                  className="button button-primary"
+                  style={{ marginRight: "10px" }}
+                >
                   Add
                 </button>
-                <button type="button" className="button" onClick={() => setShowModal(false)}>
+                <button
+                  type="button"
+                  className="button"
+                  onClick={() => setShowModal(false)}
+                >
                   Cancel
                 </button>
               </div>
@@ -250,7 +383,7 @@ const Contents = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Contents
+export default Contents;

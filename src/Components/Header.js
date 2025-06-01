@@ -18,15 +18,20 @@ const Header = () => {
           <li>
             <a href="#services">Service</a>
           </li>
-
           <li>
             <a href="#contact">Contact Us</a>
           </li>
         </ul>
       </nav>
-      <button onClick={() => navigate("/login")} className="px-6 py-2 ">
-        Login
-      </button>
+
+      <div className="auth-buttons">
+        <button onClick={() => navigate("/login")} className="auth-btn">
+          Login
+        </button>
+        <button onClick={() => navigate("/signup")} className="auth-btn">
+          Signup
+        </button>
+      </div>
     </header>
   );
 };

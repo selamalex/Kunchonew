@@ -6,8 +6,6 @@ import { AuthContext } from "../../Context/AuthContext";
 import defaultAvatar from "../../Assets/images/avatar1.png";
 import axios from "axios";
 
-// Import statements unchanged...
-
 const ChildAccounts = () => {
   const { user } = useContext(AuthContext);
   const [children, setChildren] = useState([]);

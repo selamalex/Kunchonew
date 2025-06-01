@@ -9,29 +9,6 @@ import axios from "axios";
 const SubAccountManagement = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  const [profile, setProfile] = useState(null);
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3000/api/parents/me",
-          {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
-          }
-        );
-        setProfile(response.data);
-      } catch (error) {
-        console.error("Failed to fetch user profile:", error);
-      }
-    };
-
-    if (user?.token) {
-      fetchUserProfile();
-    }
-  }, [user]);
 
   return (
     <div className="dashboard-wrapper">
@@ -44,7 +21,7 @@ const SubAccountManagement = () => {
       {/* Greeting Section */}
       <div className="greeting-section">
         <div className="greeting-text">
-          <h2>Hello {profile?.firstName || "User"},</h2>
+          <h2>Hello {user.firstName},</h2>
           <p>Your Child activities and progress are updated here</p>
         </div>
 

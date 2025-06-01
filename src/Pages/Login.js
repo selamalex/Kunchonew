@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import axios from "axios";
 import "./Login.css";
@@ -31,6 +31,7 @@ const Login = () => {
       localStorage.setItem(
         "user",
         JSON.stringify({
+          firstName: decoded.firstName,
           role: decoded.role,
           id: decoded.id,
           token,
@@ -38,6 +39,7 @@ const Login = () => {
       );
       // Set user context
       setUser({
+        firstName: decoded.firstName,
         role: decoded.role,
         id: decoded.id,
         token,
@@ -92,6 +94,11 @@ const Login = () => {
           <button type="submit" className="submit-btn">
             Sign In
           </button>
+          <div style={{ textAlign: "center", marginTop: "1rem" }}>
+            <Link to="/" style={{ color: "#d59c38", textDecoration: "none" }}>
+              ← Go to Home
+            </Link>
+          </div>
         </form>
       </div>
     </div>
