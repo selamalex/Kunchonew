@@ -11,7 +11,6 @@
   border-color: #81c784;
 }
 
-/* Popup backdrop */
 .avatar-popup-backdrop {
   position: fixed;
   top: 0;
@@ -25,7 +24,6 @@
   z-index: 9999;
 }
 
-/* Popup container */
 .avatar-popup {
   background: white;
   border-radius: 12px;

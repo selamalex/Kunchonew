@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom"
-import "./Sidebar.css"
+import { NavLink } from "react-router-dom";
+import './Sidebarr.css';
 
 const Sidebar = () => {
   return (
@@ -23,17 +23,18 @@ const Sidebar = () => {
             <span>Overview</span>
           </NavLink>
 
-          <NavLink
-            to="/user-management"
-            className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}
-          >
-            <div className="sidebar-icon">
-              <i className="fas fa-users"></i>
-            </div>
-            <span>User Management</span>
-          </NavLink>
+         <NavLink
+  to="/admin/users"
+  className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}
+>
+  <div className="sidebar-icon">
+    <i className="fas fa-users"></i>
+  </div>
+  <span>User Management</span>
+</NavLink>
 
-          <NavLink to="/contents" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+
+          <NavLink to="/admin/contents" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
             <div className="sidebar-icon">
               <i className="fas fa-file-alt"></i>
             </div>
@@ -41,7 +42,7 @@ const Sidebar = () => {
           </NavLink>
 
           <NavLink
-            to="/notifications"
+            to="/admin/notifications"
             className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}
           >
             <div className="sidebar-icon">
@@ -50,14 +51,14 @@ const Sidebar = () => {
             <span>Notifications</span>
           </NavLink>
 
-          <NavLink to="/reports" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+          <NavLink to="admin/reports" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
             <div className="sidebar-icon">
               <i className="fas fa-chart-bar"></i>
             </div>
             <span>Reports</span>
           </NavLink>
 
-          <NavLink to="/settings" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+          <NavLink to="admin/settings" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
             <div className="sidebar-icon">
               <i className="fas fa-cog"></i>
             </div>

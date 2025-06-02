@@ -12,13 +12,11 @@ const SubAccountManagement = () => {
 
   return (
     <div className="dashboard-wrapper">
-      {/* Back Arrow */}
       <div className="back-arrow" onClick={() => navigate("/parent/dashboard")}>
         <FaArrowLeft className="back-icon" />
         <span>Back</span>
       </div>
 
-      {/* Greeting Section */}
       <div className="greeting-section">
         <div className="greeting-text">
           <h2>Hello {user.firstName},</h2>

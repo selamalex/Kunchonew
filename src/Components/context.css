@@ -5,7 +5,62 @@
   padding: 40px;
   margin-top: -50px;
   padding-left: 60px;
+  transition: all 0.5s ease;
+  box-sizing: border-box;
 }
+
+.text-content h1 {
+  font-size: 2em;
+  color: #d59c38;
+  display: inline;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.text-content h1::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 1.2em;
+  background: #d59c38;
+  animation: blink 0.7s infinite;
+  left: 100%;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.text-content {
+  max-width: 50%;
+  margin-top: -15px;
+  transition: all 0.5s ease;
+}
+
+.text-content p {
+  margin: 20px 0;
+  line-height: 1.6;
+  transition: all 0.3s ease;
+}
+
+.image-content {
+  transition: all 0.5s ease;
+}
+
+.content-image {
+  max-width: 95%;
+  height: auto;
+  transition: all 0.5s ease;
+  border-radius: 8px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -17,48 +72,72 @@
   }
 }
 
-.text-content h1 {
-  font-size: 2em;
-  color: #d59c38;
+.text-content h1,
+.text-content p,
+.content-image {
   animation: fadeIn 1s ease forwards;
 }
-.text-content {
-  max-width: 50%;
-  margin-top: -15px;
-}
 
-.text-content h1 {
-  font-size: 2em;
-  color: #d59c38;
-  display: inline;
-  position: relative;
-}
-
-.text-content p {
-  margin: 20px 0;
-}
-
-.image-content img {
-  max-width: 95%;
-  height: auto;
-}
-.text-content h1::after {
-  content: "";
-  position: absolute;
-  width: 2px;
-  height: 1.2em;
-  background: #d59c38;
-  animation: blink 0.7s infinite;
-  left: 100%;
-  margin-left: 2px; /* Space between text and cursor */
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
+@media (max-width: 1200px) {
+  .content-section {
+    padding: 30px;
+    padding-left: 40px;
   }
-  50% {
-    opacity: 0;
+
+  .text-content h1 {
+    font-size: 1.8em;
+  }
+}
+
+@media (max-width: 992px) {
+  .content-section {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 0;
+  }
+
+  .text-content {
+    max-width: 80%;
+    margin-bottom: 30px;
+  }
+
+  .text-content h1::after {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 100%;
+    margin-top: 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-section {
+    padding: 20px 15px;
+  }
+
+  .text-content {
+    max-width: 90%;
+  }
+
+  .text-content h1 {
+    font-size: 1.6em;
+  }
+
+  .content-image {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .text-content {
+    max-width: 100%;
+  }
+
+  .text-content h1 {
+    font-size: 1.4em;
+  }
+
+  .text-content p {
+    font-size: 0.9em;
   }
 }

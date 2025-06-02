@@ -1,68 +1,162 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../Context/AuthContext";
+
+const categories = [
+  { value: "book", label: "Books" },
+  { value: "audio", label: "Audio" },
+  { value: "video", label: "Videos" },
+  { value: "other", label: "Others" },
+];
 
 const Contents = () => {
-  const [activeTab, setActiveTab] = useState("all")
+  const { user } = useContext(AuthContext);
+  const [activeTab, setActiveTab] = useState("all");
   const [contents, setContents] = useState([
-    { id: 1, title: "Introduction to Math", category: "Books", status: "Published", date: "2023-05-15" },
-    { id: 2, title: "Classical Music Collection", category: "Music", status: "Published", date: "2023-06-20" },
-    { id: 3, title: "Science Experiments", category: "Videos", status: "Draft", date: "2023-07-10" },
-    { id: 4, title: "History Timeline", category: "Others", status: "Published", date: "2023-08-05" },
-  ])
+    { id: 1, title: "Introduction to Math", category: "book", status: "Published", date: "2023-05-15" },
+    { id: 2, title: "Classical Music Collection", category: "audio", status: "Published", date: "2023-06-20" },
+    { id: 3, title: "Science Experiments", category: "video", status: "Draft", date: "2023-07-10" },
+    { id: 4, title: "History Timeline", category: "other", status: "Published", date: "2023-08-05" },
+  ]);
 
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({
     title: "",
-    category: "Books",
+    category: "book",
     status: "Draft",
+    ageGroup: "1",
     date: "",
     file: null,
-  })
+  });
 
-  const handleDeleteContent = (id) => {
-    setContents(contents.filter((content) => content.id !== id))
-  }
+  useEffect(() => {
+    const fetchContents = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/admin/content/", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          const formatted = data.map((item) => ({
+            id: item.id,
+            title: item.title,
+            category: item.type.toLowerCase(),
+            ageGroup: item.ageGroup,
+            status: item.status || "Draft",
+            date: new Date(item.createdAt).toISOString().split("T")[0],
+          }));
+          setContents(formatted);
+        } else {
+          alert("Failed to load contents: " + (data.message || "Unknown error"));
+        }
+      } catch (error) {
+        console.error("Error fetching contents:", error);
+        alert("An error occurred while fetching content.");
+      }
+    };
+
+    fetchContents();
+  }, [user.token]);
+
+  const handleDeleteContent = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/admin/content/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+
+      if (response.ok) {
+        setContents(contents.filter((content) => content.id !== id));
+      } else {
+        const error = await response.json();
+        alert("Failed to delete content: " + (error.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("An error occurred while deleting the content.");
+    }
+  };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setNewContent((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleFileChange = (e) => {
     setNewContent((prev) => ({
       ...prev,
       file: e.target.files[0],
-    }))
-  }
+    }));
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!newContent.title || !newContent.date) {
-      alert("Please fill in Title and Date")
-      return
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { title, category, ageGroup, date, file, status } = newContent;
+
+    if (!title || !date || !file) {
+      alert("Please fill in Title, Date, and upload a File");
+      return;
     }
-    const newId = contents.length ? Math.max(...contents.map(c => c.id)) + 1 : 1
-    setContents((prev) => [
-      ...prev,
-      {
-        id: newId,
-        title: newContent.title,
-        category: newContent.category,
-        status: newContent.status,
-        date: newContent.date,
-      },
-    ])
-    setNewContent({
-      title: "",
-      category: "Books",
-      status: "Draft",
-      date: "",
-      file: null,
-    })
-    setShowModal(false)
-  }
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("type", category);
+    formData.append("description", "");
+    formData.append("ageGroup", ageGroup);
+    formData.append("status", status);
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/admin/content", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        const newId = contents.length ? Math.max(...contents.map((c) => c.id)) + 1 : 1;
+        setContents((prev) => [
+          ...prev,
+          {
+            id: newId,
+            title: result.title,
+            category: result.type.toLowerCase(),
+            ageGroup,
+            status: result.status || "Draft",
+            date,
+          },
+        ]);
+        setNewContent({
+          title: "",
+          category: "book",
+          status: "Draft",
+          ageGroup: "1",
+          date: "",
+          file: null,
+        });
+        setShowModal(false);
+      } else {
+        alert("Failed to upload content: " + (result.message || "Unknown error"));
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Error uploading content");
+    }
+  };
 
   return (
     <div className="page-container">
@@ -71,33 +165,38 @@ const Contents = () => {
       <div className="stats-container">
         <div className="stat-card">
           <div className="stat-title">Total Contents</div>
-          <div className="stat-value">671</div>
+          <div className="stat-value">{contents.length}</div>
         </div>
-        <div className="stat-card">
-          <div className="stat-title">Books</div>
-          <div className="stat-value">150</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-title">Music</div>
-          <div className="stat-value">220</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-title">Videos</div>
-          <div className="stat-value">250</div>
-        </div>
+        {categories.map((cat) => (
+          <div key={cat.value} className="stat-card">
+            <div className="stat-title">{cat.label}</div>
+            <div className="stat-value">
+              {contents.filter((c) => c.category === cat.value).length}
+            </div>
+          </div>
+        ))}
       </div>
 
       <div className="tab-container">
         <div className="tabs">
-          <div className={`tab ${activeTab === "all" ? "active" : ""}`} onClick={() => setActiveTab("all")}>All</div>
-          <div className={`tab ${activeTab === "books" ? "active" : ""}`} onClick={() => setActiveTab("books")}>Books</div>
-          <div className={`tab ${activeTab === "music" ? "active" : ""}`} onClick={() => setActiveTab("music")}>Music</div>
-          <div className={`tab ${activeTab === "videos" ? "active" : ""}`} onClick={() => setActiveTab("videos")}>Videos</div>
-          <div className={`tab ${activeTab === "others" ? "active" : ""}`} onClick={() => setActiveTab("others")}>Others</div>
+          <div className={`tab ${activeTab === "all" ? "active" : ""}`} onClick={() => setActiveTab("all")}>
+            All
+          </div>
+          {categories.map((cat) => (
+            <div
+              key={cat.value}
+              className={`tab ${activeTab === cat.value ? "active" : ""}`}
+              onClick={() => setActiveTab(cat.value)}
+            >
+              {cat.label}
+            </div>
+          ))}
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
-          <button className="button button-primary" onClick={() => setShowModal(true)}>Add New Content</button>
+          <button className="button button-primary" onClick={() => setShowModal(true)}>
+            Add New Content
+          </button>
           <input type="text" className="search-input" placeholder="Search" style={{ width: "250px" }} />
         </div>
 
@@ -114,7 +213,7 @@ const Contents = () => {
           </thead>
           <tbody>
             {contents
-              .filter((content) => activeTab === "all" ? true : content.category.toLowerCase() === activeTab)
+              .filter((content) => activeTab === "all" || content.category === activeTab)
               .map((content) => (
                 <tr key={content.id}>
                   <td><input type="checkbox" /></td>
@@ -134,7 +233,9 @@ const Contents = () => {
                         cursor: "pointer",
                         marginRight: "5px",
                       }}
-                    >Edit</button>
+                    >
+                      Edit
+                    </button>
                     <button
                       className="action-button"
                       onClick={() => handleDeleteContent(content.id)}
@@ -146,7 +247,9 @@ const Contents = () => {
                         borderRadius: "3px",
                         cursor: "pointer",
                       }}
-                    >Delete</button>
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -154,7 +257,6 @@ const Contents = () => {
         </table>
       </div>
 
-      {/* Modal Overlay */}
       {showModal && (
         <div
           style={{
@@ -166,10 +268,10 @@ const Contents = () => {
             alignItems: "center",
             zIndex: 1000,
           }}
-          onClick={() => setShowModal(false)} // close on clicking outside form
+          onClick={() => setShowModal(false)}
         >
           <div
-            onClick={(e) => e.stopPropagation()} // prevent close when clicking inside form
+            onClick={(e) => e.stopPropagation()}
             style={{
               backgroundColor: "white",
               padding: "25px",
@@ -200,10 +302,11 @@ const Contents = () => {
                   onChange={handleInputChange}
                   style={{ width: "100%", padding: "8px" }}
                 >
-                  <option value="Books">Books</option>
-                  <option value="Music">Music</option>
-                  <option value="Videos">Videos</option>
-                  <option value="Others">Others</option>
+                  {categories.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -234,7 +337,14 @@ const Contents = () => {
 
               <div style={{ marginBottom: "12px" }}>
                 <label>Upload File</label>
-                <input type="file" onChange={handleFileChange} />
+                <input
+                  type="file"
+                  name="file"
+                  accept=".pdf,.mp3,.mp4"
+                  onChange={handleFileChange}
+                  style={{ width: "100%", padding: "8px" }}
+                  required
+                />
               </div>
 
               <div style={{ textAlign: "right" }}>
@@ -250,7 +360,7 @@ const Contents = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Contents
+export default Contents;

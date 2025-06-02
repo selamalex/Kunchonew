@@ -42,27 +42,28 @@ const SlideBook = () => {
 
   const handleRating = (selectedRating) => {
     setRating(selectedRating);
-    // Here you would typically send the rating to your backend
+
     console.log(`Rated book ${bookId} with ${selectedRating} stars`);
   };
 
-  if (imagePaths.length === 0) return <div className="loader">Loading book...</div>;
+  if (imagePaths.length === 0)
+    return <div className="loader">Loading book...</div>;
 
   return (
     <div className="slidebook-container">
-      {/* Back Button */}
       <button className="back-button" onClick={() => navigate(-1)}>
         ← Back to Books
       </button>
 
-      {/* Rating System */}
       <div className="rating-container">
         <p>Rate this book:</p>
         <div className="stars">
           {[1, 2, 3, 4, 5].map((star) => (
             <span
               key={star}
-              className={`star ${star <= (hoverRating || rating) ? "filled" : ""}`}
+              className={`star ${
+                star <= (hoverRating || rating) ? "filled" : ""
+              }`}
               onClick={() => handleRating(star)}
               onMouseEnter={() => setHoverRating(star)}
               onMouseLeave={() => setHoverRating(0)}
@@ -72,11 +73,12 @@ const SlideBook = () => {
           ))}
         </div>
         <p className="rating-text">
-          {rating > 0 ? `You rated this ${rating} star${rating > 1 ? "s" : ""}` : "Not rated yet"}
+          {rating > 0
+            ? `You rated this ${rating} star${rating > 1 ? "s" : ""}`
+            : "Not rated yet"}
         </p>
       </div>
 
-      {/* Book Slides */}
       <div className="slider-wrapper">
         <button className="nav-arrow left" onClick={prevSlide}>
           ⬅

@@ -1,4 +1,6 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 import "./ScreenTime.css";
 
 const screenData = [
@@ -23,8 +25,16 @@ const screenData = [
 ];
 
 const ScreenTime = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="screen-time-section">
+      {/* Back arrow */}
+      <div className="back-arrow" onClick={() => navigate("/parent/dashboard")}>
+        <FaArrowLeft className="back-icon" />
+        <span>Back</span>
+      </div>
+
       <h3 className="section-title">Screen Time</h3>
       <p className="subtitle">Children’s Info</p>
       <div className="screen-list">

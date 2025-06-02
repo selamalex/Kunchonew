@@ -19,6 +19,7 @@
   justify-content: center;
   gap: 60px;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .card {
@@ -54,4 +55,16 @@
 
 .large-card {
   transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+  .cards-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .large-card {
+    transform: scale(1);
+  }
 }

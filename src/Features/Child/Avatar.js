@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Avatar.css"; // You'll create this for styling
+import "./Avatar.css";
 
 const avatarOptions = [
   "https://i.pravatar.cc/80?img=5",
@@ -35,10 +35,7 @@ export default function Avatar({ onChange }) {
 
       {popupOpen && (
         <div className="avatar-popup-backdrop" onClick={togglePopup}>
-          <div
-            className="avatar-popup"
-            onClick={(e) => e.stopPropagation()} // prevent closing on inner click
-          >
+          <div className="avatar-popup" onClick={(e) => e.stopPropagation()}>
             <h4>Choose Your Avatar</h4>
             <div className="avatar-options">
               {avatarOptions.map((avatar, i) => (
