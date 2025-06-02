@@ -1,6 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../Context/AuthContext";
 
+const categories = [
+  { value: "book", label: "Books" },
+  { value: "audio", label: "Audio" },
+  { value: "video", label: "Videos" },
+  { value: "other", label: "Others" },
+];
+
 const Contents = () => {
   const { user } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("all");
@@ -9,11 +16,12 @@ const Contents = () => {
   const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({
     title: "",
-    category: "Books",
-    ageGroup: "1", // updated from ageGroup
+    category: "book",
+    ageGroup: "1",
     date: "",
     file: null,
   });
+
   useEffect(() => {
     const fetchContents = async () => {
       try {
@@ -33,9 +41,9 @@ const Contents = () => {
           const formatted = data.map((item) => ({
             id: item.id,
             title: item.title,
-            category: item.type, // mapping `type` to `category`
+            category: item.type.toLowerCase(),
             ageGroup: item.ageGroup,
-            date: new Date(item.createdAt).toISOString().split("T")[0], // format to YYYY-MM-DD
+            date: new Date(item.createdAt).toISOString().split("T")[0],
           }));
           setContents(formatted);
         } else {
@@ -115,7 +123,6 @@ const Contents = () => {
         method: "POST",
         headers: {
           Authorization: `Bearer ${user.token}`,
-          // Do NOT set Content-Type when sending FormData. Let the browser handle it.
         },
         body: formData,
       });
@@ -123,7 +130,6 @@ const Contents = () => {
       const result = await response.json();
 
       if (response.ok) {
-        // Add new content to UI
         const newId = contents.length
           ? Math.max(...contents.map((c) => c.id)) + 1
           : 1;
@@ -132,14 +138,14 @@ const Contents = () => {
           {
             id: newId,
             title: result.title,
-            category: result.type,
-            ageGroup: ageGroup,
-            date: date,
+            category: result.type.toLowerCase(),
+            ageGroup,
+            date,
           },
         ]);
         setNewContent({
           title: "",
-          category: "Books",
+          category: "book",
           ageGroup: "1",
           date: "",
           file: null,
@@ -165,18 +171,14 @@ const Contents = () => {
           <div className="stat-title">Total Contents</div>
           <div className="stat-value">671</div>
         </div>
-        <div className="stat-card">
-          <div className="stat-title">Books</div>
-          <div className="stat-value">150</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-title">Audio</div>
-          <div className="stat-value">220</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-title">Videos</div>
-          <div className="stat-value">250</div>
-        </div>
+        {categories.map((cat) => (
+          <div key={cat.value} className="stat-card">
+            <div className="stat-title">{cat.label}</div>
+            <div className="stat-value">
+              {contents.filter((c) => c.category === cat.value).length}
+            </div>
+          </div>
+        ))}
       </div>
 
       <div className="tab-container">
@@ -187,30 +189,15 @@ const Contents = () => {
           >
             All
           </div>
-          <div
-            className={`tab ${activeTab === "books" ? "active" : ""}`}
-            onClick={() => setActiveTab("books")}
-          >
-            Books
-          </div>
-          <div
-            className={`tab ${activeTab === "audio" ? "active" : ""}`}
-            onClick={() => setActiveTab("audio")}
-          >
-            Audio
-          </div>
-          <div
-            className={`tab ${activeTab === "videos" ? "active" : ""}`}
-            onClick={() => setActiveTab("videos")}
-          >
-            Videos
-          </div>
-          <div
-            className={`tab ${activeTab === "others" ? "active" : ""}`}
-            onClick={() => setActiveTab("others")}
-          >
-            Others
-          </div>
+          {categories.map((cat) => (
+            <div
+              key={cat.value}
+              className={`tab ${activeTab === cat.value ? "active" : ""}`}
+              onClick={() => setActiveTab(cat.value)}
+            >
+              {cat.label}
+            </div>
+          ))}
         </div>
 
         <div
@@ -250,9 +237,7 @@ const Contents = () => {
           <tbody>
             {contents
               .filter((content) =>
-                activeTab === "all"
-                  ? true
-                  : content.category.toLowerCase() === activeTab
+                activeTab === "all" ? true : content.category === activeTab
               )
               .map((content) => (
                 <tr key={content.id}>
@@ -305,7 +290,6 @@ const Contents = () => {
         </table>
       </div>
 
-      {/* Modal Overlay */}
       {showModal && (
         <div
           style={{
@@ -317,10 +301,10 @@ const Contents = () => {
             alignItems: "center",
             zIndex: 1000,
           }}
-          onClick={() => setShowModal(false)} // close on clicking outside form
+          onClick={() => setShowModal(false)}
         >
           <div
-            onClick={(e) => e.stopPropagation()} // prevent close when clicking inside form
+            onClick={(e) => e.stopPropagation()}
             style={{
               backgroundColor: "white",
               padding: "25px",
@@ -351,10 +335,11 @@ const Contents = () => {
                   onChange={handleInputChange}
                   style={{ width: "100%", padding: "8px" }}
                 >
-                  <option value="book">Books</option>
-                  <option value="audio">Audio</option>
-                  <option value="video">Videos</option>
-                  <option value="other">Others</option>
+                  {categories.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -388,7 +373,7 @@ const Contents = () => {
                 <input
                   type="file"
                   name="file"
-                  accept=".pdf,.mp3,.mp4" // or whatever types you want
+                  accept=".pdf,.mp3,.mp4"
                   onChange={handleFileChange}
                   style={{ width: "100%", padding: "8px" }}
                   required
