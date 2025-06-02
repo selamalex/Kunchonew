@@ -7,16 +7,15 @@ function ContentSection() {
   const navigate = useNavigate();
   const [displayedText, setDisplayedText] = useState("");
   const fullText = "Welcome to Kuncho Kids Entertainment";
-  const typingSpeed = 100; // Typing speed in milliseconds
+  const typingSpeed = 100;
 
   useEffect(() => {
     let index = 0;
-
     const typingInterval = setInterval(() => {
       setDisplayedText((prev) => {
         if (index < fullText.length) {
           index++;
-          return fullText.slice(0, index); // Ensures accurate letter update
+          return fullText.slice(0, index);
         } else {
           clearInterval(typingInterval);
           return prev;
@@ -25,7 +24,7 @@ function ContentSection() {
     }, typingSpeed);
 
     return () => clearInterval(typingInterval);
-  }, []); // No dependency on fullText to avoid unnecessary re-renders
+  }, []);
 
   return (
     <section className="content-section" id="home">
@@ -39,7 +38,7 @@ function ContentSection() {
         </p>
       </div>
       <div className="image-content">
-        <img src={childrenImage} alt="Kuncho Kids" />
+        <img src={childrenImage} alt="Kuncho Kids" className="content-image" />
       </div>
     </section>
   );

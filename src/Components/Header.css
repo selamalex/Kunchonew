@@ -1,3 +1,4 @@
+/* Original Desktop Styles (unchanged) */
 .header {
   display: flex;
   justify-content: space-between;
@@ -38,7 +39,6 @@
   margin-top: -40px;
 }
 
-/* Shared button style */
 .auth-btn {
   background-color: #d59c38;
   color: #fff;
@@ -53,4 +53,134 @@
 .auth-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Mobile Menu Styles (only visible on small screens) */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 1000;
+  padding-top: 100px;
+  text-align: center;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.mobile-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.mobile-menu a:hover {
+  color: #d59c38;
+}
+
+.mobile-auth-btn {
+  background-color: #d59c38;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.mobile-auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive Adjustments Only When Screen Gets Smaller */
+@media (max-width: 1200px) {
+  .nav ul {
+    padding-left: 200px;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 992px) {
+  .header {
+    padding: 60px;
+  }
+  .nav ul {
+    padding-left: 150px;
+    gap: 25px;
+  }
+  .nav a {
+    font-size: 16px;
+  }
+  .auth-btn {
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 40px;
+    justify-content: center;
+    position: relative;
+  }
+
+  .nav ul,
+  .auth-buttons {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .mobile-menu {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    padding: 30px 20px;
+  }
+
+  .mobile-menu {
+    padding-top: 80px;
+  }
+
+  .mobile-menu ul {
+    gap: 20px;
+  }
+
+  .mobile-auth-btn {
+    padding: 10px 20px;
+  }
 }
