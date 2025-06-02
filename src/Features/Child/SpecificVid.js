@@ -39,11 +39,16 @@ const SpecificVid = () => {
 
   const recordView = async () => {
     try {
-      await axios.post(`http://localhost:3000/api/child/content/views/${id}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      await axios.post(
+        `http://localhost:3000/api/child/content/views/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
       console.log("View recorded!");
     } catch (error) {
       console.error("Failed to record view:", error);
