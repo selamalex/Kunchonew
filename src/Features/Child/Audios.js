@@ -1,10 +1,9 @@
-import React from "react";
-import { useEffect, useState, useContext, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../Context/AuthContext";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import LogoutButton from "../../Components/LogoutButton";
 import Navbar from "../../Components/Navbar";
+import { AuthContext } from "../../Context/AuthContext";
 import "./Audios.css";
 
 const Audios = () => {
@@ -112,66 +111,70 @@ const Audios = () => {
           <li>
             <Link to="/child/games">Games</Link>
           </li>
+          <li>
+            <LogoutButton className="logout-button" />
+          </li>
         </ul>
-        <button className="logout-button">Logout</button>
       </div>
 
       <div className="main-content">
-        <Navbar pageName="Audio Library" />
-
         <button className="back-button" onClick={() => navigate(-1)}>
           ← Back
         </button>
+        <Navbar pageName="Audio Player" />
 
-        <div className="audio-list">
-          {songs.map((song) => (
-            <div key={song.id} className="audio-card">
-              <img src={song.cover} alt={song.title} className="audio-cover" />
-              <h3>{song.title}</h3>
-              <p>{song.artist}</p>
-
-              <audio ref={audioRefs[song.id]} src={song.audio} />
-
-              <button
-                className="play-button"
-                onClick={() => handlePlayPause(song.id)}
-              >
-                {playingId === song.id ? "⏸ Pause" : "▶️ Play"}
-              </button>
-              <button
-                className="forward-button"
-                onClick={() => handleForward(song.id)}
-              >
-                ⏩ Forward 10s
-              </button>
-              <button
-                className="backward-button"
-                onClick={() => handleBackward(song.id)}
-              >
-                ⏪ Back 10s
-              </button>
-
-              <div className="rating">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    onClick={() => handleRating(song.id, star)}
-                    className={star <= (ratings[song.id] || 0) ? "filled" : ""}
-                  >
-                    {star <= (ratings[song.id] || 0) ? "⭐" : "☆"}
-                  </span>
-                ))}
+        {songs.length > 0 && (
+          <div className="player-container">
+            {songs.map((song) => (
+              <div className="player-song" key={song.id}>
+                <div className="player-cover">
+                  <img src={song.cover} alt="Album Cover" />
+                </div>
+                <div className="player-details">
+                  <div className="song-title">{song.title}</div>
+                  <div className="song-artist">{song.artist}</div>
+                  <div className="song-duration">{song.duration}</div>
+                </div>
+                <audio ref={audioRefs[song.id]} src={song.audio} />
+                <button
+                  className="play-button"
+                  onClick={() => handlePlayPause(song.id)}
+                >
+                  {playingId === song.id ? "⏸ Pause" : "▶️ Play"}
+                </button>
+                <button
+                  className="forward-button"
+                  onClick={() => handleForward(song.id)}
+                >
+                  ⏩ Forward 10s
+                </button>
+                <button
+                  className="backward-button"
+                  onClick={() => handleBackward(song.id)}
+                >
+                  ⏪ Back 10s
+                </button>
+                <div className="rating">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                      key={star}
+                      onClick={() => handleRating(song.id, star)}
+                      className={
+                        star <= (ratings[song.id] || 0) ? "filled" : ""
+                      }
+                    >
+                      {star <= (ratings[song.id] || 0) ? "⭐" : "☆"}
+                    </span>
+                  ))}
+                </div>
+                <button
+                  className={`like-button ${likes[song.id] ? "liked" : ""}`}
+                  onClick={() => handleLike(song.id)}
+                ></button>
               </div>
-
-              <button
-                className={`like-button ${likes[song.id] ? "liked" : ""}`}
-                onClick={() => handleLike(song.id)}
-              >
-                {likes[song.id] ? "❤️ Liked" : "🤍 Like"}
-              </button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

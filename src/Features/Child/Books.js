@@ -1,6 +1,7 @@
-import { useEffect, useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import LogoutButton from "../../Components/LogoutButton";
 import Navbar from "../../Components/Navbar";
 import { AuthContext } from "../../Context/AuthContext"; // ✅ Add this
 import "./Books.css";
@@ -91,10 +92,13 @@ const Books = () => {
             <Link to="/child/games">Games</Link>
           </li>
         </ul>
-        <button className="logout-button">Logout</button>
+        <LogoutButton className="logout-button"/>
       </div>
 
       <div className="main-content">
+         <button className="back-button" onClick={() => navigate(-1)}>
+    ← Back
+  </button>
         <Navbar pageName="Books" />
 
         <section className="cards-wrapper">
