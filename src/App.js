@@ -7,20 +7,26 @@ import {
   Navigate,
 } from "react-router-dom";
 
+// General landing page
 import GeneralHome from "./Pages/GeneralHome";
+
+// Login/Signup
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 
-import AdminDashboard from "./Features/Admin/pages/Overview";
-import UserManagement from "./Features/Admin/pages/UserManagement";
+// Admin pages
 import ContentManagement from "./Features/Admin/pages/ContentManagement";
-import Settings from "./Features/Admin/pages/Settings";
 import Reports from "./Features/Admin/pages/Reports";
+import Settings from "./Features/Admin/pages/Settings";
+import UserManagement from "./Features/Admin/pages/UserManagement";
+import Overview from "./Features/Admin/pages/Overview";
 
+// Parent pages
 import ParentDashboard from "./Features/Parent/ParentDashboard";
 import SubAccountManagement from "./Features/Parent/SubAccountManagement";
 import ScreenTimeReport from "./Features/Parent/ScreenTimeReport";
 
+// Child pages
 import ChildDashboard from "./Features/Child/ChildDashboard";
 import Videos from "./Features/Child/Videos";
 import SpecificVid from "./Features/Child/SpecificVid";
@@ -32,6 +38,7 @@ import Animals from "./Features/Child/Animals";
 import Vegetables from "./Features/Child/Vegetables";
 import Objects from "./Features/Child/Objects";
 import SlideBook from "./Features/Child/SlideBook";
+
 const ProtectedRoute = ({ role, children }) => {
   const { user } = useAuth();
 
@@ -40,6 +47,7 @@ const ProtectedRoute = ({ role, children }) => {
 
   return children;
 };
+
 function App() {
   const { user } = useAuth();
 
@@ -52,72 +60,24 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         {/* Admin Routes */}
-        <Route
-          path="/admin/dashboard"
-          element={
-            <ProtectedRoute role="admin">
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/users"
-          element={
-            <ProtectedRoute role="admin">
-              <UserManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/content"
-          element={
-            <ProtectedRoute role="admin">
-              <ContentManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/settings"
-          element={
-            <ProtectedRoute role="admin">
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/reports"
-          element={
-            <ProtectedRoute role="admin">
-              <Reports />
-            </ProtectedRoute>
-          }
-        />
+        {user?.role === "admin" && (
+          <>
+            <Route path="/admin/overview" element={<Overview />} />
+            <Route path="/admin/users" element={<UserManagement />} />
+            <Route path="/admin/content" element={<ContentManagement />} />
+            <Route path="/admin/settings" element={<Settings />} />
+            <Route path="/admin/reports" element={<Reports />} />
+          </>
+        )}
 
         {/* Parent Routes */}
-        <Route
-          path="/parent/dashboard"
-          element={
-            <ProtectedRoute role="parent">
-              <ParentDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/parent/subaccounts"
-          element={
-            <ProtectedRoute role="parent">
-              <SubAccountManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/parent/screentime"
-          element={
-            <ProtectedRoute role="parent">
-              <ScreenTimeReport />
-            </ProtectedRoute>
-          }
-        />
+        {user?.role === "parent" && (
+          <>
+            <Route path="/parent/dashboard" element={<ParentDashboard />} />
+            <Route path="/parent/subaccounts" element={<SubAccountManagement />} />
+            <Route path="/parent/screentime" element={<ScreenTimeReport />} />
+          </>
+        )}
 
         {/* Child Routes */}
         <Route
