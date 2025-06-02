@@ -50,6 +50,7 @@ const ChildAccounts = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   const handleUpdateChild = async (updatedData) => {
+    console.log("Updating child with data:", updatedData);
     try {
       await axios.put(
         `http://localhost:3000/api/parent/childs/${user.id}/${updatedData.id}`,
@@ -156,7 +157,9 @@ const ChildAccounts = () => {
             age={child.age}
             userGroup={child.userGroup}
             avatarUrl={child.avatarPath}
-            onUpdate={handleUpdateChild}
+            onUpdate={(updatedFields) =>
+              handleUpdateChild({ ...updatedFields, id: child.id })
+            }
             onDelete={() => handleDeleteChild(child.id)}
           />
         ))}
