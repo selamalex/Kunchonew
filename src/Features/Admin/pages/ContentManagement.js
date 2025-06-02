@@ -170,7 +170,7 @@ const Contents = () => {
           <div className="stat-value">150</div>
         </div>
         <div className="stat-card">
-          <div className="stat-title">Music</div>
+          <div className="stat-title">Audio</div>
           <div className="stat-value">220</div>
         </div>
         <div className="stat-card">
@@ -194,10 +194,10 @@ const Contents = () => {
             Books
           </div>
           <div
-            className={`tab ${activeTab === "music" ? "active" : ""}`}
-            onClick={() => setActiveTab("music")}
+            className={`tab ${activeTab === "audio" ? "active" : ""}`}
+            onClick={() => setActiveTab("audio")}
           >
-            Music
+            Audio
           </div>
           <div
             className={`tab ${activeTab === "videos" ? "active" : ""}`}
@@ -352,7 +352,7 @@ const Contents = () => {
                   style={{ width: "100%", padding: "8px" }}
                 >
                   <option value="book">Books</option>
-                  <option value="music">Music</option>
+                  <option value="audio">Audio</option>
                   <option value="video">Videos</option>
                   <option value="other">Others</option>
                 </select>

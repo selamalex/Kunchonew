@@ -1,9 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
+import { AuthContext } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Avatar from "../Features/Child/Avatar";
 import "./Navbar.css";
 
 export default function Navbar({ pageName }) {
+  const { user } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
@@ -19,7 +21,12 @@ export default function Navbar({ pageName }) {
     try {
       const query = encodeURIComponent(searchTerm);
       const response = await fetch(
-        `http://localhost:3000/api/child/content/search?query=${query}`
+        `http://localhost:3000/api/child/content/search?query=${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
       );
 
       if (!response.ok) throw new Error("Search failed");
@@ -39,7 +46,7 @@ export default function Navbar({ pageName }) {
   const handleResultClick = (result) => {
     setResults([]); // Close dropdown
     if (result.type.toLowerCase() === "video") {
-      navigate(`/SpecificVid/${result.id}`);
+      navigate(`/child/videos/${result.id}`);
     } else if (result.type.toLowerCase() === "book") {
       window.open(result.filePath, "_blank");
     } else {
