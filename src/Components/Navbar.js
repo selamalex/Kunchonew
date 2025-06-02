@@ -1,6 +1,6 @@
-import { useState, useRef, useContext, useEffect } from "react";
-import { AuthContext } from "../Context/AuthContext";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../Context/AuthContext';
 import Avatar from "../Features/Child/Avatar";
 import "./Navbar.css";
 
