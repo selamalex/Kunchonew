@@ -28,6 +28,7 @@ import Overview from "./Features/Admin/pages/Overview";
 import ParentDashboard from "./Features/Parent/ParentDashboard";
 import SubAccountManagement from "./Features/Parent/SubAccountManagement";
 import ScreenTimeReport from "./Features/Parent/ScreenTimeReport";
+import ParentLayout from "./Features/Parent/ParentLayout";
 
 // Child pages
 import ChildDashboard from "./Features/Child/ChildDashboard";
@@ -121,16 +122,15 @@ function App() {
         )}
 
         {/* Parent Routes */}
-        {user?.role === "parent" && (
-          <>
-            <Route path="/parent/dashboard" element={<ParentDashboard />} />
-            <Route
-              path="/parent/subaccounts"
-              element={<SubAccountManagement />}
-            />
-            <Route path="/parent/screentime" element={<ScreenTimeReport />} />
-          </>
-        )}
+        {/* Parent Routes */}
+{user?.role === "parent" && (
+  <Route path="/parent" element={<ParentLayout />}>
+    <Route path="dashboard" element={<ParentDashboard />} />
+    <Route path="subaccounts" element={<SubAccountManagement />} />
+    <Route path="screentime" element={<ScreenTimeReport />} />
+  </Route>
+)}
+
 
         {/* Child Routes */}
         <Route

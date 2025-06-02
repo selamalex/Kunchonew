@@ -175,10 +175,25 @@ const ChildAccounts = () => {
   };
 
   return (
-    <div className="dashboard-wrapper">
-      {/* Hamburger Menu */}
-      <div className="hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>
-        <FaBars />
+    <div className="child-accounts-section">
+      <div className="card-container">
+        {children.map((child, index) => (
+          <ChildCard
+            key={index}
+            name={child.childUser?.firstName || "Unknown"}
+            age={child.age}
+            userGroup={child.userGroup}
+            avatarUrl={child.avatarPath}
+            onUpdate={(updatedFields) =>
+              handleUpdateChild({ ...updatedFields, id: child.id })
+            }
+            onDelete={() => handleDeleteChild(child.id)}
+          />
+        ))}
+        <div className="child-card add-card" onClick={() => setShowModal(true)}>
+          <FaPlus className="add-icon" />
+          <p>Add Child</p>
+        </div>
       </div>
 
       {/* Sidebar */}

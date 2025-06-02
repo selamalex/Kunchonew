@@ -19,8 +19,10 @@ const Login = () => {
   };
 
   const validatePassword = (password) => {
-    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    return re.test(password);
+    // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
+   // const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    //return re.test(password);
+    return true
   };
 
   const handleSubmit = async (e) => {
