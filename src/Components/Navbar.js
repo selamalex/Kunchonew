@@ -51,7 +51,6 @@ export default function Navbar({ pageName }) {
     console.log("Avatar changed to:", avatarUrl);
   };
 
-  // 🔽 Hide dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

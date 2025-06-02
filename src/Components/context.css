@@ -9,7 +9,6 @@
   box-sizing: border-box;
 }
 
-/* Typing animation styles */
 .text-content h1 {
   font-size: 2em;
   color: #d59c38;
@@ -39,7 +38,6 @@
   }
 }
 
-/* Text content styling */
 .text-content {
   max-width: 50%;
   margin-top: -15px;
@@ -52,7 +50,6 @@
   transition: all 0.3s ease;
 }
 
-/* Image styling */
 .image-content {
   transition: all 0.5s ease;
 }
@@ -64,7 +61,6 @@
   border-radius: 8px;
 }
 
-/* Fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -82,7 +78,6 @@
   animation: fadeIn 1s ease forwards;
 }
 
-/* Responsive adjustments */
 @media (max-width: 1200px) {
   .content-section {
     padding: 30px;

@@ -1,4 +1,3 @@
-/* Original Desktop Styles (unchanged) */
 .header {
   display: flex;
   justify-content: space-between;
@@ -9,7 +8,7 @@
   margin-top: -8px;
   margin-left: -8px;
   margin-right: -8px;
-  position: relative; /* added for absolute hamburger */
+  position: relative;
 }
 
 .nav ul {
@@ -56,7 +55,6 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Mobile Menu Styles (only visible on small screens) */
 .hamburger {
   display: none;
   position: absolute !important;
@@ -122,7 +120,6 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Responsive Adjustments Only When Screen Gets Smaller */
 @media (max-width: 1200px) {
   .nav ul {
     padding-left: 200px;

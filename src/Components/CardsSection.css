@@ -19,10 +19,9 @@
   justify-content: center;
   gap: 60px;
   margin-top: 20px;
-  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  flex-wrap: wrap;
 }
 
-/* Individual Card Styles */
 .card {
   width: 260px;
   padding: 20px;
@@ -58,7 +57,6 @@
   transform: scale(1.2);
 }
 
-/* RESPONSIVE: Stack cards in a column */
 @media (max-width: 768px) {
   .cards-section {
     flex-direction: column;
@@ -67,6 +65,6 @@
   }
 
   .large-card {
-    transform: scale(1); /* Normalize scale in column layout */
+    transform: scale(1);
   }
 }

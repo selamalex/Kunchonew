@@ -102,7 +102,6 @@
   background-color: #e08c1e;
 }
 
-/* ----------- Responsive Styles ----------- */
 @media (max-width: 768px) {
   .greeting-section {
     flex-direction: column;

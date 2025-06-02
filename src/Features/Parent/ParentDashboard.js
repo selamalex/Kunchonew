@@ -16,13 +16,10 @@ const ParentDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Mobile toggle button */}
-      {/* Mobile toggle button */}
       <button className="sidebar-hamburger" onClick={toggleSidebar}>
         <FaBars />
       </button>
 
-      {/* Sidebar */}
       <div className={`sidebar ${sidebarOpen ? "active" : ""}`}>
         <div className="logo">
           <img src={logo} alt="Kuncho Logo" className="logo-img" />
@@ -44,7 +41,6 @@ const ParentDashboard = () => {
         <LogoutButton />
       </div>
 
-      {/* Main content */}
       <div className="main-content">
         <div className="greeting-section">
           <div className="greeting-text">

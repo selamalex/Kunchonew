@@ -34,12 +34,10 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile Menu Button - Only visible on small screens */}
       <button className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)}>
         {isMenuOpen ? "✕" : "☰"}
       </button>
 
-      {/* Mobile Menu - Only visible when hamburger is clicked */}
       {isMenuOpen && (
         <div className="mobile-menu">
           <ul>
