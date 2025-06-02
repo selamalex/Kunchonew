@@ -45,10 +45,15 @@ export default function Navbar({ pageName }) {
 
   const handleResultClick = (result) => {
     setResults([]); // Close dropdown
-    if (result.type.toLowerCase() === "video") {
+
+    const type = result.type.toLowerCase();
+
+    if (type === "video") {
       navigate(`/child/videos/${result.id}`);
-    } else if (result.type.toLowerCase() === "book") {
-      window.open(result.filePath, "_blank");
+    } else if (type === "book") {
+      navigate(`/child/books/${result.id}`);
+    } else if (type === "audio") {
+      navigate(`/child/audios/${result.id}`);
     } else {
       alert(`Unsupported content type: ${result.type}`);
     }

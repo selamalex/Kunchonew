@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState, useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../Components/Navbar";
 import "./Audios.css";
@@ -14,6 +15,7 @@ const Audios = () => {
   const [audioRefs, setAudioRefs] = useState({});
   const [likes, setLikes] = useState({});
   const [ratings, setRatings] = useState({});
+  const { audioId } = useParams();
 
   useEffect(() => {
     const fetchAudios = async () => {
@@ -24,12 +26,9 @@ const Audios = () => {
             headers: {
               Authorization: `Bearer ${user.token}`,
             },
-            params: {
-              type: "audio",
-            },
+            params: { type: "audio" },
           }
         );
-        console.log("API Response:", response.data);
 
         const audioItems = response.data
           .filter((item) => item.type === "audio")
@@ -43,7 +42,7 @@ const Audios = () => {
 
         setSongs(audioItems);
 
-        // ✅ Create and assign refs
+        // Create refs for each audio
         const refs = {};
         audioItems.forEach((song) => {
           refs[song.id] = React.createRef();
@@ -55,7 +54,7 @@ const Audios = () => {
     };
 
     fetchAudios();
-  }, []);
+  }, [user.token]);
 
   const handlePlayPause = (songId) => {
     const audio = audioRefs[songId]?.current;
