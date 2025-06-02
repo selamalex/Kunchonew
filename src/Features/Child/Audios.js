@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import LogoutButton from "../../Components/LogoutButton";
 import Navbar from "../../Components/Navbar";
-import { AuthContext } from '../../Context/AuthContext';
+import { AuthContext } from "../../Context/AuthContext";
 import "./Audios.css";
 
 const Audios = () => {
@@ -14,6 +14,7 @@ const Audios = () => {
   const [audioRefs, setAudioRefs] = useState({});
   const [likes, setLikes] = useState({});
   const [ratings, setRatings] = useState({});
+  const { audioId } = useParams();
 
   useEffect(() => {
     const fetchAudios = async () => {
@@ -24,12 +25,9 @@ const Audios = () => {
             headers: {
               Authorization: `Bearer ${user.token}`,
             },
-            params: {
-              type: "audio",
-            },
+            params: { type: "audio" },
           }
         );
-        console.log("API Response:", response.data);
 
         const audioItems = response.data
           .filter((item) => item.type === "audio")
@@ -43,7 +41,7 @@ const Audios = () => {
 
         setSongs(audioItems);
 
-        // ✅ Create and assign refs
+        // Create refs for each audio
         const refs = {};
         audioItems.forEach((song) => {
           refs[song.id] = React.createRef();
@@ -55,7 +53,7 @@ const Audios = () => {
     };
 
     fetchAudios();
-  }, []);
+  }, [user.token]);
 
   const handlePlayPause = (songId) => {
     const audio = audioRefs[songId]?.current;
@@ -112,25 +110,33 @@ const Audios = () => {
           <li className="active">Audio</li>
           <li>
             <Link to="/child/games">Games</Link>
-          </li>      
+          </li>
         </ul>
-         <LogoutButton/>
+        <LogoutButton className="logout-button" />
       </div>
 
       <div className="main-content">
-
-         <button className="back-button" onClick={() => navigate(-1)}>
-    ← Back
-  </button>
+        <button className="back-button" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
         <Navbar pageName="Audio Player" />
 
         {songs.length > 0 && (
           <div className="player-container">
             {songs.map((song) => (
-              <div className="player-song" key={song.id}>
-                <div className="player-cover">
+              <div
+                className="player-song"
+                key={song.id}
+                onClick={() => navigate(`/child/audios/${song.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <div
+                  className="player-cover clickable"
+                  onClick={() => navigate(`/child/audios/${song.id}`)}
+                >
                   <img src={song.cover} alt="Album Cover" />
                 </div>
+
                 <div className="player-details">
                   <div className="song-title">{song.title}</div>
                   <div className="song-artist">{song.artist}</div>
@@ -160,7 +166,9 @@ const Audios = () => {
                     <span
                       key={star}
                       onClick={() => handleRating(song.id, star)}
-                      className={star <= (ratings[song.id] || 0) ? "filled" : ""}
+                      className={
+                        star <= (ratings[song.id] || 0) ? "filled" : ""
+                      }
                     >
                       {star <= (ratings[song.id] || 0) ? "⭐" : "☆"}
                     </span>
@@ -169,14 +177,11 @@ const Audios = () => {
                 <button
                   className={`like-button ${likes[song.id] ? "liked" : ""}`}
                   onClick={() => handleLike(song.id)}
-                >
-                  
-                </button>
+                ></button>
               </div>
             ))}
           </div>
         )}
-        
       </div>
     </div>
   );
