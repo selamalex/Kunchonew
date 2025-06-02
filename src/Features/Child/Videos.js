@@ -1,88 +1,112 @@
-import { Link } from 'react-router-dom';
-// Optional for styling
-import '../Child/Videos.css';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import Navbar from "../../Components/Navbar";
+import "../Child/Videos.css";
+import { useNavigate } from "react-router-dom";
 
 const Videos = () => {
-  // Mock data
-  const videos = [
-    { id: 1, title: 'ቀይዋ ወፍ', views: '40', duration: '4:34', thumbnail: 'images/Abush.png' },
-    { id: 2, title: 'እንቡፍ እንቡፍእንቡፍ', views: '85', duration: '24:12', thumbnail: 'images/Abush.png' },
-    { id: 3, title: 'እቴ እሜቴእሜቴ', views: '54', duration: '5:45', thumbnail: 'images/Bitiko.png' },
-    { id: 4, title: 'መሃረቤን ያያችሁ እንዴት እንጫወት', views: '32', duration: '32:10', thumbnail: 'images/Abush.png' },
-    { id: 5, title: 'ኢትዮጲያን እንወቅ', views: '21', duration: '5:22', thumbnail: 'images/Abush.png' },
-    { id: 6, title: 'አኳኩሉ', views: '87', duration: '2:37', thumbnail: 'images/Abush.png' },
-];
+  const [videos, setVideos] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/child/content",
+          { params: { type: "video" } }
+        );
+        const filteredVideos = response.data.filter(
+          (item) => item.type === "video"
+        );
+        setVideos(filteredVideos);
+      } catch (error) {
+        console.error("Failed to fetch videos:", error);
+      }
+    };
+
+    fetchVideos();
+  }, []);
+
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    return (
+      <div className="video-rating">
+        {[...Array(5)].map((_, i) => (
+          <span
+            key={i}
+            className={`star ${
+              i < fullStars
+                ? "filled"
+                : i === fullStars && hasHalfStar
+                ? "half"
+                : ""
+            }`}
+          >
+            {i < fullStars ? "★" : i === fullStars && hasHalfStar ? "½" : "☆"}
+          </span>
+        ))}
+        <span className="rating-value">{rating.toFixed(1)}</span>
+      </div>
+    );
+  };
 
   return (
-     <div className="dashboard-container">
-    
-          <div className="sidebar">
-            <div className="logo">Kuncho</div>
-            <ul>
-              <li>Dashboard</li>
-              <li><Link to="/videos">Videos</Link></li>
-              <li><Link to="/books">Books</Link></li>
-              <li><Link to="/audio">Audio</Link></li>
-              <li><Link to="/games">Games</Link></li>
-            </ul>
-            <button className="logout-button">Logout</button>
-          </div>
-          
-          <div className="main-content">
-          <nav className="navbar">
-          <div className="navbar-left">
-            <div className="menu-icon">☰</div>
-            <h1 className="title">Dashboard</h1>
-          </div>
-          <div className="navbar-right">
-            <input type="text" className="search-input" placeholder="Search..." />
-            <span className="search-icon">🔍</span>
-            <div className="profile">
-              <span className="username">Ruhama Belay</span>
-              <div className="profile-icon">👤</div>
-            </div>
-          </div>
-        </nav>
-    <div className="featured-video">
-          <div className="video-player">
-            <div className="player-placeholder">Video Player</div>
-            <div className="video-info">
-              <h3>ጨረቃ ድንቡል ዶቃ</h3>
-              <div className="video-meta">
-                <span>50 views</span>
-                <span className="separator">•</span>
-                <span>2 days ago</span>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="dashboard-container">
+      <div className="sidebar">
+        <div className="logo">Kuncho</div>
+        <ul>
+          <li>
+            <Link to="/child/dashboard">Dashboard</Link>
+          </li>
+          <li>Videos</li>
+          <li>
+            <Link to="/child/books">Books</Link>
+          </li>
+          <li>
+            <Link to="/child/audios">Audio</Link>
+          </li>
+          <li>
+            <Link to="/child/games">Games</Link>
+          </li>
+        </ul>
+        <button className="logout-button">Logout</button>
+      </div>
 
-        {/* Video Grid */}
+      <div className="main-content">
+        <Navbar pageName="Videos" />
+
         <h3 className="section-title">Recommended Videos</h3>
         <div className="video-grid">
-            {videos.map((video) => (
-                <div key={video.id} className="video-card">
-                    <div className="thumbnail-container">
-                        <Link to={`/video/${video.id}`}> {/* Adjust the link based on your routing */}
-                            <img
-                                src={video.thumbnail}
-                                alt={video.title}
-                                className="video-thumbnail"
-                            />
-                            <div className="video-duration">{video.duration}</div>
-                        </Link>
-                    </div>
-                    <div className="video-details">
-                        <h4 className="video-title">{video.title}</h4>
-                        <p className="video-views">{video.views} views</p>
-                    </div>
-                </div>
-            ))}
+          {videos.map((video) => (
+            <div
+              key={video.id}
+              className="video-card"
+              onClick={() =>
+                navigate(`/child/videos/${video.id}`, { state: video })
+              }
+            >
+              <div className="thumbnail-container">
+                <img
+                  src={"/images/video-placeholder.png"} // Placeholder until you have thumbnails
+                  alt={video.title}
+                  className="video-thumbnail"
+                />
+                <div className="video-duration">--:--</div>{" "}
+                {/* Duration unknown in API */}
+              </div>
+              <div className="video-details">
+                <h4 className="video-title">{video.title}</h4>
+                <p className="video-views">{video.ageGroup}+ age group</p>
+                {renderStars(Math.random() * 2 + 3)}{" "}
+                {/* Random rating for now */}
+              </div>
+            </div>
+          ))}
         </div>
-           
-          </div>
-        </div>
-    
+      </div>
+    </div>
   );
 };
 

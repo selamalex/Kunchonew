@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import Abush from '../../Assets/images/Abush.png';
 import Bitiko from '../../Assets/images/Bitiko.png';
 import Mitu from '../../Assets/images/Mitu.png';
-import './ChildDashboard.css';
+import Navbar from '../../Components/Navbar'; // Import the Navbar component
+import './ChildDashboard.css'; // Optional for styling
 // import './ChildDshboard.css'; // Optional for styling
 
 const ChildDashboard = () => {
@@ -14,16 +15,16 @@ const ChildDashboard = () => {
         <div className="logo">Kuncho</div>
         <ul>
           <li>Dashboard</li>
-          <li><Link to="/videos">Videos</Link></li>
-          <li><Link to="/books">Books</Link></li>
-          <li><Link to="/audio">Audio</Link></li>
-          <li><Link to="/games">Games</Link></li>
+          <li><Link to="/child/videos">Videos</Link></li>
+          <li><Link to="/child/books">Books</Link></li>
+          <li><Link to="/child/audios">Audios</Link></li>
+          <li><Link to="/child/games">Games</Link></li>
         </ul>
         <button className="logout-button">Logout</button>
       </div>
       
       <div className="main-content">
-      <nav className="navbar">
+      {/* <nav className="navbar">
       <div className="navbar-left">
         <div className="menu-icon">☰</div>
         <h1 className="title">Dashboard</h1>
@@ -36,7 +37,8 @@ const ChildDashboard = () => {
           <div className="profile-icon">👤</div>
         </div>
       </div>
-    </nav>
+    </nav> */}
+     <Navbar pageName="Dashboard" />
 
         <h1>Hello, Ruhama</h1>
         <p>Explore fun videos, exciting books, cool music, and awesome games.</p>

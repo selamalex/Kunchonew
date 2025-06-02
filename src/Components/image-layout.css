@@ -41,7 +41,9 @@
   z-index: 1;
   margin-bottom: -80px;
   max-height: 115%;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+
 }
 
 .image-container:nth-child(3) {
@@ -105,6 +107,7 @@
   border-radius: 10px;
   margin-bottom: -30px;
 }
+
 .image-stack.enlarged {
   max-width: 90%;
 }
@@ -112,6 +115,7 @@
 .right-image.reduced img {
   max-width: 80%;
 }
+
 .image-container {
   position: relative;
   width: 100%;
