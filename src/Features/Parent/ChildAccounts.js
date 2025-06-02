@@ -49,6 +49,54 @@ const ChildAccounts = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+  const handleUpdateChild = async (updatedData) => {
+    try {
+      await axios.put(
+        `http://localhost:3000/api/parent/childs/${user.id}/${updatedData.id}`,
+
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      // Refresh list
+      const refreshed = await axios.get(
+        `http://localhost:3000/api/parent/childs`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+          params: { parentId: user.id },
+        }
+      );
+      setChildren(refreshed.data);
+    } catch (err) {
+      console.error("Failed to update child:", err);
+    }
+  };
+  const handleDeleteChild = async (childId) => {
+    console.log(
+      "Attempting to delete child:",
+      childId,
+      "with parent:",
+      user.id
+    );
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/parent/childs/${user.id}/${childId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      setChildren(children.filter((child) => child.id !== childId));
+    } catch (err) {
+      console.error("Failed to delete child:", err);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -107,6 +155,9 @@ const ChildAccounts = () => {
             name={child.childUser?.firstName || "Unknown"}
             age={child.age}
             userGroup={child.userGroup}
+            avatarUrl={child.avatarPath}
+            onUpdate={handleUpdateChild}
+            onDelete={() => handleDeleteChild(child.id)}
           />
         ))}
         <div className="child-card add-card" onClick={() => setShowModal(true)}>
