@@ -21,7 +21,6 @@ const ImageStack = () => {
         </div>
       </div>
 
-      {/* Text Content */}
       <div className="content">
         <h2>More About Us</h2>
         <h3>Special Care For Your Children</h3>

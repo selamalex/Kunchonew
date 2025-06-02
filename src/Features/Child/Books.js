@@ -58,7 +58,6 @@ const Books = () => {
 
   return (
     <div className="container">
-      {/* Sidebar */}
       <div className="sidebar">
         <div className="logo">Kuncho</div>
         <ul>
@@ -81,14 +80,12 @@ const Books = () => {
         <button className="logout-button">Logout</button>
       </div>
 
-      {/* Main Content */}
       <div className="main-content">
          <button className="back-button" onClick={() => navigate(-1)}>
     ← Back
   </button>
         <Navbar pageName="Books" />
 
-        {/* Book Cards */}
         <section className="cards-wrapper">
           <h2 className="cards-title">Books Available</h2>
           <div className="cards-section">
@@ -99,14 +96,13 @@ const Books = () => {
                 onClick={() => navigate(`/child/books/${book.id}`)}
               >
                 <img
-                  src={book.thumbnail || "/images/default-book.png"} // fallback image
+                  src={book.thumbnail || "/images/default-book.png"}
                   alt={book.title}
                   className="book-thumbnail"
                 />
                 <h3>{book.title}</h3>
                 <div className="book-rating">
                   {renderStars(book.rating || 4)}{" "}
-                  {/* fallback to 4 if no rating */}
                   <span className="rating-value">
                     ({(book.rating || 4).toFixed(1)})
                   </span>

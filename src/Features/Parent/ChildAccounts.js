@@ -18,7 +18,7 @@ const ChildAccounts = () => {
     age: "",
     userGroup: "",
     screentime: "",
-    avatarPath: "", // optional
+    avatarPath: "",
   });
 
   useEffect(() => {
@@ -58,8 +58,8 @@ const ChildAccounts = () => {
         "http://localhost:3000/api/parent/childs",
         {
           ...formData,
-          parentId: user.id, // Automatically set from token context
-          avatarPath: "frontend/src/Assets/images/avatar1.png", // Default avatar
+          parentId: user.id,
+          avatarPath: "frontend/src/Assets/images/avatar1.png",
         },
         {
           headers: {
@@ -69,7 +69,6 @@ const ChildAccounts = () => {
         }
       );
 
-      // Clear form and close modal
       setFormData({
         firstName: "",
         lastName: "",
@@ -82,7 +81,6 @@ const ChildAccounts = () => {
       });
       setShowModal(false);
 
-      // Refresh child list
       const refreshed = await axios.get(
         `http://localhost:3000/api/parent/childs`,
         {

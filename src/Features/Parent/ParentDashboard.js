@@ -1,24 +1,26 @@
-import { React, useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import LogoutButton from "../../Components/LogoutButton";
 import { AuthContext } from "../../Context/AuthContext";
 import "./Sidebar.css";
-import {
-  FaTachometerAlt,
-  FaUserPlus,
-  FaClock,
-  FaChartBar,
-  FaCog,
-  FaSignOutAlt,
-} from "react-icons/fa";
+import { FaTachometerAlt, FaClock, FaBars } from "react-icons/fa";
 import logo from "../../Assets/images/logo.png";
 
 const ParentDashboard = () => {
   const { user } = useContext(AuthContext);
-  console.log(user.firstName);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <div className="dashboard-container">
-      <div className="sidebar">
+      <button className="sidebar-hamburger" onClick={toggleSidebar}>
+        <FaBars />
+      </button>
+
+      <div className={`sidebar ${sidebarOpen ? "active" : ""}`}>
         <div className="logo">
           <img src={logo} alt="Kuncho Logo" className="logo-img" />
         </div>
@@ -38,16 +40,14 @@ const ParentDashboard = () => {
         </ul>
         <LogoutButton />
       </div>
+
       <div className="main-content">
-        <h2 className="text-xl mb-4">
-          {" "}
-          <div className="greeting-section">
-            <div className="greeting-text">
-              <h2>Hello {user.firstName},</h2>
-              <p>Your Child activities and progress are updated here</p>
-            </div>
+        <div className="greeting-section">
+          <div className="greeting-text">
+            <h2>Hello {user.firstName},</h2>
+            <p>Your Child activities and progress are updated here</p>
           </div>
-        </h2>
+        </div>
       </div>
     </div>
   );

@@ -15,7 +15,6 @@ const Audios = () => {
   const [ratings, setRatings] = useState({});
   const [likes, setLikes] = useState({});
 
-  // Fetch audio content
   useEffect(() => {
     const fetchAudios = async () => {
       try {

@@ -3,7 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext";
 import "./ChildCard.css";
 
-const ChildCard = ({ name = "", userGroup, age, avatarUrl = "", timerMinutes = 25, onDelete, onUpdate }) => {
+const ChildCard = ({
+  name = "",
+  userGroup,
+  age,
+  avatarUrl = "",
+  timerMinutes = 25,
+  onDelete,
+  onUpdate,
+}) => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
@@ -13,7 +21,7 @@ const ChildCard = ({ name = "", userGroup, age, avatarUrl = "", timerMinutes = 2
     age,
     userGroup,
     avatarUrl,
-    timerMinutes
+    timerMinutes,
   });
   const fileInputRef = useRef(null);
 
@@ -37,9 +45,9 @@ const ChildCard = ({ name = "", userGroup, age, avatarUrl = "", timerMinutes = 2
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setChildData(prev => ({
+    setChildData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -48,9 +56,9 @@ const ChildCard = ({ name = "", userGroup, age, avatarUrl = "", timerMinutes = 2
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setChildData(prev => ({
+        setChildData((prev) => ({
           ...prev,
-          avatarUrl: reader.result
+          avatarUrl: reader.result,
         }));
       };
       reader.readAsDataURL(file);
@@ -70,15 +78,14 @@ const ChildCard = ({ name = "", userGroup, age, avatarUrl = "", timerMinutes = 2
           {childData.avatarUrl ? (
             <img src={childData.avatarUrl} alt={`${firstName}'s avatar`} />
           ) : (
-            <div className="avatar-initial">{firstName.charAt(0).toUpperCase()}</div>
+            <div className="avatar-initial">
+              {firstName.charAt(0).toUpperCase()}
+            </div>
           )}
         </div>
         <h4>{firstName}</h4>
         <p>Age: {age}</p>
-        <button
-          className="view-btn"
-          onClick={handleView}
-        >
+        <button className="view-btn" onClick={handleView}>
           View
         </button>
       </div>
@@ -86,36 +93,35 @@ const ChildCard = ({ name = "", userGroup, age, avatarUrl = "", timerMinutes = 2
       {showDetails && (
         <div className="details-modal">
           <div className="details-content">
-            <button 
-              className="close-btn"
-              onClick={() => setShowDetails(false)}
-            >
+            <button className="close-btn" onClick={() => setShowDetails(false)}>
               ×
             </button>
-            
-            <div 
-              className="child-avatar large" 
+
+            <div
+              className="child-avatar large"
               onClick={isEditing ? handleAvatarClick : null}
-              style={{ cursor: isEditing ? 'pointer' : 'default' }}
+              style={{ cursor: isEditing ? "pointer" : "default" }}
             >
               {childData.avatarUrl ? (
                 <img src={childData.avatarUrl} alt={`${firstName}'s avatar`} />
               ) : (
-                <div className="avatar-initial">{firstName.charAt(0).toUpperCase()}</div>
+                <div className="avatar-initial">
+                  {firstName.charAt(0).toUpperCase()}
+                </div>
               )}
               {isEditing && (
                 <div className="avatar-upload-hint">Click to upload</div>
               )}
             </div>
-            
+
             <input
               type="file"
               ref={fileInputRef}
               onChange={handleFileChange}
               accept="image/*"
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
-            
+
             {isEditing ? (
               <div className="edit-form">
                 <label>
@@ -151,26 +157,25 @@ const ChildCard = ({ name = "", userGroup, age, avatarUrl = "", timerMinutes = 2
             ) : (
               <div className="details-info">
                 <h3>{childData.name}</h3>
-                <p><strong>Age:</strong> {childData.age}</p>
-                <p><strong>Group:</strong> {childData.userGroup}</p>
-                <p><strong>Timer:</strong> {childData.timerMinutes} minutes</p>
+                <p>
+                  <strong>Age:</strong> {childData.age}
+                </p>
+                <p>
+                  <strong>Group:</strong> {childData.userGroup}
+                </p>
+                <p>
+                  <strong>Timer:</strong> {childData.timerMinutes} minutes
+                </p>
               </div>
             )}
-            
+
             <div className="action-buttons">
-              <button 
-                className="update-btn"
-                onClick={handleUpdate}
-              >
-                {isEditing ? 'Save' : 'Update'}
+              <button className="update-btn" onClick={handleUpdate}>
+                {isEditing ? "Save" : "Update"}
               </button>
-              <button 
-                className="delete-btn"
-                onClick={handleDelete}
-              >
+              <button className="delete-btn" onClick={handleDelete}>
                 Delete
               </button>
-             
             </div>
           </div>
         </div>

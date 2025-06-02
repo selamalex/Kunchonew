@@ -1,14 +1,11 @@
-/* Audios.css - Kid-Friendly Music Player */
-
-/* Base Styles */
 .audio-container {
     display: flex;
     min-height: 100vh;
-    font-family: 'Comic Sans MS', 'Marker Felt', 'Arial Rounded MT Bold', sans-serif;
+    font-family: "Comic Sans MS", "Marker Felt", "Arial Rounded MT Bold",
+        sans-serif;
     background-color: #fff9f0;
 }
 
-/* Sidebar (consistent with other pages) */
 .sidebar {
     width: 220px;
     background: linear-gradient(180deg, #d59c38 0%, #f8d485 100%);
@@ -16,13 +13,12 @@
     box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-
 }
 
 .logo {
     font-size: 28px;
     font-weight: bold;
-    color: #431B06;
+    color: #431b06;
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
     margin-bottom: 30px;
     text-align: center;
@@ -30,7 +26,7 @@
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 15px;
     transform: rotate(-3deg);
-    border: 2px dashed #431B06;
+    border: 2px dashed #431b06;
 }
 
 .sidebar ul {
@@ -45,7 +41,7 @@
     border-radius: 12px;
     transition: all 0.3s ease;
     font-size: 18px;
-    color: #431B06;
+    color: #431b06;
     font-weight: bold;
     background-color: rgba(255, 255, 255, 0.2);
 }
@@ -69,7 +65,7 @@
     padding: 12px;
     border: none;
     border-radius: 12px;
-    background-color: #431B06;
+    background-color: #431b06;
     color: #f8d485;
     font-weight: bold;
     font-size: 16px;
@@ -84,7 +80,6 @@
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Main Content */
 .main-content {
     flex-grow: 1;
     padding: 30px;
@@ -92,10 +87,9 @@
     overflow-x: hidden;
 }
 
-/* Back Button */
 .back-button {
     background-color: #f8d485;
-    color: #431B06;
+    color: #431b06;
     border: none;
     border-radius: 20px;
     padding: 8px 15px;
@@ -113,7 +107,6 @@
     transform: translateY(-2px);
 }
 
-/* Player Container */
 .player-container {
     background-color: white;
     border-radius: 20px;
@@ -139,18 +132,17 @@
 }
 
 .player-info h2 {
-    color: #431B06;
+    color: #431b06;
     font-size: 24px;
     margin-bottom: 5px;
 }
 
 .player-info p {
-    color: #7E5E9E;
+    color: #7e5e9e;
     font-size: 18px;
     margin-bottom: 15px;
 }
 
-/* Like Button */
 .like-button {
     background-color: #ff6b6b;
     color: white;
@@ -167,7 +159,6 @@
     background-color: #ff4757;
 }
 
-/* Rating */
 .rating {
     margin: 15px 0;
     font-size: 24px;
@@ -183,7 +174,6 @@
     color: #ffd700;
 }
 
-/* Progress Bar */
 .progress-container {
     margin: 25px 0;
     display: flex;
@@ -210,13 +200,12 @@
 }
 
 .time {
-    color: #7E5E9E;
+    color: #7e5e9e;
     font-size: 14px;
     min-width: 80px;
     text-align: right;
 }
 
-/* Controls */
 .controls {
     display: flex;
     justify-content: center;
@@ -230,7 +219,7 @@
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: #431B06;
+    color: #431b06;
     transition: all 0.2s ease;
 }
 
@@ -259,7 +248,6 @@
     background-color: #e0a84e;
 }
 
-/* Volume Control */
 .volume-control {
     display: flex;
     align-items: center;
@@ -286,7 +274,6 @@
     cursor: pointer;
 }
 
-/* Song List */
 .song-list {
     background-color: white;
     border-radius: 20px;
@@ -295,7 +282,7 @@
 }
 
 .song-list h3 {
-    color: #431B06;
+    color: #431b06;
     font-size: 20px;
     margin-bottom: 15px;
     padding-bottom: 10px;
@@ -333,13 +320,13 @@
 }
 
 .song-details h4 {
-    color: #431B06;
+    color: #431b06;
     margin: 0;
     font-size: 16px;
 }
 
 .song-details p {
-    color: #7E5E9E;
+    color: #7e5e9e;
     margin: 3px 0 0;
     font-size: 14px;
 }
@@ -364,10 +351,9 @@
 
 .song-item .rating {
     font-size: 14px;
-    color: #7E5E9E;
+    color: #7e5e9e;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .audio-container {
         flex-direction: column;
@@ -462,7 +448,6 @@
     }
 }
 
-/* Animation */
 @keyframes bounce {
 
     0%,

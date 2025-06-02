@@ -2,7 +2,7 @@
   padding: 1.5rem 2rem;
   margin-top: -70px;
 
-  margin-top: -30px; /* Adjust this value to reduce space at the top */
+  margin-top: -30px;
 }
 
 .section-title {
@@ -108,9 +108,7 @@
   margin-top: 1rem;
   cursor: pointer;
 }
-/* Existing styles... */
 
-/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -191,7 +189,6 @@
   background-color: #e0912a;
 }
 
-/* Add card styles */
 .add-card {
   cursor: pointer;
   transition: transform 0.2s;

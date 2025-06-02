@@ -66,3 +66,20 @@
   color: #f5a12b;
   margin: 0;
 }
+.back-arrow {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #431b06;
+  margin-bottom: 20px;
+  font-weight: 600;
+  gap: 8px;
+}
+
+.back-arrow:hover {
+  color: #d59c38;
+}
+
+.back-icon {
+  font-size: 18px;
+}

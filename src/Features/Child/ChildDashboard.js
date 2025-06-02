@@ -18,7 +18,7 @@ const ChildDashboard = () => {
   return (
     <div className="dashboard-container">
       {/* Hamburger Menu */}
-      <div className="hamburger" onClick={toggleSidebar}>
+      <div className="hamburgerchild" onClick={toggleSidebar}>
         ☰
       </div>
 
