@@ -10,6 +10,20 @@
   top: 0;
   left: 0;
   padding: 1rem;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+/* Hide sidebar by default on small screens */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
 }
 
 /* Logo styling */
@@ -50,20 +64,55 @@
   color: #431b06;
 }
 
-/* Main content layout */
-.dashboard-container {
-  display: flex;
-}
-
-.main-content {
-  margin-left: 250px; /* Same as sidebar width */
-  padding: 2rem;
-  flex-grow: 1;
-}
-
 /* Logout button container */
 .logout {
   margin-top: auto;
   border-top: 1px solid #f5a12b;
   padding-top: 1rem;
+}
+
+/* Main layout */
+.dashboard-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 2rem;
+  flex-grow: 1;
+  transition: margin-left 0.3s ease;
+}
+
+/* Responsive main content when sidebar is hidden */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 1.5rem;
+  }
+}
+
+/* Sidebar hamburger toggle button */
+.sidebar-hamburger {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #431b06; /* Dark brown color */
+  z-index: 1100;
+  display: none;
+  cursor: pointer;
+}
+
+/* Show sidebar hamburger only on small screens */
+@media (max-width: 768px) {
+  .sidebar-hamburger {
+    display: block;
+  }
 }
