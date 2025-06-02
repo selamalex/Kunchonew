@@ -6,6 +6,7 @@ import Mitu from "../../Assets/images/Mitu.png";
 import Navbar from "../../Components/Navbar";
 import "./ChildDashboard.css";
 import { AuthContext } from "../../Context/AuthContext";
+import LogoutButton from "../../Components/LogoutButton";
 
 const ChildDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -28,7 +29,7 @@ const ChildDashboard = () => {
             <Link to="/child/games">Games</Link>
           </li>
         </ul>
-        <button className="logout-button">Logout</button>
+        <LogoutButton />{" "}
       </div>
 
       <div className="main-content">
