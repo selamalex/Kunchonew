@@ -1,6 +1,6 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Navbar from "../../Components/Navbar";
 import "./Books.css";
 
@@ -83,6 +83,9 @@ const Books = () => {
 
       {/* Main Content */}
       <div className="main-content">
+         <button className="back-button" onClick={() => navigate(-1)}>
+    ← Back
+  </button>
         <Navbar pageName="Books" />
 
         {/* Book Cards */}

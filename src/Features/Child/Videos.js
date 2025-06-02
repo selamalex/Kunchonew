@@ -1,10 +1,9 @@
-import { useEffect, useContext, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
-import "../Child/Videos.css";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
+import "../Child/Videos.css";
 
 const Videos = () => {
   const { user } = useContext(AuthContext);
@@ -84,8 +83,13 @@ const Videos = () => {
       </div>
 
       <div className="main-content">
+        <button
+  className="back-button"
+  onClick={() => navigate(-1)} // navigates to previous page
+>
+  ← Back
+</button>
         <Navbar pageName="Videos" />
-
         <h3 className="section-title">Recommended Videos</h3>
         <div className="video-grid">
           {videos.map((video) => (

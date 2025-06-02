@@ -1,7 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import anim from '../../Assets/images/lion.png';
 import bg from '../../Assets/images/trendinganim.jpg';
+import Navbar from "../../Components/Navbar";
 import './Games.css';
+
 
 const Games = () => {
   const navigate = useNavigate();
@@ -56,7 +58,7 @@ const Games = () => {
     <div className="games-dashboard">
       {/* Sidebar */}
       <div className="sidebar">
-        <button className="back-button" onClick={handleBack}>⬅ Back</button>
+        
         <div className="logo">Kuncho</div>
         <ul>
           <li><Link to="/child/dashboard">Dashboard</Link></li>
@@ -70,21 +72,9 @@ const Games = () => {
 
       {/* Main Content */}
       <div className="main-content">
-        <nav className="navbar">
-          <div className="navbar-left">
-            <div className="menu-icon">☰</div>
-            <h1 className="title">Games</h1>
-          </div>
-          <div className="navbar-right">
-            <input type="text" className="search-input" placeholder="Search..." />
-            <span className="search-icon">🔍</span>
-            <div className="profile">
-              <span className="username">Ruhama Belay</span>
-              <div className="profile-icon">👤</div>
-            </div>
-          </div>
-        </nav>
-
+        <button className="back-button" onClick={handleBack}>⬅ Back</button>
+        <Navbar pageName="Videos" />
+        
         {/* Trending Game Section */}
         <div className="trending-game" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.3), url(${bg})` }}>
           <div className="trending-content">

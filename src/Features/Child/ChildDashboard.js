@@ -1,17 +1,29 @@
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { React, useContext } from "react";
 import Abush from "../../Assets/images/Abush.png";
 import Bitiko from "../../Assets/images/Bitiko.png";
 import Mitu from "../../Assets/images/Mitu.png";
 import Navbar from "../../Components/Navbar";
-import "./ChildDashboard.css";
 import { AuthContext } from "../../Context/AuthContext";
+import "./ChildDashboard.css";
 
 const ChildDashboard = () => {
   const { user } = useContext(AuthContext);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <div className="dashboard-container">
-      <div className="sidebar">
+      {/* Hamburger Menu */}
+      <div className="hamburger" onClick={toggleSidebar}>
+        ☰
+      </div>
+
+      {/* Sidebar */}
+      <div className={`sidebar ${sidebarOpen ? "show" : ""}`}>
         <div className="logo">Kuncho</div>
         <ul>
           <li>Dashboard</li>
@@ -31,27 +43,12 @@ const ChildDashboard = () => {
         <button className="logout-button">Logout</button>
       </div>
 
+      {/* Main Content */}
       <div className="main-content">
-        {/* <nav className="navbar">
-      <div className="navbar-left">
-        <div className="menu-icon">☰</div>
-        <h1 className="title">Dashboard</h1>
-      </div>
-      <div className="navbar-right">
-        <input type="text" className="search-input" placeholder="Search..." />
-        <span className="search-icon">🔍</span>
-        <div className="profile">
-          <span className="username">Ruhama Belay</span>
-          <div className="profile-icon">👤</div>
-        </div>
-      </div>
-    </nav> */}
         <Navbar pageName="Dashboard" />
 
         <h1>Hello, {user.firstName}</h1>
-        <p>
-          Explore fun videos, exciting books, cool music, and awesome games.
-        </p>
+        <p>Explore fun videos, exciting books, cool music, and awesome games.</p>
 
         <h2>Our Characters</h2>
         <div className="character-container">
@@ -84,83 +81,42 @@ const ChildDashboard = () => {
             <p>Bitiko</p>
           </div>
         </div>
+
         <div className="recentsample">
-          <h2>Videos</h2>
-          <div className="video-container-main">
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-          </div>
+  <div className="section-header">
+    <h2>Contents Available for you</h2>
+  </div>
+  <div className="video-container-main">
+    <Link to="/child/audios" className="video-container">
+      <div className="image-container">
+        <img src={Mitu} alt="Audios" />
+      </div>
+      <p>Audios</p>
+    </Link>
 
-          <h2>Games</h2>
-          <div className="video-container-main">
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-          </div>
+    <Link to="/child/videos" className="video-container">
+      <div className="image-container">
+        <img src={Mitu} alt="Videos" />
+      </div>
+      <p>Videos</p>
+    </Link>
 
-          <h2>Books</h2>
-          <div className="video-container-main">
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-          </div>
+    <Link to="/child/books" className="video-container">
+      <div className="image-container">
+        <img src={Mitu} alt="Books" />
+      </div>
+      <p>Books</p>
+    </Link>
 
-          <h2>Audio</h2>
-          <div className="video-container-main">
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-            <div className="video-container">
-              <img src={Mitu} alt="Mitu" />
-              <p>ቀዩ ወፍ</p>
-              <button>play</button>
-            </div>
-          </div>
-        </div>
+    <Link to="/child/games" className="video-container">
+      <div className="image-container">
+        <img src={Mitu} alt="Games" />
+      </div>
+      <p>Games</p>
+    </Link>
+  </div>
+</div>
+
       </div>
     </div>
   );

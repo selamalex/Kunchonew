@@ -1,6 +1,6 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Navbar from "../../Components/Navbar";
 import "./Audios.css";
 
@@ -118,11 +118,10 @@ const Audios = () => {
       </div>
 
       <div className="main-content">
+         <button className="back-button" onClick={() => navigate(-1)}>
+    ← Back
+  </button>
         <Navbar pageName="Audio Player" />
-
-        <button className="back-button" onClick={() => navigate(-1)}>
-          ← Back
-        </button>
 
         {songs.length > 0 && (
           <div className="player-container">
