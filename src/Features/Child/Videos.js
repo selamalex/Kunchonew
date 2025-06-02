@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../Components/Navbar";
 import "../Child/Videos.css";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
 
 const Videos = () => {
+  const { user } = useContext(AuthContext);
   const [videos, setVideos] = useState([]);
   const navigate = useNavigate();
 
@@ -14,7 +16,14 @@ const Videos = () => {
       try {
         const response = await axios.get(
           "http://localhost:3000/api/child/content",
-          { params: { type: "video" } }
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+            params: {
+              type: "video",
+            },
+          }
         );
         const filteredVideos = response.data.filter(
           (item) => item.type === "video"

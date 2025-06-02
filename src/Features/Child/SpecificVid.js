@@ -1,22 +1,60 @@
-import { useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom"; // ✅ Add useLocation
+import { useEffect, useRef, useState, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import "./SpacificVid.css";
+import { AuthContext } from "../../Context/AuthContext";
+import Header from "../../Components/Header";
 
 const SpecificVid = () => {
+  const { user } = useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { state: video } = useLocation(); // ✅ Get video data from route state
   const videoRef = useRef(null);
+  const [video, setVideo] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasViewed, setHasViewed] = useState(false);
   const [progress, setProgress] = useState(0);
   const [userRating, setUserRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
 
-  if (!video) {
-    return <div className="specific-vid-container">Video not found.</div>; // fallback
-  }
+  useEffect(() => {
+    const fetchVideo = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/child/content/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+        setVideo(response.data);
+      } catch (error) {
+        console.error("Failed to fetch video:", error);
+      }
+    };
 
+    fetchVideo();
+  }, [id]);
+
+  const recordView = async () => {
+    try {
+      await axios.post(`http://localhost:3000/api/child/content/views/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      console.log("View recorded!");
+    } catch (error) {
+      console.error("Failed to record view:", error);
+    }
+  };
   const togglePlay = () => {
+    if (!hasViewed) {
+      recordView(); // Record view on first play
+      setHasViewed(true); // Avoid duplicate submissions
+    }
+
     if (isPlaying) {
       videoRef.current.pause();
     } else {
@@ -41,6 +79,10 @@ const SpecificVid = () => {
     console.log(`Rated video ${id} with ${rating} stars`);
   };
 
+  if (!video) {
+    return <div className="specific-vid-container">Loading video...</div>;
+  }
+
   return (
     <div className="specific-vid-container">
       <button className="back-button" onClick={() => navigate(-1)}>
@@ -51,7 +93,7 @@ const SpecificVid = () => {
         <div className="video-wrapper">
           <video
             ref={videoRef}
-            src={video.filePath} // ✅ Use dynamic path
+            src={`http://localhost:3000${video.filePath}`}
             poster="/images/video-placeholder.png"
             onTimeUpdate={handleProgress}
             onClick={togglePlay}
@@ -83,9 +125,11 @@ const SpecificVid = () => {
           <h2 className="video-title">{video.title}</h2>
 
           <div className="video-meta">
-            <span className="views">👀 {video.views || "1.2K"} views</span>
+            <span className="age-group">👶 Age Group: {video.ageGroup}+</span>
             <span className="separator">•</span>
-            <span className="date">📅 {video.uploadDate || "N/A"}</span>
+            <span className="date">
+              📅 Uploaded on {new Date(video.createdAt).toLocaleDateString()}
+            </span>
           </div>
 
           <p className="video-description">
