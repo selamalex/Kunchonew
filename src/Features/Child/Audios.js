@@ -112,13 +112,9 @@ const Audios = () => {
           <li className="active">Audio</li>
           <li>
             <Link to="/child/games">Games</Link>
-          </li>
-           <li>
-            <LogoutButton className="logout-button"/>
-          </li>
-          
+          </li>      
         </ul>
-        
+         <LogoutButton/>
       </div>
 
       <div className="main-content">
