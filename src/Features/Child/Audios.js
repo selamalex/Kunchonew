@@ -126,10 +126,19 @@ const Audios = () => {
         {songs.length > 0 && (
           <div className="player-container">
             {songs.map((song) => (
-              <div className="player-song" key={song.id}>
-                <div className="player-cover">
+              <div
+                className="player-song"
+                key={song.id}
+                onClick={() => navigate(`/child/audios/${song.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <div
+                  className="player-cover clickable"
+                  onClick={() => navigate(`/child/audios/${song.id}`)}
+                >
                   <img src={song.cover} alt="Album Cover" />
                 </div>
+
                 <div className="player-details">
                   <div className="song-title">{song.title}</div>
                   <div className="song-artist">{song.artist}</div>
