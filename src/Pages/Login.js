@@ -7,13 +7,50 @@ import "./Login.css";
 const Login = () => {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [email, setEmail] = useState(""); // changed from username to email
+  const [email, setEmail] = useState(""); // Changed from username to email
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validatePassword = (password) => {
+    // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    return re.test(password);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
     setError("");
+
+    // Validate email
+    if (!email) {
+      setEmailError("Email is required");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+
+    // Validate password
+    if (!password) {
+      setPasswordError("Password is required");
+      return;
+    }
+    if (!validatePassword(password)) {
+      setPasswordError(
+        "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number"
+      );
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -25,8 +62,6 @@ const Login = () => {
       );
 
       const { token } = response.data;
-
-      // Decode token to get user role or send user info in the response too
       const decoded = JSON.parse(atob(token.split(".")[1]));
       localStorage.setItem(
         "user",
@@ -37,7 +72,7 @@ const Login = () => {
           token,
         })
       );
-      // Set user context
+
       setUser({
         firstName: decoded.firstName,
         role: decoded.role,
@@ -72,17 +107,19 @@ const Login = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="input-field"
+            className={`input-field ${emailError ? "error" : ""}`}
             required
           />
+          {emailError && <p className="error-msg">{emailError}</p>}
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="input-field"
+            className={`input-field ${passwordError ? "error" : ""}`}
             required
           />
+          {passwordError && <p className="error-msg">{passwordError}</p>}
           <div className="options">
             <label>
               <input type="checkbox" /> Remember me
