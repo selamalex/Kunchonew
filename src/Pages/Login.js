@@ -6,26 +6,67 @@ import "./Login.css";
 const Login = () => {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [username, setUsername] = useState(""); // Initialized username state
+  const [email, setEmail] = useState(""); // Changed from username to email
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validatePassword = (password) => {
+    // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    return re.test(password);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Reset errors
+    setEmailError("");
+    setPasswordError("");
+    setError("");
+
+    // Validate email
+    if (!email) {
+      setEmailError("Email is required");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+
+    // Validate password
+    if (!password) {
+      setPasswordError("Password is required");
+      return;
+    }
+    if (!validatePassword(password)) {
+      setPasswordError(
+        "Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number"
+      );
+      return;
+    }
+
     try {
       // Example: Sending login credentials to the server
-      // const response = await axios.post("/api/login", { username, password });
+      // const response = await axios.post("/api/login", { email, password });
       // const userData = response.data;
 
-      // For demonstration purposes, using mock logic based on username
-      if (username.startsWith("admin")) {
-        setUser({ role: "admin", username });
+      // For demonstration purposes, using mock logic based on email
+      if (email.startsWith("admin@")) {
+        setUser({ role: "admin", email });
         navigate("/admin/overview");
-      } else if (username.startsWith("child")) {
-        setUser({ role: "child", username, age: parseInt(password) });
+      } else if (email.startsWith("child@")) {
+        setUser({ role: "child", email, age: parseInt(password) });
         navigate("/child/dashboard");
       } else {
-        setUser({ role: "parent", username });
+        setUser({ role: "parent", email });
         navigate("/parent/dashboard");
       }
     } catch (err) {
@@ -41,21 +82,23 @@ const Login = () => {
           <h3>Sign In</h3>
           {error && <p className="error-msg">{error}</p>}
           <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="input-field"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={`input-field ${emailError ? "error" : ""}`}
             required
           />
+          {emailError && <p className="error-msg">{emailError}</p>}
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="input-field"
+            className={`input-field ${passwordError ? "error" : ""}`}
             required
           />
+          {passwordError && <p className="error-msg">{passwordError}</p>}
           <div className="options">
             <label>
               <input type="checkbox" /> Remember me
