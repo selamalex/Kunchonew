@@ -15,6 +15,7 @@
     box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+
 }
 
 .logo {
@@ -43,7 +44,7 @@
     border-radius: 12px;
     transition: all 0.3s ease;
     font-size: 18px;
-    color: #431b06;
+    color: #431B06;
     font-weight: bold;
     background-color: rgba(255, 255, 255, 0.2);
 }
@@ -110,7 +111,7 @@
 }
 
 .main-content h2 {
-    color: #431b06;
+    color: #431B06;
     font-size: 24px;
     margin: 30px 0 20px;
     padding-bottom: 8px;
@@ -119,14 +120,14 @@
 
 .section-header h2 {
     margin: 0;
-    color: #431b06;
+    color: #431B06;
     font-size: 24px;
 }
 
 .view-all-button {
     padding: 8px 16px;
     background-color: #f8d485;
-    color: #431b06;
+    color: #431B06;
     border: none;
     border-radius: 20px;
     font-weight: bold;
@@ -316,7 +317,6 @@
     animation: float 2s ease-in-out infinite;
 }
 
-
 /* Responsive Design - General Approach */
 @media (max-width: 1200px) {
 
@@ -505,6 +505,14 @@
 
     }
 
+    .video-container {
+        text-decoration: none;
+        /* removes underline */
+        color: inherit;
+        /* inherits text color */
+    }
+
+
     /* Hamburger visible */
     .hamburgerchild {
         position: fixed;
@@ -533,63 +541,4 @@
     .main-content {
         padding: 30px 20px;
     }
-}
-
-.sidebar {
-    position: fixed;
-    /* Fix it to viewport */
-    top: 0;
-    left: -240px;
-    /* Hide sidebar offscreen to the left */
-    width: 220px;
-    height: 100vh;
-    background: linear-gradient(180deg, #d59c38 0%, #f8d485 100%);
-    padding: 20px;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-    transition: left 0.3s ease;
-    /* Smooth slide */
-    z-index: 1000;
-    /* Make sure it’s above main content */
-    flex-direction: column;
-}
-
-/* When sidebar has .open class, slide it in */
-.sidebar.open {
-    left: 0;
-}
-
-/* Sidebar ul hidden by default */
-.sidebar ul {
-    display: block !important;
-    /* always show list inside sidebar */
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-/* Hamburger visible */
-.hamburger {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 1100;
-    font-size: 50px;
-    /* increased size */
-    cursor: pointer;
-    padding: 12px;
-    border-radius: 50%;
-    background-color: #d59c38;
-    color: #431b06;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    user-select: none;
-    transition: transform 0.2s ease;
-}
-
-.hamburger:hover {
-    transform: scale(1.1);
-}
-
-/* Prevent sidebar pushing content */
-.main-content {
-    padding: 30px 20px;
 }
