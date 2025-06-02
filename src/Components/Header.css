@@ -67,6 +67,7 @@
   border: none !important;
   cursor: pointer !important;
   z-index: 1001 !important;
+  margin-top: -15px;
 }
 
 .mobile-menu {
