@@ -12,7 +12,7 @@ const Contents = () => {
     category: "Books",
     ageGroup: "1", // updated from ageGroup
     date: "",
-    filePath: "",
+    file: null,
   });
   useEffect(() => {
     const fetchContents = async () => {
@@ -96,30 +96,34 @@ const Contents = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!newContent.title || !newContent.date || !newContent.filePath) {
-      alert("Please fill in Title, Date, and File Link");
+    const { title, category, ageGroup, date, file } = newContent;
+
+    if (!title || !date || !file) {
+      alert("Please fill in Title, Date, and upload a File");
       return;
     }
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("type", category);
+    formData.append("description", "");
+    formData.append("ageGroup", ageGroup);
+    formData.append("file", file);
 
     try {
       const response = await fetch("http://localhost:3000/api/admin/content", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${user.token}`,
-          "Content-Type": "application/json",
+          // Do NOT set Content-Type when sending FormData. Let the browser handle it.
         },
-        body: JSON.stringify({
-          type: newContent.category,
-          title: newContent.title,
-          description: "",
-          ageGroup: parseInt(newContent.ageGroup, 10),
-          filePath: newContent.filePath,
-        }),
+        body: formData,
       });
 
-      const savedContent = await response.json();
+      const result = await response.json();
 
       if (response.ok) {
+        // Add new content to UI
         const newId = contents.length
           ? Math.max(...contents.map((c) => c.id)) + 1
           : 1;
@@ -127,28 +131,28 @@ const Contents = () => {
           ...prev,
           {
             id: newId,
-            title: savedContent.title,
-            category: savedContent.type,
-            ageGroup: newContent.ageGroup,
-            date: newContent.date,
+            title: result.title,
+            category: result.type,
+            ageGroup: ageGroup,
+            date: date,
           },
         ]);
         setNewContent({
           title: "",
           category: "Books",
-          ageGroup: "Draft",
+          ageGroup: "1",
           date: "",
-          filePath: "",
+          file: null,
         });
         setShowModal(false);
       } else {
         alert(
-          "Failed to save content: " + (savedContent.error || "Unknown error")
+          "Failed to upload content: " + (result.message || "Unknown error")
         );
       }
     } catch (err) {
-      console.error("Error:", err);
-      alert("Error saving content");
+      console.error("Upload error:", err);
+      alert("Error uploading content");
     }
   };
 
@@ -380,13 +384,12 @@ const Contents = () => {
               </div>
 
               <div style={{ marginBottom: "12px" }}>
-                <label>Google Drive File Link</label>
+                <label>Upload File</label>
                 <input
-                  type="text"
-                  name="filePath"
-                  value={newContent.filePath || ""}
-                  onChange={handleInputChange}
-                  placeholder="https://drive.google.com/..."
+                  type="file"
+                  name="file"
+                  accept=".pdf,.mp3,.mp4" // or whatever types you want
+                  onChange={handleFileChange}
                   style={{ width: "100%", padding: "8px" }}
                   required
                 />

@@ -1,30 +1,38 @@
-import { Link } from 'react-router-dom';
-import Abush from '../../Assets/images/Abush.png';
-import Bitiko from '../../Assets/images/Bitiko.png';
-import Mitu from '../../Assets/images/Mitu.png';
-import Navbar from '../../Components/Navbar'; // Import the Navbar component
-import './ChildDashboard.css'; // Optional for styling
-// import './ChildDshboard.css'; // Optional for styling
+import { Link } from "react-router-dom";
+import { React, useContext } from "react";
+import Abush from "../../Assets/images/Abush.png";
+import Bitiko from "../../Assets/images/Bitiko.png";
+import Mitu from "../../Assets/images/Mitu.png";
+import Navbar from "../../Components/Navbar";
+import "./ChildDashboard.css";
+import { AuthContext } from "../../Context/AuthContext";
 
 const ChildDashboard = () => {
+  const { user } = useContext(AuthContext);
   return (
-    
     <div className="dashboard-container">
-
       <div className="sidebar">
         <div className="logo">Kuncho</div>
         <ul>
           <li>Dashboard</li>
-          <li><Link to="/child/videos">Videos</Link></li>
-          <li><Link to="/child/books">Books</Link></li>
-          <li><Link to="/child/audios">Audios</Link></li>
-          <li><Link to="/child/games">Games</Link></li>
+          <li>
+            <Link to="/child/videos">Videos</Link>
+          </li>
+          <li>
+            <Link to="/child/books">Books</Link>
+          </li>
+          <li>
+            <Link to="/child/audios">Audios</Link>
+          </li>
+          <li>
+            <Link to="/child/games">Games</Link>
+          </li>
         </ul>
         <button className="logout-button">Logout</button>
       </div>
-      
+
       <div className="main-content">
-      {/* <nav className="navbar">
+        {/* <nav className="navbar">
       <div className="navbar-left">
         <div className="menu-icon">☰</div>
         <h1 className="title">Dashboard</h1>
@@ -38,10 +46,12 @@ const ChildDashboard = () => {
         </div>
       </div>
     </nav> */}
-     <Navbar pageName="Dashboard" />
+        <Navbar pageName="Dashboard" />
 
-        <h1>Hello, Ruhama</h1>
-        <p>Explore fun videos, exciting books, cool music, and awesome games.</p>
+        <h1>Hello, {user.firstName}</h1>
+        <p>
+          Explore fun videos, exciting books, cool music, and awesome games.
+        </p>
 
         <h2>Our Characters</h2>
         <div className="character-container">
@@ -75,94 +85,81 @@ const ChildDashboard = () => {
           </div>
         </div>
         <div className="recentsample">
-        <h2>Videos</h2>
-        <div className="video-container-main">
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        </div>
+          <h2>Videos</h2>
+          <div className="video-container-main">
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+          </div>
 
+          <h2>Games</h2>
+          <div className="video-container-main">
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+          </div>
 
-        <h2>Games</h2>
-        <div className="video-container-main">
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        </div>
+          <h2>Books</h2>
+          <div className="video-container-main">
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+          </div>
 
-        <h2>Books</h2>
-        <div className="video-container-main">
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        </div>
-
-        <h2>Audio</h2>
-        <div className="video-container-main">
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        <div className="video-container">
-        <img src={Mitu} alt="Mitu" />
-        <p>ቀዩ ወፍ</p>
-          <button>play</button>
-         
-        </div>
-        </div>
+          <h2>Audio</h2>
+          <div className="video-container-main">
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+            <div className="video-container">
+              <img src={Mitu} alt="Mitu" />
+              <p>ቀዩ ወፍ</p>
+              <button>play</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
