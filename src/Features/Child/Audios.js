@@ -1,30 +1,54 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import LogoutButton from "../../Components/LogoutButton";
 import Navbar from "../../Components/Navbar";
+import { AuthContext } from '../../Context/AuthContext';
 import "./Audios.css";
 
 const Audios = () => {
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const audioRef = useRef(null);
   const [songs, setSongs] = useState([]);
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(0.7);
-  const [ratings, setRatings] = useState({});
+  const [playingId, setPlayingId] = useState(null);
+  const [audioRefs, setAudioRefs] = useState({});
   const [likes, setLikes] = useState({});
+  const [ratings, setRatings] = useState({});
 
   useEffect(() => {
     const fetchAudios = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/child/content"
+          "http://localhost:3000/api/child/content",
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+            params: {
+              type: "audio",
+            },
+          }
         );
-        const audioItems = response.data.filter(
-          (item) => item.type === "audio"
-        );
+        console.log("API Response:", response.data);
+
+        const audioItems = response.data
+          .filter((item) => item.type === "audio")
+          .map((item) => ({
+            ...item,
+            audio: `http://localhost:3000${item.filePath}`,
+            artist: item.artist || "Unknown Artist",
+            cover: item.cover || "/default-cover.jpg",
+            duration: item.duration || "Unknown",
+          }));
+
         setSongs(audioItems);
+
+        // ✅ Create and assign refs
+        const refs = {};
+        audioItems.forEach((song) => {
+          refs[song.id] = React.createRef();
+        });
+        setAudioRefs(refs);
       } catch (error) {
         console.error("Failed to fetch audios:", error);
       }
@@ -33,66 +57,43 @@ const Audios = () => {
     fetchAudios();
   }, []);
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.addEventListener("ended", nextSong);
-      return () => audio.removeEventListener("ended", nextSong);
-    }
-  }, [songs]);
+  const handlePlayPause = (songId) => {
+    const audio = audioRefs[songId]?.current;
+    if (!audio) return;
 
-  useEffect(() => {
-    if (isPlaying && audioRef.current) {
-      audioRef.current.play();
-    }
-  }, [currentSongIndex]);
-
-  const togglePlay = () => {
-    if (!songs.length) return;
-    if (isPlaying) {
-      audioRef.current.pause();
+    if (playingId === songId) {
+      audio.pause();
+      setPlayingId(null);
     } else {
-      audioRef.current.play();
+      // Pause any currently playing audio
+      if (playingId && audioRefs[playingId]) {
+        audioRefs[playingId].current.pause();
+      }
+
+      audio.play();
+      setPlayingId(songId);
     }
-    setIsPlaying(!isPlaying);
   };
-
-  const nextSong = () => {
-    setCurrentSongIndex((prev) => (prev === songs.length - 1 ? 0 : prev + 1));
-    setIsPlaying(true);
+  const handleForward = (songId) => {
+    const audio = audioRefs[songId]?.current;
+    if (audio) {
+      audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+    }
   };
-
-  const prevSong = () => {
-    setCurrentSongIndex((prev) => (prev === 0 ? songs.length - 1 : prev - 1));
-    setIsPlaying(true);
-  };
-
-  const updateProgress = () => {
-    const duration = audioRef.current.duration;
-    const currentTime = audioRef.current.currentTime;
-    setProgress((currentTime / duration) * 100);
-  };
-
-  const handleSeek = (e) => {
-    const seekTime = (e.target.value / 100) * audioRef.current.duration;
-    audioRef.current.currentTime = seekTime;
-  };
-
-  const handleVolumeChange = (e) => {
-    const newVolume = e.target.value;
-    setVolume(newVolume);
-    audioRef.current.volume = newVolume;
-  };
-
-  const handleRating = (songId, rating) => {
-    setRatings({ ...ratings, [songId]: rating });
+  const handleBackward = (songId) => {
+    const audio = audioRefs[songId]?.current;
+    if (audio) {
+      audio.currentTime = Math.max(0, audio.currentTime - 10);
+    }
   };
 
   const handleLike = (songId) => {
-    setLikes({ ...likes, [songId]: !likes[songId] });
+    setLikes((prev) => ({ ...prev, [songId]: !prev[songId] }));
   };
 
-  const currentSong = songs[currentSongIndex] || {};
+  const handleRating = (songId, rating) => {
+    setRatings((prev) => ({ ...prev, [songId]: rating }));
+  };
 
   return (
     <div className="audio-container">
@@ -112,11 +113,16 @@ const Audios = () => {
           <li>
             <Link to="/child/games">Games</Link>
           </li>
+           <li>
+            <LogoutButton className="logout-button"/>
+          </li>
+          
         </ul>
-        <button className="logout-button">Logout</button>
+        
       </div>
 
       <div className="main-content">
+
          <button className="back-button" onClick={() => navigate(-1)}>
     ← Back
   </button>
@@ -124,129 +130,60 @@ const Audios = () => {
 
         {songs.length > 0 && (
           <div className="player-container">
-            <div className="player-cover">
-              <img src={currentSong.cover} alt="Album Cover" />
-            </div>
-
-            <div className="player-info">
-              <h2>{currentSong.title}</h2>
-              <p>{currentSong.artist}</p>
-
-              <button
-                className={`like-button ${
-                  likes[currentSong.id] ? "liked" : ""
-                }`}
-                onClick={() => handleLike(currentSong.id)}
-              >
-                {likes[currentSong.id] ? "❤️ Liked" : "🤍 Like"}
-              </button>
-
-              <div className="rating">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    onClick={() => handleRating(currentSong.id, star)}
-                    className={
-                      star <= (ratings[currentSong.id] || 0) ? "filled" : ""
-                    }
-                  >
-                    {star <= (ratings[currentSong.id] || 0) ? "⭐" : "☆"}
-                  </span>
-                ))}
+            {songs.map((song) => (
+              <div className="player-song" key={song.id}>
+                <div className="player-cover">
+                  <img src={song.cover} alt="Album Cover" />
+                </div>
+                <div className="player-details">
+                  <div className="song-title">{song.title}</div>
+                  <div className="song-artist">{song.artist}</div>
+                  <div className="song-duration">{song.duration}</div>
+                </div>
+                <audio ref={audioRefs[song.id]} src={song.audio} />
+                <button
+                  className="play-button"
+                  onClick={() => handlePlayPause(song.id)}
+                >
+                  {playingId === song.id ? "⏸ Pause" : "▶️ Play"}
+                </button>
+                <button
+                  className="forward-button"
+                  onClick={() => handleForward(song.id)}
+                >
+                  ⏩ Forward 10s
+                </button>
+                <button
+                  className="backward-button"
+                  onClick={() => handleBackward(song.id)}
+                >
+                  ⏪ Back 10s
+                </button>
+                <div className="rating">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                      key={star}
+                      onClick={() => handleRating(song.id, star)}
+                      className={star <= (ratings[song.id] || 0) ? "filled" : ""}
+                    >
+                      {star <= (ratings[song.id] || 0) ? "⭐" : "☆"}
+                    </span>
+                  ))}
+                </div>
+                <button
+                  className={`like-button ${likes[song.id] ? "liked" : ""}`}
+                  onClick={() => handleLike(song.id)}
+                >
+                  
+                </button>
               </div>
-            </div>
-
-            <div className="progress-container">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={progress}
-                onChange={handleSeek}
-                className="progress-bar"
-              />
-              <span className="time">
-                {formatTime(audioRef.current?.currentTime || 0)} /{" "}
-                {currentSong.duration}
-              </span>
-            </div>
-
-            <div className="controls">
-              <button className="control-button" onClick={prevSong}>
-                ⏮
-              </button>
-              <button className="play-button" onClick={togglePlay}>
-                {isPlaying ? "⏸" : "▶️"}
-              </button>
-              <button className="control-button" onClick={nextSong}>
-                ⏭
-              </button>
-            </div>
-
-            <div className="volume-control">
-              <span>🔈</span>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={volume}
-                onChange={handleVolumeChange}
-                className="volume-slider"
-              />
-              <span>🔊</span>
-            </div>
-
-            <audio
-              ref={audioRef}
-              src={currentSong.audio}
-              onTimeUpdate={updateProgress}
-            />
+            ))}
           </div>
         )}
-
-        <div className="song-list">
-          <h3>More Songs</h3>
-          {songs.map((song, index) => (
-            <div
-              key={song.id}
-              className={`song-item ${
-                index === currentSongIndex ? "active" : ""
-              }`}
-              onClick={() => {
-                setCurrentSongIndex(index);
-                setIsPlaying(true);
-              }}
-            >
-              <img src={song.cover} alt={song.title} />
-              <div className="song-details">
-                <h4>{song.title}</h4>
-                <p>{song.artist}</p>
-              </div>
-              <div className="song-actions">
-                <button
-                  className={`mini-like ${likes[song.id] ? "liked" : ""}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleLike(song.id);
-                  }}
-                >
-                  {likes[song.id] ? "❤️" : "🤍"}
-                </button>
-                <span className="rating">{ratings[song.id] || 0}/5</span>
-              </div>
-            </div>
-          ))}
-        </div>
+        
       </div>
     </div>
   );
 };
-
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-}
 
 export default Audios;

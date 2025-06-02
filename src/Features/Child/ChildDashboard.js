@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import Abush from "../../Assets/images/Abush.png";
 import Bitiko from "../../Assets/images/Bitiko.png";
 import Mitu from "../../Assets/images/Mitu.png";
+import LogoutButton from "../../Components/LogoutButton";
 import Navbar from "../../Components/Navbar";
 import { AuthContext } from "../../Context/AuthContext";
 import "./ChildDashboard.css";
+
 
 const ChildDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -40,7 +42,7 @@ const ChildDashboard = () => {
             <Link to="/child/games">Games</Link>
           </li>
         </ul>
-        <button className="logout-button">Logout</button>
+         <LogoutButton className="logout-button"/>
       </div>
 
       {/* Main Content */}
