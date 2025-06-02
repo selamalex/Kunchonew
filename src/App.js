@@ -32,6 +32,7 @@ import Videos from "./Features/Child/Videos";
 import SpecificVid from "./Features/Child/SpecificVid";
 import Books from "./Features/Child/Books";
 import Audios from "./Features/Child/Audios";
+import SpecificAud from "./Features/Child/SpecificAud";
 import Games from "./Features/Child/Games";
 import Animals from "./Features/Child/Animals";
 import Vegetables from "./Features/Child/Vegetables";
@@ -119,6 +120,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/child/audios/:id"
+          element={
+            <ProtectedRoute role="child">
+              <SpecificAud />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/child/games"
           element={

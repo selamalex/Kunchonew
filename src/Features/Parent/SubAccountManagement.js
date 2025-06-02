@@ -31,11 +31,6 @@ const SubAccountManagement = () => {
             </div>
             <FaBell className="notification-icon" />
           </div>
-
-          <button className="start-time-btn">
-            <FaClock style={{ marginRight: "8px" }} />
-            Start Time Limit
-          </button>
         </div>
       </div>
 

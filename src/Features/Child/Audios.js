@@ -1,9 +1,9 @@
-import React from "react";
-import { useEffect, useState, useContext, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../Context/AuthContext";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import LogoutButton from "../../Components/LogoutButton";
 import Navbar from "../../Components/Navbar";
+import { AuthContext } from "../../Context/AuthContext";
 import "./Audios.css";
 
 const Audios = () => {
@@ -14,6 +14,7 @@ const Audios = () => {
   const [audioRefs, setAudioRefs] = useState({});
   const [likes, setLikes] = useState({});
   const [ratings, setRatings] = useState({});
+  const { audioId } = useParams();
 
   useEffect(() => {
     const fetchAudios = async () => {
@@ -24,12 +25,9 @@ const Audios = () => {
             headers: {
               Authorization: `Bearer ${user.token}`,
             },
-            params: {
-              type: "audio",
-            },
+            params: { type: "audio" },
           }
         );
-        console.log("API Response:", response.data);
 
         const audioItems = response.data
           .filter((item) => item.type === "audio")
@@ -43,7 +41,7 @@ const Audios = () => {
 
         setSongs(audioItems);
 
-        // ✅ Create and assign refs
+        // Create refs for each audio
         const refs = {};
         audioItems.forEach((song) => {
           refs[song.id] = React.createRef();
@@ -55,7 +53,7 @@ const Audios = () => {
     };
 
     fetchAudios();
-  }, []);
+  }, [user.token]);
 
   const handlePlayPause = (songId) => {
     const audio = audioRefs[songId]?.current;
@@ -114,65 +112,76 @@ const Audios = () => {
             <Link to="/child/games">Games</Link>
           </li>
         </ul>
-        <button className="logout-button">Logout</button>
+        <LogoutButton className="logout-button" />
       </div>
 
       <div className="main-content">
-        <Navbar pageName="Audio Library" />
-
         <button className="back-button" onClick={() => navigate(-1)}>
           ← Back
         </button>
+        <Navbar pageName="Audio Player" />
 
-        <div className="audio-list">
-          {songs.map((song) => (
-            <div key={song.id} className="audio-card">
-              <img src={song.cover} alt={song.title} className="audio-cover" />
-              <h3>{song.title}</h3>
-              <p>{song.artist}</p>
-
-              <audio ref={audioRefs[song.id]} src={song.audio} />
-
-              <button
-                className="play-button"
-                onClick={() => handlePlayPause(song.id)}
+        {songs.length > 0 && (
+          <div className="player-container">
+            {songs.map((song) => (
+              <div
+                className="player-song"
+                key={song.id}
+                onClick={() => navigate(`/child/audios/${song.id}`)}
+                style={{ cursor: "pointer" }}
               >
-                {playingId === song.id ? "⏸ Pause" : "▶️ Play"}
-              </button>
-              <button
-                className="forward-button"
-                onClick={() => handleForward(song.id)}
-              >
-                ⏩ Forward 10s
-              </button>
-              <button
-                className="backward-button"
-                onClick={() => handleBackward(song.id)}
-              >
-                ⏪ Back 10s
-              </button>
+                <div
+                  className="player-cover clickable"
+                  onClick={() => navigate(`/child/audios/${song.id}`)}
+                >
+                  <img src={song.cover} alt="Album Cover" />
+                </div>
 
-              <div className="rating">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    onClick={() => handleRating(song.id, star)}
-                    className={star <= (ratings[song.id] || 0) ? "filled" : ""}
-                  >
-                    {star <= (ratings[song.id] || 0) ? "⭐" : "☆"}
-                  </span>
-                ))}
+                <div className="player-details">
+                  <div className="song-title">{song.title}</div>
+                  <div className="song-artist">{song.artist}</div>
+                  <div className="song-duration">{song.duration}</div>
+                </div>
+                <audio ref={audioRefs[song.id]} src={song.audio} />
+                <button
+                  className="play-button"
+                  onClick={() => handlePlayPause(song.id)}
+                >
+                  {playingId === song.id ? "⏸ Pause" : "▶️ Play"}
+                </button>
+                <button
+                  className="forward-button"
+                  onClick={() => handleForward(song.id)}
+                >
+                  ⏩ Forward 10s
+                </button>
+                <button
+                  className="backward-button"
+                  onClick={() => handleBackward(song.id)}
+                >
+                  ⏪ Back 10s
+                </button>
+                <div className="rating">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                      key={star}
+                      onClick={() => handleRating(song.id, star)}
+                      className={
+                        star <= (ratings[song.id] || 0) ? "filled" : ""
+                      }
+                    >
+                      {star <= (ratings[song.id] || 0) ? "⭐" : "☆"}
+                    </span>
+                  ))}
+                </div>
+                <button
+                  className={`like-button ${likes[song.id] ? "liked" : ""}`}
+                  onClick={() => handleLike(song.id)}
+                ></button>
               </div>
-
-              <button
-                className={`like-button ${likes[song.id] ? "liked" : ""}`}
-                onClick={() => handleLike(song.id)}
-              >
-                {likes[song.id] ? "❤️ Liked" : "🤍 Like"}
-              </button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

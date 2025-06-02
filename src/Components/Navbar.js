@@ -1,6 +1,6 @@
-import { useState, useRef, useContext, useEffect } from "react";
-import { AuthContext } from "../Context/AuthContext";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../Context/AuthContext';
 import Avatar from "../Features/Child/Avatar";
 import "./Navbar.css";
 
@@ -45,10 +45,15 @@ export default function Navbar({ pageName }) {
 
   const handleResultClick = (result) => {
     setResults([]); // Close dropdown
-    if (result.type.toLowerCase() === "video") {
+
+    const type = result.type.toLowerCase();
+
+    if (type === "video") {
       navigate(`/child/videos/${result.id}`);
-    } else if (result.type.toLowerCase() === "book") {
-      window.open(result.filePath, "_blank");
+    } else if (type === "book") {
+      navigate(`/child/books/${result.id}`);
+    } else if (type === "audio") {
+      navigate(`/child/audios/${result.id}`);
     } else {
       alert(`Unsupported content type: ${result.type}`);
     }

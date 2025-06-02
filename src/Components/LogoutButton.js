@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
+import "./LogoutButton.css";
 
 export default function LogoutButton() {
   const { setUser, user } = useAuth();
@@ -12,10 +13,7 @@ export default function LogoutButton() {
   };
 
   return (
-    <button
-      onClick={handleLogout}
-      className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
-    >
+    <button onClick={handleLogout} className="logout-button">
       Logout
     </button>
   );

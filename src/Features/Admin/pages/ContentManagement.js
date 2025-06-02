@@ -340,7 +340,7 @@ const Contents = () => {
                 <input
                   type="file"
                   name="file"
-                  accept=".pdf,.mp3,.mp4"
+                  accept=".pdf,.mp3,.mp4,.zip"
                   onChange={handleFileChange}
                   style={{ width: "100%", padding: "8px" }}
                   required
