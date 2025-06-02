@@ -56,8 +56,8 @@ const SpecificVid = () => {
   };
   const togglePlay = () => {
     if (!hasViewed) {
-      recordView(); // Record view on first play
-      setHasViewed(true); // Avoid duplicate submissions
+      recordView();
+      setHasViewed(true);
     }
 
     if (isPlaying) {

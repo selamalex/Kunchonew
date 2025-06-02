@@ -1,79 +1,78 @@
 .container {
-    display: flex;
+  display: flex;
 }
 
 .sidebar {
-    width: 250px;
-    background-color: #431B06;
-    padding: 20px;
-    height: 100%;
+  width: 250px;
+  background-color: #431b06;
+  padding: 20px;
+  height: 100%;
 }
 
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #431B06;
-    /* Brown color */
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #431b06;
+
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-left {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .menu-icon {
-    font-size: 1.5rem;
-    color: white;
-    margin-right: 10px;
+  font-size: 1.5rem;
+  color: white;
+  margin-right: 10px;
 }
 
 .title {
-    font-size: 1.5rem;
-    color: white;
-    font-weight: bold;
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
 }
 
 .navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .search-input {
-    padding: 0.5rem;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-    width: 200px;
-    /* Adjust width as needed */
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  width: 200px;
 }
 
 .search-icon {
-    font-size: 1.5rem;
-    color: white;
+  font-size: 1.5rem;
+  color: white;
 }
 
 .profile {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .username {
-    color: white;
-    font-size: 1rem;
-    margin-right: 5px;
+  color: white;
+  font-size: 1rem;
+  margin-right: 5px;
 }
 
 .profile-icon {
-    font-size: 1.5rem;
-    color: white;
-    background-color: #5f4b8a;
-    /* Different shade for profile icon */
-    border-radius: 50%;
-    padding: 5px;
+  font-size: 1.5rem;
+  color: white;
+  background-color: #5f4b8a;
+
+  border-radius: 50%;
+  padding: 5px;
 }
 
 /* .logo {
@@ -165,59 +164,59 @@ li {
 } */
 
 .cards-wrapper {
-    text-align: center;
-    padding: 80px 0;
-    margin-top: -30px;
+  text-align: center;
+  padding: 80px 0;
+  margin-top: -30px;
 }
 
 .cards-title {
-    font-size: 28px;
-    font-weight: bold;
-    color: #d59c38;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    margin-top: -5px;
-    padding-bottom: 70px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #d59c38;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  margin-top: -5px;
+  padding-bottom: 70px;
 }
 
 .cards-section {
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 20px;
 }
 
 .card {
-    width: 260px;
-    padding: 20px;
-    border-radius: 20px;
-    text-align: center;
-    backdrop-filter: blur(15px);
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    border: 2px solid rgba(213, 156, 56, 0.5);
-    position: relative;
+  width: 260px;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border: 2px solid rgba(213, 156, 56, 0.5);
+  position: relative;
 }
 
 .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
-    border-color: rgba(213, 156, 56, 1);
+  transform: scale(1.05);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(213, 156, 56, 1);
 }
 
 .card-icon {
-    font-size: 40px;
-    color: #d59c38;
-    margin-bottom: 10px;
+  font-size: 40px;
+  color: #d59c38;
+  margin-bottom: 10px;
 }
 
 .card img {
-    max-width: 100%;
-    border-radius: 15px;
-    margin-top: 10px;
+  max-width: 100%;
+  border-radius: 15px;
+  margin-top: 10px;
 }
 
 .large-card {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }

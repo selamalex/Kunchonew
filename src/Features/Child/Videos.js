@@ -98,18 +98,16 @@ const Videos = () => {
             >
               <div className="thumbnail-container">
                 <img
-                  src={"/images/video-placeholder.png"} // Placeholder until you have thumbnails
+                  src={"/images/video-placeholder.png"}
                   alt={video.title}
                   className="video-thumbnail"
                 />
                 <div className="video-duration">--:--</div>{" "}
-                {/* Duration unknown in API */}
               </div>
               <div className="video-details">
                 <h4 className="video-title">{video.title}</h4>
                 <p className="video-views">{video.ageGroup}+ age group</p>
                 {renderStars(Math.random() * 2 + 3)}{" "}
-                {/* Random rating for now */}
               </div>
             </div>
           ))}
