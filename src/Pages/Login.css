@@ -94,3 +94,6 @@
 .submit-btn:hover {
   background: linear-gradient(to right, #c78b2e, #d59c38);
 }
+.forgot-link {
+  display: none;
+}
