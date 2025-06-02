@@ -1,4 +1,8 @@
-import { Line, Bar } from "react-chartjs-2"
+import React from "react";
+import Sidebar from '../components/Sidebarr'; // Correct component import
+import '../components/admin.css';
+import '../components/Sidebarr.css';
+import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,12 +13,11 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js"
+} from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend)
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
 const Overview = () => {
-  // Line chart data
   const lineChartData = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
     datasets: [
@@ -32,7 +35,7 @@ const Overview = () => {
         borderDash: [5, 5],
       },
     ],
-  }
+  };
 
   const lineChartOptions = {
     responsive: true,
@@ -46,9 +49,8 @@ const Overview = () => {
         min: 0,
       },
     },
-  }
+  };
 
-  // Bar chart data
   const barChartData = {
     labels: ["Books", "Music", "Others", "Videos"],
     datasets: [
@@ -63,7 +65,7 @@ const Overview = () => {
         ],
       },
     ],
-  }
+  };
 
   const barChartOptions = {
     responsive: true,
@@ -77,47 +79,49 @@ const Overview = () => {
         beginAtZero: true,
       },
     },
-  }
+  };
 
   return (
-    <div className="page-container">
-      <h1 className="page-header">Overview</h1>
+    <div className="admin-container">
+      <Sidebar /> {/* ✅ Display Sidebar */}
+      <div className="page-container">
+        <h1 className="page-header">Overview</h1>
 
-      <div className="stats-container">
-        <div className="stat-card">
-          <div className="stat-title">Total Users</div>
-          <div className="stat-value">965</div>
+        <div className="stats-container">
+          <div className="stat-card">
+            <div className="stat-title">Total Users</div>
+            <div className="stat-value">965</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-title">Contents</div>
+            <div className="stat-value">671</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-title">Notification sent</div>
+            <div className="stat-value">156</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-title">Active Users</div>
+            <div className="stat-value">2,318</div>
+          </div>
         </div>
-        <div className="stat-card">
-          <div className="stat-title">Contents</div>
-          <div className="stat-value">671</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-title">Notification sent</div>
-          <div className="stat-value">156</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-title">Active Users</div>
-          <div className="stat-value">2,318</div>
-        </div>
-      </div>
 
-      <div className="chart-container">
-        <h2 className="chart-header">Total Users</h2>
-        <div style={{ height: "300px" }}>
-          <Line data={lineChartData} options={lineChartOptions} />
+        <div className="chart-container">
+          <h2 className="chart-header">Total Users</h2>
+          <div style={{ height: "300px" }}>
+            <Line data={lineChartData} options={lineChartOptions} />
+          </div>
         </div>
-      </div>
 
-      <div className="chart-container">
-        <h2 className="chart-header">Content by Category</h2>
-        <div style={{ height: "300px" }}>
-          <Bar data={barChartData} options={barChartOptions} />
+        <div className="chart-container">
+          <h2 className="chart-header">Content by Category</h2>
+          <div style={{ height: "300px" }}>
+            <Bar data={barChartData} options={barChartOptions} />
+          </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Overview
-
+export default Overview;
