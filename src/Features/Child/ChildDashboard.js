@@ -1,10 +1,11 @@
+// ChildDashboard.js
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import Abush from "../../Assets/images/Abush.png";
 import Bitiko from "../../Assets/images/Bitiko.png";
 import Mitu from "../../Assets/images/Mitu.png";
+import LogoutButton from "../../Components/LogoutButton";
 import Navbar from "../../Components/Navbar";
-import LogoutButton from "../../Components/LogoutButton"; // Keep this import
 import { AuthContext } from "../../Context/AuthContext";
 import "./ChildDashboard.css";
 
@@ -13,6 +14,7 @@ const ChildDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
+    console.log("clicked");
     setSidebarOpen(!sidebarOpen);
   };
 
@@ -24,7 +26,7 @@ const ChildDashboard = () => {
       </div>
 
       {/* Sidebar */}
-      <div className={`sidebar ${sidebarOpen ? "show" : ""}`}>
+      <div className={`sidebar ${sidebarOpen? 'active' : ''}`}>
         <div className="logo">Kuncho</div>
         <ul>
           <li>Dashboard</li>
@@ -41,7 +43,7 @@ const ChildDashboard = () => {
             <Link to="/child/games">Games</Link>
           </li>
         </ul>
-        <LogoutButton className="logout-button" /> {/* Use LogoutButton */}
+        <LogoutButton className="logout-button" />
       </div>
 
       {/* Main Content */}
@@ -49,41 +51,16 @@ const ChildDashboard = () => {
         <Navbar pageName="Dashboard" />
 
         <h1>Hello, {user.firstName}</h1>
-        <p>
-          Explore fun videos, exciting books, cool music, and awesome games.
-        </p>
+        <p>Explore fun videos, exciting books, cool music, and awesome games.</p>
 
         <h2>Our Characters</h2>
         <div className="character-container">
-          <div className="character">
-            <img src={Abush} alt="Abush" />
-            <p>Abush</p>
-          </div>
-          <div className="character">
-            <img src={Bitiko} alt="Bitiko" />
-            <p>Bitiko</p>
-          </div>
-          <div className="character">
-            <img src={Mitu} alt="Mitu" />
-            <p>Mitu</p>
-          </div>
-          {/* Duplicate characters can be removed if not needed */}
-          <div className="character">
-            <img src={Abush} alt="Abush" />
-            <p>Abush</p>
-          </div>
-          <div className="character">
-            <img src={Bitiko} alt="Bitiko" />
-            <p>Bitiko</p>
-          </div>
-          <div className="character">
-            <img src={Mitu} alt="Mitu" />
-            <p>Mitu</p>
-          </div>
-          <div className="character">
-            <img src={Bitiko} alt="Bitiko" />
-            <p>Bitiko</p>
-          </div>
+          {[Abush, Bitiko, Mitu, Abush, Bitiko, Mitu, Bitiko].map((img, idx) => (
+            <div className="character" key={idx}>
+              <img src={img} alt="Character" />
+              <p>{img === Abush ? "Abush" : img === Bitiko ? "Bitiko" : "Mitu"}</p>
+            </div>
+          ))}
         </div>
 
         <div className="recentsample">

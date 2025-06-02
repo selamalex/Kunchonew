@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
+import axios from "axios";
 import "./Login.css";
 
 const Login = () => {
@@ -25,8 +26,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Reset errors
     setEmailError("");
     setPasswordError("");
     setError("");
@@ -54,23 +53,45 @@ const Login = () => {
     }
 
     try {
-      // Example: Sending login credentials to the server
-      // const response = await axios.post("/api/login", { email, password });
-      // const userData = response.data;
+      const response = await axios.post(
+        "http://localhost:3000/api/parents/login",
+        {
+          email,
+          password,
+        }
+      );
 
-      // For demonstration purposes, using mock logic based on email
-      if (email.startsWith("admin@")) {
-        setUser({ role: "admin", email });
-        navigate("/admin/overview");
-      } else if (email.startsWith("child@")) {
-        setUser({ role: "child", email, age: parseInt(password) });
-        navigate("/child/dashboard");
-      } else {
-        setUser({ role: "parent", email });
+      const { token } = response.data;
+      const decoded = JSON.parse(atob(token.split(".")[1]));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          firstName: decoded.firstName,
+          role: decoded.role,
+          id: decoded.id,
+          token,
+        })
+      );
+
+      setUser({
+        firstName: decoded.firstName,
+        role: decoded.role,
+        id: decoded.id,
+        token,
+      });
+
+      // Navigate by role
+      if (decoded.role === "parent") {
         navigate("/parent/dashboard");
+      } else if (decoded.role === "child") {
+        navigate("/child/dashboard");
+      } else if (decoded.role === "admin") {
+        navigate("/admin/dashboard");
       }
     } catch (err) {
-      setError("Login failed. Please check your credentials.");
+      console.error("Full error object:", err);
+      console.error("Backend response:", err.response?.data);
+      setError(err.response?.data?.error || "Login failed. Try again.");
     }
   };
 
@@ -79,7 +100,7 @@ const Login = () => {
       <div className="left-panel"></div>
       <div className="right-panel">
         <form className="login-form" onSubmit={handleSubmit}>
-          <h3>Sign In</h3>
+          <h3>Parent Sign In</h3>
           {error && <p className="error-msg">{error}</p>}
           <input
             type="email"
