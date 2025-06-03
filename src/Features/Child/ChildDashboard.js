@@ -1,5 +1,5 @@
 // ChildDashboard.js
-import { useContext, useState } from "react";
+import { useContext, useState, useNavigate} from "react";
 import { Link } from "react-router-dom";
 import Abush from "../../Assets/images/Abush.png";
 import Bitiko from "../../Assets/images/Bitiko.png";
@@ -19,6 +19,7 @@ import "./ChildDashboard.css";
 const ChildDashboard = () => {
   const { user } = useContext(AuthContext);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+const navigate = useNavigate();
 
   const toggleSidebar = () => {
     console.log("clicked");
@@ -50,7 +51,7 @@ const ChildDashboard = () => {
             <Link to="/child/games">Games</Link>
           </li>
         </ul>
-        <LogoutButton className="logout-button" />
+        <LogoutButton  />
       </div>
 
       {/* Main Content */}
