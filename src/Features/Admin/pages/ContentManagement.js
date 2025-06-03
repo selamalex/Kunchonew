@@ -329,7 +329,7 @@ formData.append("thumbnail", thumbnail);
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: "12px" }}>
                 <label style={{ color: "#000" }}>Title</label>
-                <input
+                                <input
                   type="text"
                   name="title"
                   value={newContent.title}
@@ -340,8 +340,7 @@ formData.append("thumbnail", thumbnail);
               </div>
 
               <div style={{ marginBottom: "12px" }}>
-                <label style={{ color: "#000" }}>Category</label>
-
+                <label>Category</label>
                 <select
                   name="category"
                   value={newContent.category}
@@ -356,7 +355,7 @@ formData.append("thumbnail", thumbnail);
                 </select>
               </div>
 
-              
+          
 
               <div style={{ marginBottom: "12px" }}>
                 <label style={{ color: "#000" }}>Date</label>
