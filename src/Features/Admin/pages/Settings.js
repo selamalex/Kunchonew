@@ -61,24 +61,13 @@ const Settings = () => {
           <div className={`tab ${activeTab === "general" ? "active" : ""}`} onClick={() => setActiveTab("general")}>
             General
           </div>
-          <div
+          {/* <div
             className={`tab ${activeTab === "notifications" ? "active" : ""}`}
             onClick={() => setActiveTab("notifications")}
           >
             Notifications
-          </div>
-          <div className={`tab ${activeTab === "security" ? "active" : ""}`} onClick={() => setActiveTab("security")}>
-            Security
-          </div>
-          <div
-            className={`tab ${activeTab === "appearance" ? "active" : ""}`}
-            onClick={() => setActiveTab("appearance")}
-          >
-            Appearance
-          </div>
-          <div className={`tab ${activeTab === "advanced" ? "active" : ""}`} onClick={() => setActiveTab("advanced")}>
-            Advanced
-          </div>
+          </div> */}
+          
         </div>
 
         {activeTab === "general" && (
@@ -298,7 +287,7 @@ const Settings = () => {
         )}
 
         <div style={{ marginTop: "40px", textAlign: "center" }}>
-  <button
+  {/* <button
     className="button"
     onClick={() => {
       // Clear session or token logic here
@@ -317,7 +306,7 @@ const Settings = () => {
     }}
   >
     Logout
-  </button>
+  </button> */}
 </div>
 
       </div>

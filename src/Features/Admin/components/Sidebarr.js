@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom";
+import LogoutButton from "../../../Components/LogoutButton";
+
 import './Sidebarr.css';
 
 const Sidebar = () => {
   return (
     <div className="sidebarr">
-        <div className="logoo">Logo</div> 
+      <div className="logoo">KUNCHO</div> 
 
       <div className="admin-info">
         <div className="admin-avatar">
@@ -23,16 +25,15 @@ const Sidebar = () => {
             <span>Overview</span>
           </NavLink>
 
-         <NavLink
-  to="/admin/users"
-  className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}
->
-  <div className="sidebar-icon">
-    <i className="fas fa-users"></i>
-  </div>
-  <span>User Management</span>
-</NavLink>
-
+          <NavLink
+            to="/admin/users"
+            className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}
+          >
+            <div className="sidebar-icon">
+              <i className="fas fa-users"></i>
+            </div>
+            <span>User Management</span>
+          </NavLink>
 
           <NavLink to="/admin/content" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
             <div className="sidebar-icon">
@@ -66,9 +67,13 @@ const Sidebar = () => {
           </NavLink>
         </nav>
       </div>
+
+      <div className="logout-container">
+  <LogoutButton />
+</div>
+
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
-
+export default Sidebar;

@@ -8,6 +8,8 @@ const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [parents, setParents] = useState([]);
   const [childrens, setChildrens] = useState([]);
+  const [editUser, setEditUser] = useState(null);
+  const [formData, setFormData] = useState({});
 
   const fetchUsersByRole = async (role, setter) => {
     try {
@@ -32,27 +34,41 @@ const UserManagement = () => {
     fetchUsersByRole("child", setChildrens);
   }, []);
 
-  const handleDeleteUser = (id, setter) => {
-    setter((prev) => prev.filter((user) => user.id !== id));
+  const handleEditClick = (user) => {
+    setEditUser(user);
+    setFormData({
+      firstName: user.firstName || "",
+      lastName: user.lastName || "",
+      password: "",
+    });
   };
 
-  const renderTable = (data, role, onDelete) => (
+  const handleFormChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSave = () => {
+    
+    console.log("Saved data:", formData);
+    setEditUser(null);
+  };
+
+  const renderTable = (data, role) => (
     <table className="table">
       <thead>
         <tr>
-          <th>
-            <input type="checkbox" />
-          </th>
-          <th>{role.charAt(0).toUpperCase() + role.slice(1)}</th>
+          <th><input type="checkbox" /></th>
+          <th>{role}</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         {data.map((user) => (
           <tr key={user.id}>
-            <td>
-              <input type="checkbox" />
-            </td>
+            <td><input type="checkbox" /></td>
             <td>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <div
@@ -74,24 +90,10 @@ const UserManagement = () => {
                   padding: "5px 10px",
                   borderRadius: "3px",
                   cursor: "pointer",
-                  marginRight: "5px",
                 }}
+                onClick={() => handleEditClick(user)}
               >
                 Edit
-              </button>
-              <button
-                className="action-button"
-                onClick={() => onDelete(user.id)}
-                style={{
-                  backgroundColor: "#dc3545",
-                  color: "#fff",
-                  border: "none",
-                  padding: "5px 10px",
-                  borderRadius: "3px",
-                  cursor: "pointer",
-                }}
-              >
-                Delete
               </button>
             </td>
           </tr>
@@ -106,19 +108,14 @@ const UserManagement = () => {
 
       <div className="user-stats-container">
         <div className="user-stat-card">
-          <div className="user-stat-icon">
-            <i className="fas fa-user"></i>
-          </div>
+          <div className="user-stat-icon"><i className="fas fa-user"></i></div>
           <div className="user-stat-info">
             <div className="user-stat-label">Parents</div>
             <div className="user-stat-value">{parents.length}</div>
           </div>
         </div>
-
         <div className="user-stat-card">
-          <div className="user-stat-icon">
-            <i className="fas fa-child"></i>
-          </div>
+          <div className="user-stat-icon"><i className="fas fa-child"></i></div>
           <div className="user-stat-info">
             <div className="user-stat-label">Children</div>
             <div className="user-stat-value">{childrens.length}</div>
@@ -134,7 +131,7 @@ const UserManagement = () => {
               className={`tab ${activeTab === tab ? "active" : ""}`}
               onClick={() => setActiveTab(tab)}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}{" "}
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
               <span className="tab-badge">
                 {tab === "admin"
                   ? users.length
@@ -157,28 +154,57 @@ const UserManagement = () => {
 
         {activeTab === "admin" && (
           <>
-            <button
+            {/* <button
               className="button button-primary"
               style={{ marginBottom: "20px" }}
             >
               Create Admin Account
-            </button>
-            {renderTable(users, "Admins", (id) =>
-              handleDeleteUser(id, setUsers)
-            )}
+            </button> */}
+            {renderTable(users, "Admins")}
           </>
         )}
 
-        {activeTab === "parents" &&
-          renderTable(parents, "Parents", (id) =>
-            handleDeleteUser(id, setParents)
-          )}
-
-        {activeTab === "children" &&
-          renderTable(childrens, "Children", (id) =>
-            handleDeleteUser(id, setChildrens)
-          )}
+        {activeTab === "parents" && renderTable(parents, "Parents")}
+        {activeTab === "children" && renderTable(childrens, "Children")}
       </div>
+
+      {/* Pop-up Edit Form */}
+      {editUser && (
+        <>
+          <div className="popup-overlay"></div>
+          <div className="popup-form">
+            <h2>Edit User</h2>
+
+            <label>First Name</label>
+            <input
+              name="firstName"
+              value={formData.firstName || ""}
+              onChange={handleFormChange}
+            />
+
+            <label>Last Name</label>
+            <input
+              name="lastName"
+              value={formData.lastName || ""}
+              onChange={handleFormChange}
+            />
+
+            <label>Change Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password || ""}
+              onChange={handleFormChange}
+              placeholder="Enter new password"
+            />
+
+            <div className="popup-buttons">
+              <button onClick={handleSave} className="btn btn-add">Save</button>
+              <button onClick={() => setEditUser(null)} className="btn btn-cancel">Cancel</button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

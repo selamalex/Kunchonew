@@ -104,3 +104,9 @@
 .sidebar-link.active .sidebar-icon {
   color: #431b06;  /* golden icon */
 }
+.logout-container {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  padding: 20px 0;
+}
