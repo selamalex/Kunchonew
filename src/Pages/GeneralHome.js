@@ -14,7 +14,7 @@ const GeneralHome = () => {
       <Header />
       <ContentSection />
       <ImageStack />
-      <div style={{ margin: "10rem 0" }}></div> {/* Add spacing div */}
+
       <CardsSection />
       <Footer />
     </div>

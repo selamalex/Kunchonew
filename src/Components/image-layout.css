@@ -8,6 +8,7 @@
   margin: 0 auto;
   position: relative;
   z-index: 1;
+  overflow-x: hidden;
 }
 
 .image-stack {
@@ -22,6 +23,7 @@
   flex-direction: column;
   align-items: center;
   pointer-events: none;
+  overflow: hidden; /* ✅ Prevent scroll overflow */
 }
 
 .image-container {
@@ -64,9 +66,10 @@
 
 .content {
   flex: 1 1 500px;
-  color: #efe8e8;
+  color: azure;
   margin-left: 100px;
   margin-top: 30px;
+  background: transparent; /* ✅ Remove background */
 }
 
 .content h2 {
@@ -85,6 +88,13 @@
   font-size: 16px;
   line-height: 1.6;
   margin-bottom: 20px;
+}
+
+html,
+body,
+.container,
+.content {
+  background: transparent !important;
 }
 
 .stats {
@@ -183,5 +193,29 @@
 
   .image-stack {
     display: none;
+  }
+}
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  .right-image {
+    width: 100%;
+    padding-right: 0;
+    justify-content: center;
+  }
+
+  .right-image img {
+    width: 100%;
+    max-width: 300px; /* adjust based on your design */
+  }
+
+  .content {
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 100%;
   }
 }
