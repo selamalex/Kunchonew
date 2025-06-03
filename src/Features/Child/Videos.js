@@ -34,7 +34,7 @@ const Videos = () => {
     };
 
     fetchVideos();
-  }, []);
+  }, [user.token]);
 
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
@@ -84,11 +84,11 @@ const Videos = () => {
 
       <div className="main-content">
         <button
-  className="back-button"
-  onClick={() => navigate(-1)} // navigates to previous page
->
-  ← Back
-</button>
+          className="back-button"
+          onClick={() => navigate(-1)} // navigates to previous page
+        >
+          ← Back
+        </button>
         <Navbar pageName="Videos" />
         <h3 className="section-title">Recommended Videos</h3>
         <div className="video-grid">
@@ -102,16 +102,20 @@ const Videos = () => {
             >
               <div className="thumbnail-container">
                 <img
-                  src={"/images/video-placeholder.png"}
+                  src={
+                    video.thumbnail
+                      ? `http://localhost:3000${video.thumbnail}`
+                      : "/images/video-placeholder.png"
+                  }
                   alt={video.title}
                   className="video-thumbnail"
                 />
-                <div className="video-duration">--:--</div>{" "}
+                <div className="video-duration">--:--</div>
               </div>
               <div className="video-details">
                 <h4 className="video-title">{video.title}</h4>
                 <p className="video-views">{video.ageGroup}+ age group</p>
-                {renderStars(Math.random() * 2 + 3)}{" "}
+                {renderStars(Math.random() * 2 + 3)}
               </div>
             </div>
           ))}
