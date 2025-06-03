@@ -11,12 +11,7 @@ const categories = [
 const Contents = () => {
   const { user } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("all");
-  const [contents, setContents] = useState([
-    { id: 1, title: "Introduction to Math", category: "book", status: "Published", date: "2023-05-15" },
-    { id: 2, title: "Classical Music Collection", category: "audio", status: "Published", date: "2023-06-20" },
-    { id: 3, title: "Science Experiments", category: "video", status: "Draft", date: "2023-07-10" },
-    { id: 4, title: "History Timeline", category: "other", status: "Published", date: "2023-08-05" },
-  ]);
+  const [contents, setContents] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({
@@ -31,12 +26,15 @@ const Contents = () => {
   useEffect(() => {
     const fetchContents = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/admin/content/", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+        const response = await fetch(
+          "http://localhost:3000/api/admin/content/",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
 
         const data = await response.json();
 
@@ -51,7 +49,9 @@ const Contents = () => {
           }));
           setContents(formatted);
         } else {
-          alert("Failed to load contents: " + (data.message || "Unknown error"));
+          alert(
+            "Failed to load contents: " + (data.message || "Unknown error")
+          );
         }
       } catch (error) {
         console.error("Error fetching contents:", error);
@@ -64,18 +64,23 @@ const Contents = () => {
 
   const handleDeleteContent = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/admin/content/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3000/api/admin/content/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         setContents(contents.filter((content) => content.id !== id));
       } else {
         const error = await response.json();
-        alert("Failed to delete content: " + (error.message || "Unknown error"));
+        alert(
+          "Failed to delete content: " + (error.message || "Unknown error")
+        );
       }
     } catch (error) {
       console.error("Delete error:", error);
@@ -128,7 +133,9 @@ const Contents = () => {
       const result = await response.json();
 
       if (response.ok) {
-        const newId = contents.length ? Math.max(...contents.map((c) => c.id)) + 1 : 1;
+        const newId = contents.length
+          ? Math.max(...contents.map((c) => c.id)) + 1
+          : 1;
         setContents((prev) => [
           ...prev,
           {
@@ -150,7 +157,9 @@ const Contents = () => {
         });
         setShowModal(false);
       } else {
-        alert("Failed to upload content: " + (result.message || "Unknown error"));
+        alert(
+          "Failed to upload content: " + (result.message || "Unknown error")
+        );
       }
     } catch (err) {
       console.error("Upload error:", err);
@@ -179,7 +188,10 @@ const Contents = () => {
 
       <div className="tab-container">
         <div className="tabs">
-          <div className={`tab ${activeTab === "all" ? "active" : ""}`} onClick={() => setActiveTab("all")}>
+          <div
+            className={`tab ${activeTab === "all" ? "active" : ""}`}
+            onClick={() => setActiveTab("all")}
+          >
             All
           </div>
           {categories.map((cat) => (
@@ -193,17 +205,33 @@ const Contents = () => {
           ))}
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
-          <button className="button button-primary" onClick={() => setShowModal(true)}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "20px",
+          }}
+        >
+          <button
+            className="button button-primary"
+            onClick={() => setShowModal(true)}
+          >
             Add New Content
           </button>
-          <input type="text" className="search-input" placeholder="Search" style={{ width: "250px" }} />
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search"
+            style={{ width: "250px" }}
+          />
         </div>
 
         <table className="table">
           <thead>
             <tr>
-              <th><input type="checkbox" /></th>
+              <th>
+                <input type="checkbox" />
+              </th>
               <th>Title</th>
               <th>Category</th>
               <th>Status</th>
@@ -213,13 +241,24 @@ const Contents = () => {
           </thead>
           <tbody>
             {contents
-              .filter((content) => activeTab === "all" || content.category === activeTab)
+              .filter(
+                (content) =>
+                  activeTab === "all" || content.category === activeTab
+              )
               .map((content) => (
                 <tr key={content.id}>
-                  <td><input type="checkbox" /></td>
+                  <td>
+                    <input type="checkbox" />
+                  </td>
                   <td>{content.title}</td>
                   <td>{content.category}</td>
-                  <td><span className={`status-badge ${content.status.toLowerCase()}`}>{content.status}</span></td>
+                  <td>
+                    <span
+                      className={`status-badge ${content.status.toLowerCase()}`}
+                    >
+                      {content.status}
+                    </span>
+                  </td>
                   <td>{content.date}</td>
                   <td>
                     <button
@@ -348,10 +387,18 @@ const Contents = () => {
               </div>
 
               <div style={{ textAlign: "right" }}>
-                <button type="submit" className="button button-primary" style={{ marginRight: "10px" }}>
+                <button
+                  type="submit"
+                  className="button button-primary"
+                  style={{ marginRight: "10px" }}
+                >
                   Add
                 </button>
-                <button type="button" className="button" onClick={() => setShowModal(false)}>
+                <button
+                  type="button"
+                  className="button"
+                  onClick={() => setShowModal(false)}
+                >
                   Cancel
                 </button>
               </div>
