@@ -5,6 +5,7 @@ import LogoutButton from "../../Components/LogoutButton";
 import logo from "../../Assets/images/logo.png";
 import { AuthContext } from "../../Context/AuthContext";
 import abushImage from "../../Assets/images/Abush.png";
+import moment from "moment";
 import "./ScreenTime.css";
 import "./Sidebar.css";
 
@@ -42,8 +43,42 @@ const ScreenTime = () => {
     fetchScreenTime();
   }, []);
 
-  const toggleExpand = (index) => {
-    setExpandedChildIndex((prev) => (prev === index ? null : index));
+  const toggleExpand = async (index, childId) => {
+    if (expandedChildIndex === index) {
+      setExpandedChildIndex(null);
+    } else {
+      try {
+        const res = await fetch(
+          "http://localhost:3000/api/parent/childs/viewedContent",
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch viewed content");
+
+        const data = await res.json();
+
+        const updatedChildren = [...screenData.children];
+        const matchedChild = data.children.find((c) => c.id === childId);
+        if (matchedChild) {
+          updatedChildren[index].viewedContent = matchedChild.viewedContent;
+        }
+
+        setScreenData((prev) => ({
+          ...prev,
+          dailyCount: data.dailyCount,
+          weeklyCount: data.weeklyCount,
+          children: updatedChildren,
+        }));
+
+        setExpandedChildIndex(index);
+      } catch (err) {
+        console.error(err.message);
+      }
+    }
   };
 
   return (
@@ -131,7 +166,11 @@ const ScreenTime = () => {
               <div key={index}>
                 <div className="screen-card">
                   <div className="child-profile">
-                    <span className="child-name">{child.name}</span>
+                    <span className="child-name">
+                      {child.childUser
+                        ? `${child.childUser.firstName} ${child.childUser.lastName}`
+                        : child.name || `Child-${child.id}`}
+                    </span>
                   </div>
                   <div className="time-box">
                     <p className="time-value">{child.today} views</p>
@@ -142,7 +181,7 @@ const ScreenTime = () => {
                   <div className="time-box">
                     <button
                       className="view-btn"
-                      onClick={() => toggleExpand(index)}
+                      onClick={() => toggleExpand(index, child.id)}
                     >
                       {expandedChildIndex === index ? "Hide" : "View"}
                     </button>
@@ -163,8 +202,14 @@ const ScreenTime = () => {
                       <ul className="content-list">
                         {child.viewedContent.map((item, i) => (
                           <li key={i}>
-                            <strong>{item.title}</strong> — {item.date} (
-                            {item.duration})
+                            <strong>{item.title}</strong>
+                            <br />
+                            <span>
+                              Date:{" "}
+                              {moment(item.date).format("MMM D, YYYY — h:mm A")}
+                            </span>
+                            <br />
+                            <span>Duration: {item.duration}</span>
                           </li>
                         ))}
                       </ul>
