@@ -14,6 +14,7 @@ const ScreenTime = () => {
   const [screenData, setScreenData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [expandedChildIndex, setExpandedChildIndex] = useState(null);
 
   useEffect(() => {
     const fetchScreenTime = async () => {
@@ -40,6 +41,10 @@ const ScreenTime = () => {
 
     fetchScreenTime();
   }, []);
+
+  const toggleExpand = (index) => {
+    setExpandedChildIndex((prev) => (prev === index ? null : index));
+  };
 
   return (
     <div className="dashboard-container">
@@ -84,7 +89,7 @@ const ScreenTime = () => {
           <p className="error">{error}</p>
         ) : (
           <div className="screen-list">
-            {/* Header Row */}
+            {/* Header */}
             <div className="screen-card screen-header">
               <div className="child-profile">
                 <img
@@ -100,6 +105,9 @@ const ScreenTime = () => {
               <div className="time-box">
                 <p className="time-label">This Week</p>
               </div>
+              <div className="time-box">
+                <p className="time-label">Action</p>
+              </div>
             </div>
 
             {/* Total Summary */}
@@ -113,18 +121,13 @@ const ScreenTime = () => {
               <div className="time-box">
                 <p className="time-value">{screenData.weeklyCount} views</p>
               </div>
+              <div className="time-box"></div>
             </div>
 
-            {/* Per-Child Summary */}
-            {screenData.children &&
-              screenData.children.map((child, index) => (
-                <div
-                  key={index}
-                  className="screen-card clickable-card"
-                  onClick={() =>
-                    navigate("/parent/screentime/report", { state: { child } })
-                  }
-                >
+            {/* Per-child */}
+            {screenData.children?.map((child, index) => (
+              <div key={index}>
+                <div className="screen-card">
                   <div className="child-profile">
                     <span className="child-name">{child.name}</span>
                   </div>
@@ -134,8 +137,42 @@ const ScreenTime = () => {
                   <div className="time-box">
                     <p className="time-value">{child.week} views</p>
                   </div>
+                  <div className="time-box">
+                    <button
+                      className="view-btn"
+                      onClick={() => toggleExpand(index)}
+                    >
+                      {expandedChildIndex === index ? "Hide" : "View"}
+                    </button>
+                  </div>
                 </div>
-              ))}
+
+                {expandedChildIndex === index && (
+                  <div className="child-details">
+                    <p>
+                      <strong>Daily:</strong> {child.today} views
+                    </p>
+                    <p>
+                      <strong>Weekly:</strong> {child.week} views
+                    </p>
+
+                    <h4>Viewed Content:</h4>
+                    {child.viewedContent && child.viewedContent.length > 0 ? (
+                      <ul className="content-list">
+                        {child.viewedContent.map((item, i) => (
+                          <li key={i}>
+                            <strong>{item.title}</strong> — {item.date} (
+                            {item.duration})
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="empty">No content viewed yet.</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </div>
