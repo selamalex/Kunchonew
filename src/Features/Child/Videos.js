@@ -63,7 +63,7 @@ const Videos = () => {
   
       <div className="child-content">
        
-        <h3 className="section-title">Recommended Videos</h3>
+        <h3 className="section-title">Recommended Videos for your Age group</h3>
         <div className="video-grid">
           {videos.map((video) => (
             <div

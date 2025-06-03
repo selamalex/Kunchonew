@@ -74,10 +74,8 @@ const Books = () => {
   return (
   
       <div className="child-content">
-         
-
-        <section className="cards-wrapper">
-          <h2 className="cards-title">Books Available</h2>
+          
+          <h2 className="section-title">Recommended Books for your Age group</h2>
           <div className="cards-section">
             {books.map((book) => (
               <div
@@ -102,7 +100,6 @@ const Books = () => {
               </div>
             ))}
           </div>
-        </section>
       </div>
   
   );

@@ -63,9 +63,7 @@ const Games = () => {
 
   return (
       <div className="child-content">
-        <button className="back-button" onClick={handleBack}>⬅ Back</button>
         
-        {/* Trending Game Section */}
         <div className="trending-game" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.3), url(${bg})` }}>
           <div className="trending-content">
             <h2 className="game-name">Trending Game: Animal Edition</h2>

@@ -67,6 +67,7 @@ function App() {
         {user?.role === "admin" && (
         
       <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Overview />} /> 
         <Route path="overview" element={<Overview />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="content" element={<ContentManagement />} />

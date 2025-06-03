@@ -81,8 +81,7 @@ const Signup = () => {
   return (
     <div className="login-container">
       <div className="left-panel">
-        <h2>Welcome to Our Platform!</h2>
-        <p>Create your account and start exploring with your child.</p>
+       
       </div>
       <div className="right-panel">
         <form className="login-form" onSubmit={handleSubmit}>

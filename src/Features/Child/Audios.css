@@ -7,13 +7,6 @@
     background-color: #fff9f0;
 }
 
-/* Main Content */
-.child-content {
-    flex-grow: 1;
-    padding: 30px;
-    background-color: #fff9f0;
-    overflow-x: hidden;
-}
 
 .back-button {
     background-color: #f8d485;
