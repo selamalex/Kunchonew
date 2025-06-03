@@ -29,6 +29,12 @@ const Notifications = () => {
 
   const [activeTab, setActiveTab] = useState("all");
   const [showPopup, setShowPopup] = useState(false);
+  const [newNotification, setNewNotification] = useState({
+    adminName: "",
+    type: "",
+    message: "",
+    timestamp: "",
+  });
 
   const handleDeleteNotification = (id) => {
     setNotifications(notifications.filter((notification) => notification.id !== id));
@@ -37,12 +43,28 @@ const Notifications = () => {
   const openPopup = () => setShowPopup(true);
   const closePopup = () => setShowPopup(false);
 
+  const handleChange = (e) => {
+    setNewNotification({ ...newNotification, [e.target.name]: e.target.value });
+  };
+
+  const handleCreateNotification = () => {
+    const newId = notifications.length + 1;
+    setNotifications([
+      ...notifications,
+      {
+        id: newId,
+        ...newNotification,
+      },
+    ]);
+    setNewNotification({ adminName: "", type: "", message: "", timestamp: "" });
+    setShowPopup(false);
+  };
+
   return (
     <>
-      <div className={`page-container ${showPopup ? "blurred" : ""}`}>
+      <div className={`page-container ${showPopup ? "notif-blurred" : ""}`}>
         <h1 className="page-header">Notifications</h1>
 
-        {/* Statistics */}
         <div className="stats-container">
           <div className="stat-card">
             <div className="stat-title">Total Notifications</div>
@@ -50,7 +72,6 @@ const Notifications = () => {
           </div>
         </div>
 
-        {/* Tabs and Search */}
         <div className="tab-container">
           <div className="tabs">
             <div
@@ -80,7 +101,6 @@ const Notifications = () => {
             />
           </div>
 
-          {/* Notifications Table */}
           <table className="table">
             <thead>
               <tr>
@@ -123,51 +143,55 @@ const Notifications = () => {
         </div>
       </div>
 
-      {/* Popup Modal Disabled */}
-      {/* 
+      {/* Notification Popup Modal */}
       {showPopup && (
-        <div className="popup-overlay" onClick={closePopup}>
-          <div className="popup" onClick={(e) => e.stopPropagation()}>
-            <h2>Create Notification</h2>
-            <label>
+        <div className="notif-popup-overlay" onClick={closePopup}>
+          <div className="notif-popup" onClick={(e) => e.stopPropagation()}>
+            <h2 style={{ color: "#000" }}>Create Notification</h2>
+
+            <label style={{ color: "#000" }}>
               Admin Name
               <input
                 type="text"
                 name="adminName"
                 onChange={handleChange}
                 placeholder="Enter admin name"
-                className="popup-input"
+                className="notif-popup-input"
               />
             </label>
-            <label>
+
+            <label style={{ color: "#000" }}>
               Type
               <input
                 type="text"
                 name="type"
                 onChange={handleChange}
                 placeholder="Enter type"
-                className="popup-input"
+                className="notif-popup-input"
               />
             </label>
-            <label>
+
+            <label style={{ color: "#000" }}>
               Message
               <textarea
                 name="message"
                 onChange={handleChange}
                 placeholder="Enter message"
-                className="popup-textarea"
+                className="notif-popup-textarea"
               />
             </label>
-            <label>
+
+            <label style={{ color: "#000" }}>
               Timestamp
               <input
                 type="date"
                 name="timestamp"
                 onChange={handleChange}
-                className="popup-input"
+                className="notif-popup-input"
               />
             </label>
-            <div className="popup-buttons">
+
+            <div className="notif-popup-buttons">
               <button className="button" onClick={closePopup}>Cancel</button>
               <button className="button button-primary" onClick={handleCreateNotification}>
                 Create
@@ -176,7 +200,6 @@ const Notifications = () => {
           </div>
         </div>
       )}
-      */}
     </>
   );
 };
