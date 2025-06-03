@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import anim from '../../Assets/images/lion.png';
 import bg from '../../Assets/images/trendinganim.jpg';
+import LogoutButton from '../../Components/LogoutButton';
 import Navbar from "../../Components/Navbar";
 import './Games.css';
 
@@ -82,7 +83,7 @@ const Games = () => {
           </li>
           <li className="active">Games</li>
         </ul>
-        <button className="logout-button">Logout</button>
+        <LogoutButton/>
       </div>
 
       {/* Main Content */}
