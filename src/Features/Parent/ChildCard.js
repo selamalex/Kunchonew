@@ -8,7 +8,7 @@ const ChildCard = ({
   userGroup,
   age,
   avatarUrl = "",
-  timerMinutes = 25,
+  screentime,
   onDelete,
   onUpdate,
 }) => {
@@ -21,7 +21,7 @@ const ChildCard = ({
     age,
     userGroup,
     avatarUrl,
-    timerMinutes,
+    screentime,
   });
   const fileInputRef = useRef(null);
 
@@ -144,10 +144,10 @@ const ChildCard = ({
                   />
                 </label>
                 <label>
-                  Timer Minutes:
+                  Screen Time:
                   <input
                     type="number"
-                    name="timerMinutes"
+                    name="screentime"
                     value={childData.timerMinutes}
                     onChange={handleInputChange}
                     min="1"
@@ -164,7 +164,7 @@ const ChildCard = ({
                   <strong>Group:</strong> {childData.userGroup}
                 </p>
                 <p>
-                  <strong>Timer:</strong> {childData.timerMinutes} minutes
+                  <strong>Timer:</strong> {childData.screentime} minutes
                 </p>
               </div>
             )}

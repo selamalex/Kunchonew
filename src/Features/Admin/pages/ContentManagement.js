@@ -21,7 +21,7 @@ const Contents = () => {
     ageGroup: "1",
     date: "",
     file: null,
-    thumbnail: null, 
+    thumbnail: null,
   });
 
   useEffect(() => {
@@ -103,34 +103,34 @@ const Contents = () => {
       file: e.target.files[0],
     }));
   };
-//changes
+  //changes
   const handleThumbnailChange = (e) => {
-  setNewContent((prev) => ({
-    ...prev,
-    thumbnail: e.target.files[0],
-  }));
-};
-
+    setNewContent((prev) => ({
+      ...prev,
+      thumbnail: e.target.files[0],
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-  const { title, category, ageGroup, date, file, thumbnail} = newContent;
+    const { title, category, ageGroup, date, file, thumbnail } = newContent;
 
-if (!title || !date || !file || !thumbnail) {
-  alert("Please fill in Title, Date, upload a File, and upload a Thumbnail");
-  return;
-}
+    if (!title || !date || !file || !thumbnail) {
+      alert(
+        "Please fill in Title, Date, upload a File, and upload a Thumbnail"
+      );
+      return;
+    }
 
-const formData = new FormData();
-formData.append("title", title);
-formData.append("type", category);
-formData.append("description", "");
-formData.append("ageGroup", ageGroup);
-//  formData.append("status", status);
-formData.append("file", file);
-formData.append("thumbnail", thumbnail);  
-
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("type", category);
+    formData.append("description", "");
+    formData.append("ageGroup", ageGroup);
+    //  formData.append("status", status);
+    formData.append("file", file);
+    formData.append("thumbnail", thumbnail);
 
     try {
       const response = await fetch("http://localhost:3000/api/admin/content", {
@@ -381,17 +381,16 @@ formData.append("thumbnail", thumbnail);
                 />
               </div>
               <div style={{ marginBottom: "12px" }}>
-  <label style={{ color: "#000" }}>Upload Thumbnail</label>
-  <input
-    type="file"
-    name="thumbnail"
-    accept=".jpg,.png"
-    onChange={handleThumbnailChange}
-    style={{ width: "100%", padding: "8px" }}
-    required
-  />
-</div>
-
+                <label style={{ color: "#000" }}>Upload Thumbnail</label>
+                <input
+                  type="file"
+                  name="thumbnail"
+                  accept=".jpg,.png"
+                  onChange={handleThumbnailChange}
+                  style={{ width: "100%", padding: "8px" }}
+                  required
+                />
+              </div>
 
               <div style={{ textAlign: "right" }}>
                 <button

@@ -217,6 +217,7 @@ const ChildAccounts = () => {
               age={child.age}
               userGroup={child.userGroup}
               avatarUrl={child.avatarPath}
+              screenTime={child.screentime}
               onUpdate={(updatedFields) =>
                 handleUpdateChild({ ...updatedFields, id: child.id })
               }
