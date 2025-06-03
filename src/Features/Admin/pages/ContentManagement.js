@@ -22,10 +22,11 @@ const Contents = () => {
   const [newContent, setNewContent] = useState({
     title: "",
     category: "book",
-    status: "Draft",
+    // status: "Draft",
     ageGroup: "1",
     date: "",
     file: null,
+    thumbnail: null, 
   });
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const Contents = () => {
             title: item.title,
             category: item.type.toLowerCase(),
             ageGroup: item.ageGroup,
-            status: item.status || "Draft",
+            // status: item.status || "Draft",
             date: new Date(item.createdAt).toISOString().split("T")[0],
           }));
           setContents(formatted);
@@ -97,24 +98,34 @@ const Contents = () => {
       file: e.target.files[0],
     }));
   };
+//changes
+  const handleThumbnailChange = (e) => {
+  setNewContent((prev) => ({
+    ...prev,
+    thumbnail: e.target.files[0],
+  }));
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, category, ageGroup, date, file, status } = newContent;
+  const { title, category, ageGroup, date, file, thumbnail} = newContent;
 
-    if (!title || !date || !file) {
-      alert("Please fill in Title, Date, and upload a File");
-      return;
-    }
+if (!title || !date || !file || !thumbnail) {
+  alert("Please fill in Title, Date, upload a File, and upload a Thumbnail");
+  return;
+}
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("type", category);
-    formData.append("description", "");
-    formData.append("ageGroup", ageGroup);
-    formData.append("status", status);
-    formData.append("file", file);
+const formData = new FormData();
+formData.append("title", title);
+formData.append("type", category);
+formData.append("description", "");
+formData.append("ageGroup", ageGroup);
+//  formData.append("status", status);
+formData.append("file", file);
+formData.append("thumbnail", thumbnail);  
+
 
     try {
       const response = await fetch("http://localhost:3000/api/admin/content", {
@@ -136,14 +147,14 @@ const Contents = () => {
             title: result.title,
             category: result.type.toLowerCase(),
             ageGroup,
-            status: result.status || "Draft",
+            // status: result.status || "Draft",
             date,
           },
         ]);
         setNewContent({
           title: "",
           category: "book",
-          status: "Draft",
+          // status: "Draft",
           ageGroup: "1",
           date: "",
           file: null,
@@ -206,7 +217,7 @@ const Contents = () => {
               <th><input type="checkbox" /></th>
               <th>Title</th>
               <th>Category</th>
-              <th>Status</th>
+              {/* <th>Status</th> */}
               <th>Date</th>
               <th>Actions</th>
             </tr>
@@ -219,7 +230,7 @@ const Contents = () => {
                   <td><input type="checkbox" /></td>
                   <td>{content.title}</td>
                   <td>{content.category}</td>
-                  <td><span className={`status-badge ${content.status.toLowerCase()}`}>{content.status}</span></td>
+                  {/* <td><span className={`status-badge ${content.status.toLowerCase()}`}>{content.status}</span></td> */}
                   <td>{content.date}</td>
                   <td>
                     <button
@@ -310,7 +321,7 @@ const Contents = () => {
                 </select>
               </div>
 
-              <div style={{ marginBottom: "12px" }}>
+              {/* <div style={{ marginBottom: "12px" }}>
                 <label>Status</label>
                 <select
                   name="status"
@@ -321,7 +332,7 @@ const Contents = () => {
                   <option value="Draft">Draft</option>
                   <option value="Published">Published</option>
                 </select>
-              </div>
+              </div> */}
 
               <div style={{ marginBottom: "12px" }}>
                 <label>Date</label>
@@ -346,6 +357,18 @@ const Contents = () => {
                   required
                 />
               </div>
+              <div style={{ marginBottom: "12px" }}>
+  <label>Upload Thumbnail</label>
+  <input
+    type="file"
+    name="thumbnail"
+    accept=".jpg,.png"
+    onChange={handleThumbnailChange}
+    style={{ width: "100%", padding: "8px" }}
+    required
+  />
+</div>
+
 
               <div style={{ textAlign: "right" }}>
                 <button type="submit" className="button button-primary" style={{ marginRight: "10px" }}>
