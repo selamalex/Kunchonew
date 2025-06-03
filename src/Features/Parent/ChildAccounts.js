@@ -1,6 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaTachometerAlt, FaClock, FaPlus, FaTimes } from "react-icons/fa";
+import {
+  FaTachometerAlt,
+  FaClock,
+  FaPlus,
+  FaTimes,
+  FaBars,
+} from "react-icons/fa";
 import axios from "axios";
 
 import ChildCard from "./ChildCard";
@@ -15,6 +21,8 @@ const ChildAccounts = () => {
   const { user } = useContext(AuthContext);
   const [children, setChildren] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -96,11 +104,12 @@ const ChildAccounts = () => {
         },
         {
           headers: {
-            Authorization: `Bearer user.token`,
+            Authorization: `Bearer ${user.token}`,
             "Content-Type": "application/json",
           },
         }
       );
+
       setFormData({
         firstName: "",
         lastName: "",
@@ -116,9 +125,7 @@ const ChildAccounts = () => {
       const refreshed = await axios.get(
         `http://localhost:3000/api/parent/childs`,
         {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+          headers: { Authorization: `Bearer ${user.token}` },
           params: { parentId: user.id },
         }
       );
@@ -143,9 +150,7 @@ const ChildAccounts = () => {
       const refreshed = await axios.get(
         `http://localhost:3000/api/parent/childs`,
         {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+          headers: { Authorization: `Bearer ${user.token}` },
           params: { parentId: user.id },
         }
       );
@@ -160,9 +165,7 @@ const ChildAccounts = () => {
       await axios.delete(
         `http://localhost:3000/api/parent/childs/${user.id}/${childId}`,
         {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+          headers: { Authorization: `Bearer ${user.token}` },
         }
       );
       setChildren(children.filter((child) => child.id !== childId));
@@ -172,21 +175,29 @@ const ChildAccounts = () => {
   };
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-wrapper">
+      {/* Hamburger Menu */}
+      <div className="hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>
+        <FaBars />
+      </div>
+
       {/* Sidebar */}
-      <div className="sidebar">
+      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="logo">
           <img src={logo} alt="Kuncho Logo" className="logo-img" />
         </div>
         <ul>
           <li>
-            <Link to="/parent/subaccounts">
+            <Link
+              to="/parent/subaccounts"
+              onClick={() => setSidebarOpen(false)}
+            >
               <FaTachometerAlt />
               Sub Account Management
             </Link>
           </li>
           <li>
-            <Link to="/parent/screentime">
+            <Link to="/parent/screentime" onClick={() => setSidebarOpen(false)}>
               <FaClock />
               Screen Time Report
             </Link>
@@ -221,105 +232,55 @@ const ChildAccounts = () => {
           </div>
         </div>
 
+        {/* Modal */}
         {showModal && (
-          <div
-            className="modal-overlay"
-            onClick={() => setShowModal(false)}
-            style={{ overflowY: "auto" }}
-          >
+          <div className="modal-overlay" onClick={() => setShowModal(false)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <button className="close-btn" onClick={() => setShowModal(false)}>
                 <FaTimes />
               </button>
               <h2>Add New Child</h2>
               <form onSubmit={handleSubmit}>
-                {/* Form Fields */}
-                <div className="form-group">
-                  <label>First Name</label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Last Name</label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  {formErrors.email && (
-                    <p className="error-text">{formErrors.email}</p>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label>Password</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  {formErrors.password && (
-                    <p className="error-text">{formErrors.password}</p>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label>Confirm Password</label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  {formErrors.confirmPassword && (
-                    <p className="error-text">{formErrors.confirmPassword}</p>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label>Age</label>
-                  <input
-                    type="number"
-                    name="age"
-                    value={formData.age}
-                    onChange={handleInputChange}
-                    required
-                    min="3"
-                    max="12"
-                  />
-                  {formErrors.age && (
-                    <p className="error-text">{formErrors.age}</p>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label>Screentime (minutes/day)</label>
-                  <input
-                    type="number"
-                    name="screentime"
-                    value={formData.screentime}
-                    onChange={handleInputChange}
-                    required
-                    min="0"
-                  />
-                </div>
-
+                {[
+                  { label: "First Name", name: "firstName", type: "text" },
+                  { label: "Last Name", name: "lastName", type: "text" },
+                  { label: "Email", name: "email", type: "email" },
+                  { label: "Password", name: "password", type: "password" },
+                  {
+                    label: "Confirm Password",
+                    name: "confirmPassword",
+                    type: "password",
+                  },
+                  {
+                    label: "Age",
+                    name: "age",
+                    type: "number",
+                    min: 3,
+                    max: 12,
+                  },
+                  {
+                    label: "Screentime (minutes/day)",
+                    name: "screentime",
+                    type: "number",
+                    min: 0,
+                  },
+                ].map(({ label, name, type, min, max }) => (
+                  <div className="form-group" key={name}>
+                    <label>{label}</label>
+                    <input
+                      type={type}
+                      name={name}
+                      value={formData[name]}
+                      onChange={handleInputChange}
+                      required
+                      min={min}
+                      max={max}
+                    />
+                    {formErrors[name] && (
+                      <p className="error-text">{formErrors[name]}</p>
+                    )}
+                  </div>
+                ))}
                 <button
                   type="submit"
                   className="register-btn"

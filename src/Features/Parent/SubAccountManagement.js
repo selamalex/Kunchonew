@@ -9,6 +9,22 @@ import axios from "axios";
 const SubAccountManagement = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await axios.get("/api/notifications"); // adjust as needed
+      setNotifications(res.data);
+    } catch (err) {
+      console.error("Failed to load notifications", err);
+    }
+  };
+
+  const handleNotificationClick = () => {
+    setShowNotifications((prev) => !prev);
+    if (!showNotifications) fetchNotifications();
+  };
 
   return (
     <div className="dashboard-wrapper">
@@ -29,7 +45,25 @@ const SubAccountManagement = () => {
               <input type="text" placeholder="Search..." />
               <FaSearch className="search-icon" />
             </div>
-            <FaBell className="notification-icon" />
+            <div className="notification-wrapper">
+              <FaBell
+                className="notification-icon"
+                onClick={handleNotificationClick}
+              />
+              {showNotifications && (
+                <div className="notification-popup">
+                  {notifications.length === 0 ? (
+                    <p className="empty-text">No notifications</p>
+                  ) : (
+                    notifications.map((note) => (
+                      <div key={note.id} className="notification-item">
+                        {note.message}
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
