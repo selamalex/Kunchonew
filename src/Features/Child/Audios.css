@@ -8,7 +8,7 @@
 }
 
 /* Main Content */
-.main-content {
+.child-content {
     flex-grow: 1;
     padding: 30px;
     background-color: #fff9f0;
