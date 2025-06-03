@@ -258,3 +258,67 @@ p {
 .login-btn:hover {
   background-color: #e0912a !important;
 }
+.dashboard-container {
+  display: flex;
+}
+
+.sidebar {
+  width: 220px; /* Adjust based on your design */
+  min-height: 100vh;
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.main-content {
+  margin-left: 250px; /* Same as sidebar width */
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+/* Hamburger icon default (hidden on desktop) */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  font-size: 24px;
+  color: #333;
+  z-index: 2000;
+  cursor: pointer;
+}
+
+/* Responsive rules */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Hidden by default */
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 1500;
+  }
+
+  .sidebar.open {
+    left: 0; /* Slide in */
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    padding: 1rem;
+  }
+
+  .dashboard-wrapper {
+    position: relative;
+  }
+}
