@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import LogoutButton from "../../Components/LogoutButton";
 import Navbar from "../../Components/Navbar";
 import { AuthContext } from "../../Context/AuthContext";
 import "../Child/Videos.css";
@@ -79,7 +80,7 @@ const Videos = () => {
             <Link to="/child/games">Games</Link>
           </li>
         </ul>
-        <button className="logout-button">Logout</button>
+        <LogoutButton/>
       </div>
 
       <div className="main-content">
