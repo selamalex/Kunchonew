@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import LogoutButton from "../../Components/LogoutButton";
+
 import Navbar from "../../Components/Navbar";
 import { AuthContext } from "../../Context/AuthContext";
 import "./Audios.css";
@@ -94,31 +94,10 @@ const Audios = () => {
   };
 
   return (
-    <div className="audio-container">
-      <div className="sidebar">
-        <div className="logo">Kuncho</div>
-        <ul>
-          <li>
-            <Link to="/child/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/child/videos">Videos</Link>
-          </li>
-          <li>
-            <Link to="/child/books">Books</Link>
-          </li>
-          <li className="active">Audio</li>
-          <li>
-            <Link to="/child/games">Games</Link>
-          </li>
-        </ul>
-        <LogoutButton className="logout-button" />
-      </div>
+     
 
-      <div className="main-content">
-        <button className="back-button" onClick={() => navigate(-1)}>
-          ← Back
-        </button>
+      <div className="child-content">
+       
         <Navbar pageName="Audio Player" />
 
         {songs.length > 0 && (
@@ -183,7 +162,7 @@ const Audios = () => {
           </div>
         )}
       </div>
-    </div>
+   
   );
 };
 

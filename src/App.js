@@ -41,6 +41,7 @@ import Animals from "./Features/Child/Animals";
 import Vegetables from "./Features/Child/Vegetables";
 import Objects from "./Features/Child/Objects";
 import SlideBook from "./Features/Child/SlideBook";
+import ChildLayout from "./Features/Child/ChildLayout";
 
 const ProtectedRoute = ({ role, children }) => {
   const { user } = useAuth();
@@ -86,109 +87,28 @@ function App() {
   </Route>
 )}
 
-
-        {/* Child Routes */}
-        <Route
-          path="/child/dashboard"
-          element={
-            <ProtectedRoute role="child">
-              <ChildDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/videos"
-          element={
-            <ProtectedRoute role="child">
-              <Videos />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/videos/:id"
-          element={
-            <ProtectedRoute role="child">
-              <SpecificVid />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/books"
-          element={
-            <ProtectedRoute role="child">
-              <Books />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/audios"
-          element={
-            <ProtectedRoute role="child">
-              <Audios />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/audios/:id"
-          element={
-            <ProtectedRoute role="child">
-              <SpecificAud />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/child/games"
-          element={
-            <ProtectedRoute role="child">
-              <Games />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/games/animal"
-          element={
-            <ProtectedRoute role="child">
-              <Animals />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/games/vegetable"
-          element={
-            <ProtectedRoute role="child">
-              <Vegetables />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/games/object"
-          element={
-            <ProtectedRoute role="child">
-              <Objects />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/books/:bookId"
-          element={
-            <ProtectedRoute role="child">
-              <SlideBook />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Redirect /child to dashboard if logged in as child */}
-        <Route
-          path="/child"
-          element={
-            user?.role === "child" ? (
-              <Navigate to="/child/dashboard" replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
+{user?.role === "child" && (
+  <Route
+    path="/child"
+    element={
+      <ProtectedRoute role="child">
+        <ChildLayout />
+      </ProtectedRoute>
+    }
+  >
+    <Route path="dashboard" element={<ChildDashboard />} />
+    <Route path="videos" element={<Videos />} />
+    <Route path="videos/:id" element={<SpecificVid />} />
+    <Route path="books" element={<Books />} />
+    <Route path="books/:bookId" element={<SlideBook />} />
+    <Route path="audios" element={<Audios />} />
+    <Route path="audios/:id" element={<SpecificAud />} />
+    <Route path="games" element={<Games />} />
+    <Route path="games/animal" element={<Animals />} />
+    <Route path="games/vegetable" element={<Vegetables />} />
+    <Route path="games/object" element={<Objects />} />
+  </Route>
+)}
 
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" />} />

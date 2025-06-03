@@ -64,30 +64,7 @@ const Games = () => {
   };
 
   return (
-    <div className="games-dashboard">
-      <div className="sidebar">
-        
-        <div className="logo">Kuncho</div>
-        <ul>
-          <li>
-            <Link to="/child/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/child/videos">Videos</Link>
-          </li>
-          <li>
-            <Link to="/child/books">Books</Link>
-          </li>
-          <li>
-            <Link to="/child/audios">Audio</Link>
-          </li>
-          <li className="active">Games</li>
-        </ul>
-        <LogoutButton/>
-      </div>
-
-      {/* Main Content */}
-      <div className="main-content">
+      <div className="child-content">
         <button className="back-button" onClick={handleBack}>⬅ Back</button>
         <Navbar pageName="Videos" />
         
@@ -127,7 +104,8 @@ const Games = () => {
           ))}
         </div>
       </div>
-    </div>
+      
+
   );
 };
 

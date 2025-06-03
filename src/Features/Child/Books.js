@@ -74,31 +74,9 @@ const Books = () => {
   };
 
   return (
-    <div className="container">
-      <div className="sidebar">
-        <div className="logo">Kuncho</div>
-        <ul>
-          <li>
-            <Link to="/child/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/child/videos">Videos</Link>
-          </li>
-          <li className="active">Books</li>
-          <li>
-            <Link to="/child/audios">Audio</Link>
-          </li>
-          <li>
-            <Link to="/child/games">Games</Link>
-          </li>
-        </ul>
-        <LogoutButton className="logout-button" />
-      </div>
-
-      <div className="main-content">
-        <button className="back-button" onClick={() => navigate(-1)}>
-          ← Back
-        </button>
+  
+      <div className="child-content">
+         
         <Navbar pageName="Books" />
 
         <section className="cards-wrapper">
@@ -129,7 +107,7 @@ const Books = () => {
           </div>
         </section>
       </div>
-    </div>
+  
   );
 };
 

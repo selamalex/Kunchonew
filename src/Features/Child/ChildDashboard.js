@@ -1,6 +1,6 @@
 // ChildDashboard.js
-import { useContext, useState, useNavigate} from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState} from "react";
+import { Link,useNavigate } from "react-router-dom";
 import Abush from "../../Assets/images/Abush.png";
 import Bitiko from "../../Assets/images/Bitiko.png";
 import Mitu from "../../Assets/images/Mitu.png";
@@ -18,44 +18,11 @@ import "./ChildDashboard.css";
 
 const ChildDashboard = () => {
   const { user } = useContext(AuthContext);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-const navigate = useNavigate();
-
-  const toggleSidebar = () => {
-    console.log("clicked");
-    setSidebarOpen(!sidebarOpen);
-  };
-
+ 
+  
   return (
-    <div className="dashboard-container">
-      {/* Hamburger Menu */}
-      <div className="hamburgerchild" onClick={toggleSidebar}>
-        ☰
-      </div>
-
-      {/* Sidebar */}
-      <div className={`sidebar ${sidebarOpen? 'active' : ''}`}>
-        <div className="logo">Kuncho</div>
-        <ul>
-          <li>Dashboard</li>
-          <li>
-            <Link to="/child/videos">Videos</Link>
-          </li>
-          <li>
-            <Link to="/child/books">Books</Link>
-          </li>
-          <li>
-            <Link to="/child/audios">Audios</Link>
-          </li>
-          <li>
-            <Link to="/child/games">Games</Link>
-          </li>
-        </ul>
-        <LogoutButton  />
-      </div>
-
-      {/* Main Content */}
-      <div className="main-content">
+  
+      <div className="child-content">
         <Navbar pageName="Dashboard" />
 
         <h1>Hello, {user.firstName}</h1>
@@ -114,7 +81,7 @@ const navigate = useNavigate();
           </div>
         </div>
       </div>
-    </div>
+  
   );
 };
 

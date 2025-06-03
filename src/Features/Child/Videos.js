@@ -62,34 +62,9 @@ const Videos = () => {
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="sidebar">
-        <div className="logo">Kuncho</div>
-        <ul>
-          <li>
-            <Link to="/child/dashboard">Dashboard</Link>
-          </li>
-          <li>Videos</li>
-          <li>
-            <Link to="/child/books">Books</Link>
-          </li>
-          <li>
-            <Link to="/child/audios">Audio</Link>
-          </li>
-          <li>
-            <Link to="/child/games">Games</Link>
-          </li>
-        </ul>
-        <LogoutButton/>
-      </div>
-
-      <div className="main-content">
-        <button
-          className="back-button"
-          onClick={() => navigate(-1)} // navigates to previous page
-        >
-          ← Back
-        </button>
+  
+      <div className="child-content">
+       
         <Navbar pageName="Videos" />
         <h3 className="section-title">Recommended Videos</h3>
         <div className="video-grid">
@@ -120,9 +95,7 @@ const Videos = () => {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-    </div>
+        </div> </div>
   );
 };
 
