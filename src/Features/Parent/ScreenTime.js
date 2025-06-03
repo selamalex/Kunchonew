@@ -97,7 +97,9 @@ const ScreenTime = () => {
                   alt="Child Icon"
                   className="child-avatar"
                 />
-                <span className="child-name">Child</span>
+                <span className="child-name" id="childs">
+                  Child{" "}
+                </span>
               </div>
               <div className="time-box">
                 <p className="time-label">Today</p>
