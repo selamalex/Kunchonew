@@ -1,32 +1,31 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import cat from "../../Assets/images/cat.png";
-import cow from "../../Assets/images/cow.png";
-import lion from "../../Assets/images/lion.png";
-
-import "./Games.css";
+import chair from "../../Assets/images/chair.png";
+import table from "../../Assets/images/table.png";
+import tv from "../../Assets/images/tv.png";
+import "./Animals.css";
 
 const questions = [
   {
-    word: "ላም",
-    display: "ላ_",
-    options: ["መ", "ም", "ትት"],
-    correct: "ም",
-    image: cow,
-  },
-  {
-    word: "አንበሳ",
-    display: "አ_በሳ",
-    options: ["ላ", "ት", "ን"],
+    word: "ወንበር",
+    display: "ወ_በር",
+    options: ["ን", "ም", "ስ"],
     correct: "ን",
-    image: lion,
+    image: chair,
   },
   {
-    word: "ድመት",
-    display: "ድመ_",
-    options: ["ቅ", "ት", "ስስ"],
-    correct: "ት",
-    image: cat,
+    word: "ጠረጴዛ",
+    display: "ጠረ_ዛ",
+    options: ["ቤ", "ጴ", "ፔ"],
+    correct: "ጴ",
+    image: table,
+  },
+  {
+    word: "ቴሌቪዥን",
+    display: "_ሌቪዥን",
+    options: ["ቼ", "ት", "ቴ"],
+    correct: "ቴ",
+    image: tv,
   },
 ];
 
@@ -52,9 +51,7 @@ const Objects = () => {
         setTries(1);
         setFeedback("Try again ❌");
       } else {
-        setFeedback(
-          `Wrong again ❌ The correct answer was '${current.correct}'`
-        );
+        setFeedback(`Wrong again ❌ The correct answer was '${current.correct}'`);
         setTimeout(() => {
           goToNextQuestion();
         }, 1500);
@@ -73,13 +70,51 @@ const Objects = () => {
     }
   };
 
+  const handleRetry = () => {
+    setCurrentQ(0);
+    setTries(0);
+    setScore(0);
+    setFeedback("");
+    setFinished(false);
+  };
+
   if (finished) {
     return (
-      <div className="game-container">
+      <div className="game-container" style={{ textAlign: "center", padding: "10rem" }}>
         <h2>Game Over 🎉</h2>
         <p>
           You got {score} out of {questions.length} right!
         </p>
+        <div style={{ marginTop: "1.5rem" }}>
+          <button
+            onClick={handleRetry}
+            style={{
+              margin: "0.5rem",
+              padding: "0.8rem 1.5rem",
+              fontSize: "1rem",
+              borderRadius: "8px",
+              backgroundColor: "#431b06",
+              color: "#d59c38",
+              border: "none",
+            }}
+          >
+            Retry
+          </button>
+          <button
+            onClick={() => navigate(-1)}
+            style={{
+              margin: "0.5rem",
+              padding: "0.8rem 1.5rem",
+              fontSize: "1rem",
+              borderRadius: "8px",
+              backgroundColor: "#431b06",
+              color: "#d59c38",
+              border: "none",
+            }}
+          >
+            Finish
+          </button>
+        </div>
       </div>
     );
   }
@@ -122,11 +157,7 @@ const Objects = () => {
         Score: {score}
       </div>
 
-      <img
-        src={q.image}
-        alt="quiz"
-        style={{ width: "150px", height: "150px" }}
-      />
+      <img src={q.image} alt="quiz" style={{ width: "150px", height: "150px" }} />
       <h2>Fill in the blank: {q.display}</h2>
       <div style={{ margin: "1rem" }}>
         {q.options.map((opt) => (
