@@ -1,92 +1,41 @@
 "use client";
-import '../components/admin.css';
+import "../components/admin.css";
 import { useState } from "react";
 
 const Notifications = () => {
-  // Initial notifications state
   const [notifications, setNotifications] = useState([
     {
       id: 1,
-      title: "System Update",
+      adminName: "Admin A",
+      type: "System Update",
       message: "The system will be updated on June 15th.",
-      status: "Sent",
-      recipients: "All Users",
-      date: "2023-06-10",
+      timestamp: "2023-06-10",
     },
     {
       id: 2,
-      title: "New Content Available",
+      adminName: "Admin B",
+      type: "New Content",
       message: "Check out our new educational videos!",
-      status: "Scheduled",
-      recipients: "Parents",
-      date: "2023-06-20",
+      timestamp: "2023-06-20",
     },
     {
       id: 3,
-      title: "Maintenance Notice",
+      adminName: "Admin C",
+      type: "Maintenance",
       message: "Brief maintenance scheduled for tomorrow.",
-      status: "Draft",
-      recipients: "All Users",
-      date: "2023-06-12",
+      timestamp: "2023-06-12",
     },
   ]);
 
   const [activeTab, setActiveTab] = useState("all");
   const [showPopup, setShowPopup] = useState(false);
 
-  // State for the new notification form
-  const [newNotification, setNewNotification] = useState({
-    title: "",
-    message: "",
-    status: "Draft",
-    recipients: "",
-    date: "",
-  });
-
-  // Delete notification by id
   const handleDeleteNotification = (id) => {
     setNotifications(notifications.filter((notification) => notification.id !== id));
   };
 
-  // Open and close popup handlers
   const openPopup = () => setShowPopup(true);
   const closePopup = () => setShowPopup(false);
-
-  // Handle input changes for new notification form
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewNotification((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Create new notification and add to list
-  const handleCreateNotification = () => {
-    // Simple validation
-    if (
-      !newNotification.title.trim() ||
-      !newNotification.message.trim() ||
-      !newNotification.recipients.trim() ||
-      !newNotification.date
-    ) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    // Generate new id (assumes notifications are sorted by id ascending)
-    const newId = notifications.length ? notifications[notifications.length - 1].id + 1 : 1;
-
-    setNotifications((prev) => [...prev, { id: newId, ...newNotification }]);
-
-    // Reset form
-    setNewNotification({
-      title: "",
-      message: "",
-      status: "Draft",
-      recipients: "",
-      date: "",
-    });
-
-    closePopup();
-  };
 
   return (
     <>
@@ -99,12 +48,6 @@ const Notifications = () => {
             <div className="stat-title">Total Notifications</div>
             <div className="stat-value">{notifications.length}</div>
           </div>
-          <div className="stat-card">
-            <div className="stat-title">Sent</div>
-            <div className="stat-value">
-              {notifications.filter((n) => n.status === "Sent").length}
-            </div>
-          </div>
         </div>
 
         {/* Tabs and Search */}
@@ -115,12 +58,6 @@ const Notifications = () => {
               onClick={() => setActiveTab("all")}
             >
               All
-            </div>
-            <div
-              className={`tab ${activeTab === "sent" ? "active" : ""}`}
-              onClick={() => setActiveTab("sent")}
-            >
-              Sent
             </div>
           </div>
 
@@ -140,7 +77,6 @@ const Notifications = () => {
               className="search-input"
               placeholder="Search"
               style={{ width: "250px" }}
-              // Search functionality can be added here later
             />
           </div>
 
@@ -148,142 +84,99 @@ const Notifications = () => {
           <table className="table">
             <thead>
               <tr>
-                <th>
-                  <input type="checkbox" />
-                </th>
-                <th>Title</th>
+                <th><input type="checkbox" /></th>
+                <th>Admin Name</th>
+                <th>Type</th>
                 <th>Message</th>
-                <th>Status</th>
-                <th>Recipients</th>
-                <th>Date</th>
+                <th>Timestamp</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {notifications
-                .filter((notification) => {
-                  if (activeTab === "all") return true;
-                  return notification.status.toLowerCase() === activeTab;
-                })
-                .map((notification) => (
-                  <tr key={notification.id}>
-                    <td>
-                      <input type="checkbox" />
-                    </td>
-                    <td>{notification.title}</td>
-                    <td>{notification.message}</td>
-                    <td>
-                      <span className={`status-badge ${notification.status.toLowerCase()}`}>
-                        {notification.status}
-                      </span>
-                    </td>
-                    <td>{notification.recipients}</td>
-                    <td>{notification.date}</td>
-                    <td>
-                      <button
-                        className="action-button"
-                        onClick={() => handleDeleteNotification(notification.id)}
-                        style={{
-                          backgroundColor: "#dc3545",
-                          color: "#fff",
-                          border: "none",
-                          padding: "5px 10px",
-                          borderRadius: "3px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+              {notifications.map((notification) => (
+                <tr key={notification.id}>
+                  <td><input type="checkbox" /></td>
+                  <td>{notification.adminName}</td>
+                  <td>{notification.type}</td>
+                  <td>{notification.message}</td>
+                  <td>{notification.timestamp}</td>
+                  <td>
+                    <button
+                      className="action-button"
+                      onClick={() => handleDeleteNotification(notification.id)}
+                      style={{
+                        backgroundColor: "#dc3545",
+                        color: "#fff",
+                        border: "none",
+                        padding: "5px 10px",
+                        borderRadius: "3px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* Popup Modal */}
-     {/*  {showPopup && (
+      {/* Popup Modal Disabled */}
+      {/* 
+      {showPopup && (
         <div className="popup-overlay" onClick={closePopup}>
-          <div
-            className="popup"
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent closing when clicking inside popup
-            }}
-          >
+          <div className="popup" onClick={(e) => e.stopPropagation()}>
             <h2>Create Notification</h2>
-
             <label>
-              Title
+              Admin Name
               <input
                 type="text"
-                name="title"
-                value={newNotification.title}
+                name="adminName"
                 onChange={handleChange}
-                placeholder="Enter title"
+                placeholder="Enter admin name"
                 className="popup-input"
               />
             </label>
-
+            <label>
+              Type
+              <input
+                type="text"
+                name="type"
+                onChange={handleChange}
+                placeholder="Enter type"
+                className="popup-input"
+              />
+            </label>
             <label>
               Message
               <textarea
                 name="message"
-                value={newNotification.message}
                 onChange={handleChange}
                 placeholder="Enter message"
                 className="popup-textarea"
               />
             </label>
-
             <label>
-              Status
-              <select
-                name="status"
-                value={newNotification.status}
-                onChange={handleChange}
-                className="popup-select"
-              >
-                <option value="Draft">Draft</option>
-                <option value="Scheduled">Scheduled</option>
-                <option value="Sent">Sent</option>
-              </select>
-            </label>
-
-            <label>
-              Recipients
-              <input
-                type="text"
-                name="recipients"
-                value={newNotification.recipients}
-                onChange={handleChange}
-                placeholder="Enter recipients"
-                className="popup-input"
-              />
-            </label>
-
-            <label>
-              Date
+              Timestamp
               <input
                 type="date"
-                name="date"
-                value={newNotification.date}
+                name="timestamp"
                 onChange={handleChange}
                 className="popup-input"
               />
             </label>
-
             <div className="popup-buttons">
-              <button className="button" onClick={closePopup}>
-                Cancel
-              </button>
+              <button className="button" onClick={closePopup}>Cancel</button>
               <button className="button button-primary" onClick={handleCreateNotification}>
                 Create
-              </button> 
+              </button>
             </div>
           </div>
         </div>
-      )}*/}
+      )}
+      */}
     </>
   );
 };

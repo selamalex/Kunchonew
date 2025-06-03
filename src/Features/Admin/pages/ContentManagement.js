@@ -324,10 +324,11 @@ formData.append("thumbnail", thumbnail);
               boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
             }}
           >
-            <h2>Add New Content</h2>
+            <h2 style={{ color: "#000" }}>Add New Content</h2>
+
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: "12px" }}>
-                <label>Title</label>
+                <label style={{ color: "#000" }}>Category</label>
                 <input
                   type="text"
                   name="title"
@@ -339,7 +340,8 @@ formData.append("thumbnail", thumbnail);
               </div>
 
               <div style={{ marginBottom: "12px" }}>
-                <label>Category</label>
+                <label style={{ color: "#000" }}>Title</label>
+
                 <select
                   name="category"
                   value={newContent.category}
@@ -368,7 +370,7 @@ formData.append("thumbnail", thumbnail);
               </div> */}
 
               <div style={{ marginBottom: "12px" }}>
-                <label>Date</label>
+                <label style={{ color: "#000" }}>Date</label>
                 <input
                   type="date"
                   name="date"
@@ -380,7 +382,7 @@ formData.append("thumbnail", thumbnail);
               </div>
 
               <div style={{ marginBottom: "12px" }}>
-                <label>Upload File</label>
+                <label style={{ color: "#000" }}>Upload File</label>
                 <input
                   type="file"
                   name="file"
@@ -391,7 +393,7 @@ formData.append("thumbnail", thumbnail);
                 />
               </div>
               <div style={{ marginBottom: "12px" }}>
-  <label>Upload Thumbnail</label>
+  <label style={{ color: "#000" }}>Upload Thumbnail</label>
   <input
     type="file"
     name="thumbnail"
