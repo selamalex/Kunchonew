@@ -64,65 +64,70 @@ function App() {
 
         {/* Admin Routes */}
         {user?.role === "admin" && (
-  <>
-    <Route path="/admin" element={<Navigate to="/admin/overview" replace />} />
-    <Route
-      path="/admin/overview"
-      element={
-        <AdminLayout>
-          <Overview />
-        </AdminLayout>
-      }
-    />
-    <Route
-      path="/admin/users"
-      element={
-        <AdminLayout>
-          <UserManagement />
-        </AdminLayout>
-      }
-    />
-    <Route
-      path="/admin/notification"
-      element={
-        <AdminLayout>
-          <Notifications />
-        </AdminLayout>
-      }
-    />
-    <Route
-      path="/admin/content"
-      element={
-        <AdminLayout>
-          <ContentManagement />
-        </AdminLayout>
-      }
-    />
-    <Route
-      path="/admin/settings"
-      element={
-        <AdminLayout>
-          <Settings />
-        </AdminLayout>
-      }
-    />
-    <Route
-      path="/admin/reports"
-      element={
-        <AdminLayout>
-          <Reports />
-        </AdminLayout>
-      }
-    />
-  </>
-)}
-
+          <>
+            <Route
+              path="/admin"
+              element={<Navigate to="/admin/overview" replace />}
+            />
+            <Route
+              path="/admin/overview"
+              element={
+                <AdminLayout>
+                  <Overview />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <AdminLayout>
+                  <UserManagement />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/notification"
+              element={
+                <AdminLayout>
+                  <Notifications />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/content"
+              element={
+                <AdminLayout>
+                  <ContentManagement />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/settings"
+              element={
+                <AdminLayout>
+                  <Settings />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <AdminLayout>
+                  <Reports />
+                </AdminLayout>
+              }
+            />
+          </>
+        )}
 
         {/* Parent Routes */}
         {user?.role === "parent" && (
           <>
             <Route path="/parent/dashboard" element={<ParentDashboard />} />
-            <Route path="/parent/subaccounts" element={<SubAccountManagement />} />
+            <Route
+              path="/parent/subaccounts"
+              element={<SubAccountManagement />}
+            />
             <Route path="/parent/screentime" element={<ScreenTimeReport />} />
           </>
         )}

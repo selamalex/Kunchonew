@@ -31,6 +31,13 @@
 .screen-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+.screen-header {
+  background-color: #f9f9f9;
+  font-weight: 600;
+  border: none;
+  box-shadow: none;
+  pointer-events: none;
+}
 
 .child-profile {
   display: flex;
