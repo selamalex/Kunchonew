@@ -1,8 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import anim from '../../Assets/images/lion.png';
 import bg from '../../Assets/images/trendinganim.jpg';
-import LogoutButton from '../../Components/LogoutButton';
-import Navbar from "../../Components/Navbar";
 import './Games.css';
 
 
@@ -66,7 +64,6 @@ const Games = () => {
   return (
       <div className="child-content">
         <button className="back-button" onClick={handleBack}>⬅ Back</button>
-        <Navbar pageName="Videos" />
         
         {/* Trending Game Section */}
         <div className="trending-game" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.3), url(${bg})` }}>

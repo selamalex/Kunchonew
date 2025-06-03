@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import Navbar from "../../Components/Navbar";
 import { AuthContext } from "../../Context/AuthContext";
 import "./Audios.css";
 
@@ -98,8 +97,7 @@ const Audios = () => {
 
       <div className="child-content">
        
-        <Navbar pageName="Audio Player" />
-
+      
         {songs.length > 0 && (
           <div className="player-container">
             {songs.map((song) => (

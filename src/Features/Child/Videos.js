@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import LogoutButton from "../../Components/LogoutButton";
-import Navbar from "../../Components/Navbar";
 import { AuthContext } from "../../Context/AuthContext";
 import "../Child/Videos.css";
 
@@ -65,7 +63,6 @@ const Videos = () => {
   
       <div className="child-content">
        
-        <Navbar pageName="Videos" />
         <h3 className="section-title">Recommended Videos</h3>
         <div className="video-grid">
           {videos.map((video) => (

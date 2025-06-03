@@ -32,7 +32,9 @@ const Sidebar = () => {
                   <li>
                     <Link to="/child/books">Books</Link>
                   </li>
-                  <li className="active">Audio</li>
+                  <li>
+                    <Link to="/child/audios">Audios</Link>
+                  </li>
                   <li>
                     <Link to="/child/games">Games</Link>
                   </li>

@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import LogoutButton from "../../Components/LogoutButton";
-import Navbar from "../../Components/Navbar";
-import { AuthContext } from "../../Context/AuthContext";
+import { AuthContext } from "../../Context/AuthContext"; // ✅ Add this
 import "./Books.css";
 
 const Books = () => {
@@ -77,7 +75,6 @@ const Books = () => {
   
       <div className="child-content">
          
-        <Navbar pageName="Books" />
 
         <section className="cards-wrapper">
           <h2 className="cards-title">Books Available</h2>

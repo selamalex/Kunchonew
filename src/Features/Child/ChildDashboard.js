@@ -12,7 +12,7 @@ import hen from "../../Assets/images/hen.png";
 import music from "../../Assets/images/musicbg.png";
 import video from "../../Assets/images/videosbg.png";
 import LogoutButton from "../../Components/LogoutButton";
-import Navbar from "../../Components/Navbar";
+
 import { AuthContext } from "../../Context/AuthContext";
 import "./ChildDashboard.css";
 
@@ -23,8 +23,7 @@ const ChildDashboard = () => {
   return (
   
       <div className="child-content">
-        <Navbar pageName="Dashboard" />
-
+       
         <h1>Hello, {user.firstName}</h1>
         <p>Explore fun videos, exciting books, cool music, and awesome games.</p>
 
