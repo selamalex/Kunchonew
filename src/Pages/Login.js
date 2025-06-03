@@ -7,7 +7,7 @@ import axios from "axios";
 const Login = () => {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [email, setEmail] = useState(""); // Changed from username to email
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -19,7 +19,6 @@ const Login = () => {
   };
 
   const validatePassword = (password) => {
-    // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
     const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     return re.test(password);
   };
@@ -30,7 +29,6 @@ const Login = () => {
     setPasswordError("");
     setError("");
 
-    // Validate email
     if (!email) {
       setEmailError("Email is required");
       return;
@@ -40,7 +38,6 @@ const Login = () => {
       return;
     }
 
-    // Validate password
     if (!password) {
       setPasswordError("Password is required");
       return;
