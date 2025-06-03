@@ -1,7 +1,7 @@
-import React from "react";
-
-import '../components/admin.css';
-import '../components/Sidebarr.css';
+import React, { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../../../Context/AuthContext";
+import "../components/admin.css";
+import "../components/Sidebarr.css";
 import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -15,9 +15,65 @@ import {
   Legend,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Overview = () => {
+  const { user } = useContext(AuthContext);
+  const [userStats, setUserStats] = useState({
+    totalUsers: 0,
+    admins: 9,
+    parents: 0,
+    children: 0,
+  });
+
+  // Fetch user stats from backend
+  useEffect(() => {
+    if (!user?.token) return; // wait for token
+
+    const fetchUserStats = async () => {
+      try {
+        const res = await fetch(
+          "http://localhost:3000/api/admins/users/count",
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+
+        const contentType = res.headers.get("content-type");
+
+        if (!res.ok) {
+          const text = await res.text();
+          console.error("API error response:", text); // Logs the HTML or error
+          return;
+        }
+
+        if (contentType && contentType.includes("application/json")) {
+          const data = await res.json();
+          console.log("Parsed user stats:", data);
+          setUserStats(data);
+        } else {
+          const text = await res.text();
+          console.error("Expected JSON but got:", text);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user stats:", error);
+      }
+    };
+
+    fetchUserStats();
+  }, [user]); // 👈 important dependency
+
   const lineChartData = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
     datasets: [
@@ -56,7 +112,7 @@ const Overview = () => {
     datasets: [
       {
         label: "Content Count",
-        data: [150, 220, 180, 250],
+        data: [150, 220, 180, 250], // Replace with backend data if needed
         backgroundColor: [
           "rgba(153, 102, 255, 0.6)",
           "rgba(75, 192, 192, 0.6)",
@@ -83,26 +139,25 @@ const Overview = () => {
 
   return (
     <div className="admin-container">
-     
       <div className="page-container">
         <h1 className="page-header">Overview</h1>
 
         <div className="stats-container">
           <div className="stat-card">
             <div className="stat-title">Total Users</div>
-            <div className="stat-value">965</div>
+            <div className="stat-value">{userStats.totalUsers}</div>
           </div>
           <div className="stat-card">
-            <div className="stat-title">Contents</div>
-            <div className="stat-value">671</div>
+            <div className="stat-title">Admins</div>
+            <div className="stat-value">{userStats.admins}</div>
           </div>
           <div className="stat-card">
-            <div className="stat-title">Notification sent</div>
-            <div className="stat-value">156</div>
+            <div className="stat-title">Parents</div>
+            <div className="stat-value">{userStats.parents}</div>
           </div>
           <div className="stat-card">
-            <div className="stat-title">Active Users</div>
-            <div className="stat-value">2,318</div>
+            <div className="stat-title">Children</div>
+            <div className="stat-value">{userStats.children}</div>
           </div>
         </div>
 
