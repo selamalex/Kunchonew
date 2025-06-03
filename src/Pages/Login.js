@@ -51,7 +51,7 @@ const Login = () => {
       } else if (decoded.role === "child") {
         navigate("/child/dashboard");
       } else if (decoded.role === "admin") {
-        navigate("/admin/dashboard");
+        navigate("/admin/Overview");
       }
     } catch (err) {
       console.error("Full error object:", err);

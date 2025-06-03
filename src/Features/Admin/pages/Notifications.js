@@ -38,6 +38,7 @@ const Notifications = () => {
 
   return (
     <div className="page-container">
+     
       <h1 className="page-header">Notifications</h1>
 
       <div className="stats-container">

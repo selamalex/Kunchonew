@@ -3,8 +3,8 @@ import './Sidebarr.css';
 
 const Sidebar = () => {
   return (
-    <div className="sidebar">
-      <div className="logo">Logo</div>
+    <div className="sidebarr">
+        <div className="logoo">Logo</div> 
 
       <div className="admin-info">
         <div className="admin-avatar">
@@ -16,7 +16,7 @@ const Sidebar = () => {
       <div className="sidebar-section">
         <div className="sidebar-section-title">Dashboards</div>
         <nav className="sidebar-nav">
-          <NavLink to="/" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+          <NavLink to="/admin/overview" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
             <div className="sidebar-icon">
               <i className="fas fa-chart-pie"></i>
             </div>
@@ -34,7 +34,7 @@ const Sidebar = () => {
 </NavLink>
 
 
-          <NavLink to="/admin/contents" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+          <NavLink to="/admin/content" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
             <div className="sidebar-icon">
               <i className="fas fa-file-alt"></i>
             </div>
@@ -42,7 +42,7 @@ const Sidebar = () => {
           </NavLink>
 
           <NavLink
-            to="/admin/notifications"
+            to="/admin/notification"
             className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}
           >
             <div className="sidebar-icon">
@@ -51,14 +51,14 @@ const Sidebar = () => {
             <span>Notifications</span>
           </NavLink>
 
-          <NavLink to="admin/reports" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+          <NavLink to="/admin/reports" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
             <div className="sidebar-icon">
               <i className="fas fa-chart-bar"></i>
             </div>
             <span>Reports</span>
           </NavLink>
 
-          <NavLink to="admin/settings" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+          <NavLink to="/admin/settings" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
             <div className="sidebar-icon">
               <i className="fas fa-cog"></i>
             </div>

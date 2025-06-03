@@ -53,6 +53,7 @@ const Settings = () => {
 
   return (
     <div className="page-container">
+      
       <h1 className="page-header">Settings</h1>
 
       <div className="tab-container">

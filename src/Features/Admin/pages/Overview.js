@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from '../components/Sidebarr'; // Correct component import
+
 import '../components/admin.css';
 import '../components/Sidebarr.css';
 import { Line, Bar } from "react-chartjs-2";
@@ -83,7 +83,7 @@ const Overview = () => {
 
   return (
     <div className="admin-container">
-      <Sidebar /> {/* ✅ Display Sidebar */}
+     
       <div className="page-container">
         <h1 className="page-header">Overview</h1>
 

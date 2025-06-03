@@ -1,6 +1,5 @@
 
 
-
 import { useState } from "react"
 
 const UserManagement = () => {
@@ -37,6 +36,7 @@ const UserManagement = () => {
 
   return (
     <div className="page-container">
+     
       <h1 className="page-header">User Management</h1>
 
       <div className="user-stats-container">

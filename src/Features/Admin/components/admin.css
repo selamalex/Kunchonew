@@ -1,3 +1,4 @@
+
 * {
   margin: 0;
   padding: 0;
@@ -5,20 +6,34 @@
   font-family: "Inter", sans-serif;
 }
 
+
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+  overflow-x: hidden; /* prevent horizontal scroll */
+}
+
+
+/* Container for sidebar + main content */
 .app {
   display: flex;
   height: 100vh;
   background-color: #f5f5f5;
-  overflow: hidden;
+  overflow: hidden; /* no scroll */
 }
 
+/* Content area next to sidebar */
 .content {
   flex: 1;
-  padding: 20px;
+  padding: 1px; /* more padding for breathing room */
   overflow-y: auto;
   max-height: 100vh;
+  background-color: #f5f5f5;
 }
 
+/* White card container inside content */
 .page-container {
   background-color: white;
   border-radius: 8px;
@@ -26,10 +41,15 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+/* Other admin styles left unchanged below ... */
+
+/* (Rest of admin.css styles here, unchanged, you can append) */
+
 .page-header {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 24px;
+  color: #000;
 }
 
 .stats-container {
@@ -47,13 +67,14 @@
 
 .stat-title {
   font-size: 14px;
-  color: #6c757d;
+  color: #000;
   margin-bottom: 8px;
 }
 
 .stat-value {
   font-size: 24px;
   font-weight: 600;
+  color: #000;
 }
 
 /* User Stats Styling */
@@ -84,18 +105,19 @@
 .user-stat-info {
   display: flex;
   flex-direction: column;
+  color: #000;
 }
 
 .user-stat-label {
   font-size: 16px;
-  color: #333;
+  color: #000;
   margin-bottom: 4px;
 }
 
 .user-stat-value {
   font-size: 28px;
   font-weight: 600;
-  color: #333;
+  color: #000;
 }
 
 .chart-container {
@@ -107,6 +129,7 @@
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 16px;
+  color: #000;
 }
 
 .tab-container {
@@ -124,10 +147,11 @@
   cursor: pointer;
   position: relative;
   font-size: 14px;
+  color: #000;
 }
 
 .tab.active {
-  color: #007bff;
+   color: #431b06;  /* golden instead of blue */
 }
 
 .tab.active::after {
@@ -137,7 +161,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background-color: #007bff;
+  background-color: #431b06;  /* golden */
 }
 
 .tab-badge {
@@ -172,7 +196,7 @@
 }
 
 .button-primary {
-  background-color: #007bff;
+  background-color: #431b06;  /* golden */
   color: white;
   border: none;
 }
@@ -187,11 +211,13 @@
   padding: 12px 16px;
   text-align: left;
   border-bottom: 1px solid #dee2e6;
+  color: #000;
 }
 
 .table th {
   font-weight: 500;
-  color: #6c757d;
+  color: #000;
+
 }
 
 .action-button {
@@ -227,12 +253,14 @@
   display: flex;
   align-items: center;
   margin-right: 24px;
+  color: #000;
 }
 
 .user-count-number {
   font-size: 24px;
   font-weight: 600;
   margin-left: 12px;
+  color: #000;
 }
 
 /* body {
@@ -274,11 +302,12 @@ body {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
+  color: #000;
 }
 
 .form-group small {
   display: block;
-  color: #6c757d;
+  color: #000;
   margin-top: 4px;
 }
 
@@ -290,6 +319,7 @@ body {
 
 .checkbox-label input {
   margin-right: 8px;
+  color: #000;
 }
 
 .status-badge {
@@ -298,6 +328,7 @@ body {
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
+  color: #000;
 }
 
 .status-badge.published {

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+/* import { NavLink } from "react-router-dom"
 import "./Sidebar.css"
 
 const Sidebar = () => {
@@ -65,9 +65,10 @@ const Sidebar = () => {
           </NavLink>
         </nav>
       </div>
-    </div>
+    </div> 
   )
 }
 
 export default Sidebar
 
+ */

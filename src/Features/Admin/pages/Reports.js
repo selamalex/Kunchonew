@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState } from "react"
@@ -77,6 +78,7 @@ const Reports = () => {
 
   return (
     <div className="page-container">
+     
       <h1 className="page-header">Reports</h1>
 
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "24px" }}>

@@ -15,9 +15,12 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 
 // Admin pages
+import AdminLayout from "./Features/Admin/components/adminlayout";
+
 import ContentManagement from "./Features/Admin/pages/ContentManagement";
 import Reports from "./Features/Admin/pages/Reports";
 import Settings from "./Features/Admin/pages/Settings";
+import Notifications from "./Features/Admin/pages/Notifications";
 import UserManagement from "./Features/Admin/pages/UserManagement";
 import Overview from "./Features/Admin/pages/Overview";
 
@@ -61,14 +64,59 @@ function App() {
 
         {/* Admin Routes */}
         {user?.role === "admin" && (
-          <>
-            <Route path="/admin/overview" element={<Overview />} />
-            <Route path="/admin/users" element={<UserManagement />} />
-            <Route path="/admin/content" element={<ContentManagement />} />
-            <Route path="/admin/settings" element={<Settings />} />
-            <Route path="/admin/reports" element={<Reports />} />
-          </>
-        )}
+  <>
+    <Route path="/admin" element={<Navigate to="/admin/overview" replace />} />
+    <Route
+      path="/admin/overview"
+      element={
+        <AdminLayout>
+          <Overview />
+        </AdminLayout>
+      }
+    />
+    <Route
+      path="/admin/users"
+      element={
+        <AdminLayout>
+          <UserManagement />
+        </AdminLayout>
+      }
+    />
+    <Route
+      path="/admin/notification"
+      element={
+        <AdminLayout>
+          <Notifications />
+        </AdminLayout>
+      }
+    />
+    <Route
+      path="/admin/content"
+      element={
+        <AdminLayout>
+          <ContentManagement />
+        </AdminLayout>
+      }
+    />
+    <Route
+      path="/admin/settings"
+      element={
+        <AdminLayout>
+          <Settings />
+        </AdminLayout>
+      }
+    />
+    <Route
+      path="/admin/reports"
+      element={
+        <AdminLayout>
+          <Reports />
+        </AdminLayout>
+      }
+    />
+  </>
+)}
+
 
         {/* Parent Routes */}
         {user?.role === "parent" && (
