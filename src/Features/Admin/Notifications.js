@@ -1,5 +1,5 @@
 "use client";
-import "../components/admin.css";
+import "./admin.css";
 import { useState } from "react";
 
 const Notifications = () => {

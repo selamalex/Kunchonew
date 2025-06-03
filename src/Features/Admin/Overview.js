@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../../../Context/AuthContext";
-import "../components/admin.css";
-import "../components/Sidebarr.css";
+import { AuthContext } from "../../Context/AuthContext";  
+import './admin.css';
+import './Sidebar.css';
 import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -139,6 +139,7 @@ const Overview = () => {
 
   return (
     <div className="admin-container">
+  
       <div className="page-container">
         <h1 className="page-header">Overview</h1>
 

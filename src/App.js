@@ -15,14 +15,13 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 
 // Admin pages
-import AdminLayout from "./Features/Admin/components/adminlayout";
-
-import ContentManagement from "./Features/Admin/pages/ContentManagement";
-import Reports from "./Features/Admin/pages/Reports";
-import Settings from "./Features/Admin/pages/Settings";
-import Notifications from "./Features/Admin/pages/Notifications";
-import UserManagement from "./Features/Admin/pages/UserManagement";
-import Overview from "./Features/Admin/pages/Overview";
+import ContentManagement from "./Features/Admin/ContentManagement";
+import Reports from "./Features/Admin/Reports";
+import Settings from "./Features/Admin/Settings";
+import UserManagement from "./Features/Admin/UserManagement";
+import Overview from "./Features/Admin/Overview";
+import AdminLayout from "./Features/Admin/adminlayout";
+import Notifications from "./Features/Admin/Notifications";
 
 // Parent pages
 import ParentDashboard from "./Features/Parent/ParentDashboard";
@@ -65,60 +64,16 @@ function App() {
 
         {/* Admin Routes */}
         {user?.role === "admin" && (
-          <>
-            <Route
-              path="/admin"
-              element={<Navigate to="/admin/overview" replace />}
-            />
-            <Route
-              path="/admin/overview"
-              element={
-                <AdminLayout>
-                  <Overview />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin/users"
-              element={
-                <AdminLayout>
-                  <UserManagement />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin/notification"
-              element={
-                <AdminLayout>
-                  <Notifications />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin/content"
-              element={
-                <AdminLayout>
-                  <ContentManagement />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin/settings"
-              element={
-                <AdminLayout>
-                  <Settings />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin/reports"
-              element={
-                <AdminLayout>
-                  <Reports />
-                </AdminLayout>
-              }
-            />
-          </>
+        
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="overview" element={<Overview />} />
+        <Route path="users" element={<UserManagement />} />
+        <Route path="content" element={<ContentManagement />} />
+        <Route path="settings" element={<Settings />} />
+        <Route path="reports" element={<Reports />} />
+         <Route path="notifications" element={<Notifications />} />
+      </Route>
+
         )}
 
         {/* Parent Routes */}
