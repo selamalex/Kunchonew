@@ -15,11 +15,12 @@ const ChildAccounts = () => {
     lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
     age: "",
-    userGroup: "",
     screentime: "",
     avatarPath: "",
   });
+  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     const fetchChildren = async () => {
@@ -98,15 +99,50 @@ const ChildAccounts = () => {
       console.error("Failed to delete child:", err);
     }
   };
+  const validateInputs = () => {
+    const errors = {};
+    const { email, password, confirmPassword, age } = formData;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const ageNum = parseInt(age);
+
+    if (!emailRegex.test(email)) {
+      errors.email = "Invalid email format.";
+    }
+
+    if (!passwordRegex.test(password)) {
+      errors.password =
+        "Password must be at least 8 characters long and include uppercase, lowercase, and a number.";
+    }
+
+    if (password !== confirmPassword) {
+      errors.confirmPassword = "Passwords do not match.";
+    }
+
+    if (isNaN(ageNum) || ageNum < 3 || ageNum > 12) {
+      errors.age = "Age must be between 3 and 12.";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateInputs()) return;
+
+    const ageNum = parseInt(formData.age);
+    const userGroup = ageNum <= 6 ? 1 : 2;
 
     try {
       const response = await axios.post(
         "http://localhost:3000/api/parent/childs",
         {
           ...formData,
+          userGroup,
+          age: ageNum,
           parentId: user.id,
           avatarPath: "frontend/src/Assets/images/avatar1.png",
         },
@@ -123,8 +159,8 @@ const ChildAccounts = () => {
         lastName: "",
         email: "",
         password: "",
+        confirmPassword: "",
         age: "",
-        userGroup: "",
         screentime: "",
         avatarPath: "",
       });
@@ -210,6 +246,9 @@ const ChildAccounts = () => {
                   onChange={handleInputChange}
                   required
                 />
+                {formErrors.email && (
+                  <p className="error-text">{formErrors.email}</p>
+                )}
               </div>
               <div className="form-group">
                 <label>Password</label>
@@ -220,7 +259,24 @@ const ChildAccounts = () => {
                   onChange={handleInputChange}
                   required
                 />
+                {formErrors.password && (
+                  <p className="error-text">{formErrors.password}</p>
+                )}
               </div>
+              <div className="form-group">
+                <label>Confirm Password</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  required
+                />
+                {formErrors.confirmPassword && (
+                  <p className="error-text">{formErrors.confirmPassword}</p>
+                )}
+              </div>
+
               <div className="form-group">
                 <label>Age</label>
                 <input
@@ -229,23 +285,14 @@ const ChildAccounts = () => {
                   value={formData.age}
                   onChange={handleInputChange}
                   required
-                  min="1"
-                  max="18"
+                  min="3"
+                  max="12"
                 />
+                {formErrors.age && (
+                  <p className="error-text">{formErrors.age}</p>
+                )}
               </div>
-              <div className="form-group">
-                <label>User Group</label>
-                <select
-                  name="userGroup"
-                  value={formData.userGroup}
-                  onChange={handleInputChange}
-                  required
-                >
-                  <option value="">Select Group</option>
-                  <option value="1">Group 1</option>
-                  <option value="2">Group 2</option>
-                </select>
-              </div>
+
               <div className="form-group">
                 <label>Screentime (minutes/day)</label>
                 <input
