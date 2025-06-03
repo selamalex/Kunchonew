@@ -100,7 +100,7 @@ const Login = () => {
       <div className="left-panel"></div>
       <div className="right-panel">
         <form className="login-form" onSubmit={handleSubmit}>
-          <h3>Parent Sign In</h3>
+          <h3>Sign In</h3>
           {error && <p className="error-msg">{error}</p>}
           <input
             type="email"
@@ -129,6 +129,7 @@ const Login = () => {
             </a>
           </div>
           <button type="submit" className="submit-btn">
+            {" "}
             Sign In
           </button>
           <div style={{ textAlign: "center", marginTop: "1rem" }}>

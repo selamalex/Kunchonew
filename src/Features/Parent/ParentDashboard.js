@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import LogoutButton from "../../Components/LogoutButton";
 import { AuthContext } from "../../Context/AuthContext";
 import "./Sidebar.css";
+import "./Parent.css"; // Import the CSS for ParentDashboard
 import {
   FaTachometerAlt,
   FaUserPlus,
@@ -41,7 +42,7 @@ const ParentDashboard = () => {
       <div className="main-content">
         <h2 className="text-xl mb-4">
           {" "}
-          <div className="greeting-section">
+          <div className="greeting-sectionn">
             <div className="greeting-text">
               <h2>Hello {user.firstName},</h2>
               <p>Your Child activities and progress are updated here</p>

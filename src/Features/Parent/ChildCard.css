@@ -1,3 +1,30 @@
+/* Global box-sizing for consistent sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Main container wrapping cards */
+.screen-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  padding: 0 15px;
+  margin: 0 auto;
+  max-width: 1000px;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Card styles */
 .child-card {
   background-color: white;
   border-radius: 15px;
@@ -6,11 +33,12 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   width: 180px;
-  margin: 15px;
+  margin: 0; /* Removed horizontal margin */
   border: 2px solid #f8d485;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-shrink: 0; /* Prevent shrinking below width */
 }
 
 .child-card:hover {
@@ -22,13 +50,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 15px;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
+  margin-bottom: 15px;
   object-fit: cover;
   background-color: #eee;
   overflow: hidden;
@@ -226,21 +248,32 @@
   }
 }
 
-@media (max-width: 768px) {
-  .child-card {
-    width: 100%;
-    max-width: 400px;
-    margin: 10px auto;
+/* Responsive Styles */
 
+@media (max-width: 768px) {
+  .screen-list {
     flex-direction: column;
     align-items: center;
+    padding: 0 20px;
+    max-width: 400px;
+  }
+
+  .child-card {
+    width: 100% !important;
+    max-width: 400px;
+    margin-bottom: 15px;
   }
 }
 
 @media (max-width: 480px) {
+  .screen-list {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
   .child-card {
-    width: 100%;
-    margin: 10px auto;
+    width: 100% !important;
+    margin-bottom: 15px;
     padding: 15px;
   }
 

@@ -86,7 +86,7 @@ const Signup = () => {
       </div>
       <div className="right-panel">
         <form className="login-form" onSubmit={handleSubmit}>
-          <h3>Parent Sign Up</h3>
+          <h3>Sign Up</h3>
           {error && <p className="error-msg">{error}</p>}
 
           <input

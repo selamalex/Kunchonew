@@ -1,7 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
+import { FaArrowLeft, FaTachometerAlt, FaClock } from "react-icons/fa";
+import LogoutButton from "../../Components/LogoutButton"; // adjust path if needed
+import logo from "../../Assets/images/logo.png"; // adjust path if needed
 import "./ScreenTime.css";
+import "./Sidebar.css"; // Import Sidebar CSS like in ChildAccounts
 
 const screenData = [
   {
@@ -28,36 +31,64 @@ const ScreenTime = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="screen-time-section">
-      {/* Back arrow */}
-      <div className="back-arrow" onClick={() => navigate("/parent/dashboard")}>
-        <FaArrowLeft className="back-icon" />
-        <span>Back</span>
+    <div className="dashboard-container">
+      {/* Sidebar */}
+      <div className="sidebar">
+        <div className="logo">
+          <img src={logo} alt="Kuncho Logo" className="logo-img" />
+        </div>
+        <ul>
+          <li>
+            <Link to="/parent/subaccounts">
+              <FaTachometerAlt />
+              Sub Account Management
+            </Link>
+          </li>
+          <li>
+            <Link to="/parent/screentime" className="active-link">
+              <FaClock />
+              Screen Time Report
+            </Link>
+          </li>
+        </ul>
+        <LogoutButton />
       </div>
 
-      <h3 className="section-title">Screen Time</h3>
-      <p className="subtitle">Children’s Info</p>
-      <div className="screen-list">
-        {screenData.map((child, index) => (
-          <div key={index} className="screen-card">
-            <div className="child-profile">
-              <img
-                src={child.avatar}
-                alt={child.name}
-                className="child-avatar"
-              />
-              <span className="child-name">{child.name}</span>
+      {/* Main Content */}
+      <div className="main-content screen-time-section">
+        {/* Back arrow */}
+        <div
+          className="back-arrow"
+          onClick={() => navigate("/parent/dashboard")}
+        >
+          <FaArrowLeft className="back-icon" />
+          <span>Back</span>
+        </div>
+
+        <h3 className="section-title">Screen Time</h3>
+        <p className="subtitle">Children’s Info</p>
+        <div className="screen-list">
+          {screenData.map((child, index) => (
+            <div key={index} className="screen-card">
+              <div className="child-profile">
+                <img
+                  src={child.avatar}
+                  alt={child.name}
+                  className="child-avatar"
+                />
+                <span className="child-name">{child.name}</span>
+              </div>
+              <div className="time-box">
+                <p className="time-label">Today</p>
+                <p className="time-value">{child.today}</p>
+              </div>
+              <div className="time-box">
+                <p className="time-label">This Week</p>
+                <p className="time-value">{child.week}</p>
+              </div>
             </div>
-            <div className="time-box">
-              <p className="time-label">Today</p>
-              <p className="time-value">{child.today}</p>
-            </div>
-            <div className="time-box">
-              <p className="time-label">This Week</p>
-              <p className="time-value">{child.week}</p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
