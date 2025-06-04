@@ -1,8 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import LogoutButton from "../../Components/LogoutButton";
-import Navbar from "../../Components/Navbar";
+
 import { AuthContext } from "../../Context/AuthContext";
 import "./Audios.css";
 
@@ -94,33 +93,11 @@ const Audios = () => {
   };
 
   return (
-    <div className="audio-container">
-      <div className="sidebar">
-        <div className="logo">Kuncho</div>
-        <ul>
-          <li>
-            <Link to="/child/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/child/videos">Videos</Link>
-          </li>
-          <li>
-            <Link to="/child/books">Books</Link>
-          </li>
-          <li className="active">Audio</li>
-          <li>
-            <Link to="/child/games">Games</Link>
-          </li>
-        </ul>
-        <LogoutButton className="logout-button" />
-      </div>
+     
 
-      <div className="main-content">
-        <button className="back-button" onClick={() => navigate(-1)}>
-          ← Back
-        </button>
-        <Navbar pageName="Audio Player" />
-
+      <div className="child-content">
+       
+       <h3 className="section-title">Recommended Audio for your Age group</h3>
         {songs.length > 0 && (
           <div className="player-container">
             {songs.map((song) => (
@@ -183,7 +160,7 @@ const Audios = () => {
           </div>
         )}
       </div>
-    </div>
+   
   );
 };
 

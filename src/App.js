@@ -15,19 +15,19 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 
 // Admin pages
-import AdminLayout from "./Features/Admin/components/adminlayout";
-
-import ContentManagement from "./Features/Admin/pages/ContentManagement";
-import Reports from "./Features/Admin/pages/Reports";
-import Settings from "./Features/Admin/pages/Settings";
-import Notifications from "./Features/Admin/pages/Notifications";
-import UserManagement from "./Features/Admin/pages/UserManagement";
-import Overview from "./Features/Admin/pages/Overview";
+import ContentManagement from "./Features/Admin/ContentManagement";
+import Reports from "./Features/Admin/Reports";
+import Settings from "./Features/Admin/Settings";
+import UserManagement from "./Features/Admin/UserManagement";
+import Overview from "./Features/Admin/Overview";
+import AdminLayout from "./Features/Admin/adminlayout";
+import Notifications from "./Features/Admin/Notifications";
 
 // Parent pages
 import ParentDashboard from "./Features/Parent/ParentDashboard";
 import SubAccountManagement from "./Features/Parent/SubAccountManagement";
 import ScreenTimeReport from "./Features/Parent/ScreenTimeReport";
+import ParentLayout from "./Features/Parent/ParentLayout";
 
 // Child pages
 import ChildDashboard from "./Features/Child/ChildDashboard";
@@ -41,6 +41,7 @@ import Animals from "./Features/Child/Animals";
 import Vegetables from "./Features/Child/Vegetables";
 import Objects from "./Features/Child/Objects";
 import SlideBook from "./Features/Child/SlideBook";
+import ChildLayout from "./Features/Child/ChildLayout";
 
 const ProtectedRoute = ({ role, children }) => {
   const { user } = useAuth();
@@ -64,176 +65,51 @@ function App() {
 
         {/* Admin Routes */}
         {user?.role === "admin" && (
-          <>
-            <Route
-              path="/admin"
-              element={<Navigate to="/admin/overview" replace />}
-            />
-            <Route
-              path="/admin/overview"
-              element={
-                <AdminLayout>
-                  <Overview />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin/users"
-              element={
-                <AdminLayout>
-                  <UserManagement />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin/notification"
-              element={
-                <AdminLayout>
-                  <Notifications />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin/content"
-              element={
-                <AdminLayout>
-                  <ContentManagement />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin/settings"
-              element={
-                <AdminLayout>
-                  <Settings />
-                </AdminLayout>
-              }
-            />
-            <Route
-              path="/admin/reports"
-              element={
-                <AdminLayout>
-                  <Reports />
-                </AdminLayout>
-              }
-            />
-          </>
+        
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Overview />} /> 
+        <Route path="overview" element={<Overview />} />
+        <Route path="users" element={<UserManagement />} />
+        <Route path="content" element={<ContentManagement />} />
+        <Route path="settings" element={<Settings />} />
+        <Route path="reports" element={<Reports />} />
+         <Route path="notifications" element={<Notifications />} />
+      </Route>
+
         )}
 
         {/* Parent Routes */}
-        {user?.role === "parent" && (
-          <>
-            <Route path="/parent/dashboard" element={<ParentDashboard />} />
-            <Route
-              path="/parent/subaccounts"
-              element={<SubAccountManagement />}
-            />
-            <Route path="/parent/screentime" element={<ScreenTimeReport />} />
-          </>
-        )}
+        {/* Parent Routes */}
+{user?.role === "parent" && (
+  <Route path="/parent" element={<ParentLayout />}>
+    <Route path="dashboard" element={<ParentDashboard />} />
+    <Route path="subaccounts" element={<SubAccountManagement />} />
+    <Route path="screentime" element={<ScreenTimeReport />} />
+  </Route>
+)}
 
-        {/* Child Routes */}
-        <Route
-          path="/child/dashboard"
-          element={
-            <ProtectedRoute role="child">
-              <ChildDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/videos"
-          element={
-            <ProtectedRoute role="child">
-              <Videos />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/videos/:id"
-          element={
-            <ProtectedRoute role="child">
-              <SpecificVid />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/books"
-          element={
-            <ProtectedRoute role="child">
-              <Books />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/audios"
-          element={
-            <ProtectedRoute role="child">
-              <Audios />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/audios/:id"
-          element={
-            <ProtectedRoute role="child">
-              <SpecificAud />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/child/games"
-          element={
-            <ProtectedRoute role="child">
-              <Games />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/games/animal"
-          element={
-            <ProtectedRoute role="child">
-              <Animals />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/games/vegetable"
-          element={
-            <ProtectedRoute role="child">
-              <Vegetables />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/games/object"
-          element={
-            <ProtectedRoute role="child">
-              <Objects />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/child/books/:bookId"
-          element={
-            <ProtectedRoute role="child">
-              <SlideBook />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Redirect /child to dashboard if logged in as child */}
-        <Route
-          path="/child"
-          element={
-            user?.role === "child" ? (
-              <Navigate to="/child/dashboard" replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
+{user?.role === "child" && (
+  <Route
+    path="/child"
+    element={
+      <ProtectedRoute role="child">
+        <ChildLayout />
+      </ProtectedRoute>
+    }
+  >
+    <Route path="dashboard" element={<ChildDashboard />} />
+    <Route path="videos" element={<Videos />} />
+    <Route path="videos/:id" element={<SpecificVid />} />
+    <Route path="books" element={<Books />} />
+    <Route path="books/:bookId" element={<SlideBook />} />
+    <Route path="audios" element={<Audios />} />
+    <Route path="audios/:id" element={<SpecificAud />} />
+    <Route path="games" element={<Games />} />
+    <Route path="games/animal" element={<Animals />} />
+    <Route path="games/vegetable" element={<Vegetables />} />
+    <Route path="games/object" element={<Objects />} />
+  </Route>
+)}
 
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" />} />

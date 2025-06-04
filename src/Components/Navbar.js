@@ -114,6 +114,8 @@ export default function Navbar({ pageName }) {
 
       <div className="user-profile">
         <Avatar onClick={handleAvatarClick} />
+         <span className="user-name">{user?.firstName || "User"}</span>
+
       </div>
     </nav>
   );

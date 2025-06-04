@@ -175,62 +175,29 @@ const ChildAccounts = () => {
   };
 
   return (
-    <div className="dashboard-wrapper">
-      {/* Hamburger Menu */}
-      <div className="hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>
-        <FaBars />
+    <div className="child-accounts-section">
+      <div className="card-container">
+        {children.map((child, index) => (
+          <ChildCard
+            key={index}
+            name={child.childUser?.firstName || "Unknown"}
+            age={child.age}
+            userGroup={child.userGroup}
+            avatarUrl={child.avatarPath}
+            onUpdate={(updatedFields) =>
+              handleUpdateChild({ ...updatedFields, id: child.id })
+            }
+            onDelete={() => handleDeleteChild(child.id)}
+          />
+        ))}
+        <div className="child-card add-card" onClick={() => setShowModal(true)}>
+          <FaPlus className="add-icon" />
+          <p>Add Child</p>
+        </div>
       </div>
 
-      {/* Sidebar */}
-      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="logo">
-          <img src={logo} alt="Kuncho Logo" className="logo-img" />
-        </div>
-        <ul>
-          <li>
-            <Link
-              to="/parent/subaccounts"
-              onClick={() => setSidebarOpen(false)}
-            >
-              <FaTachometerAlt />
-              Sub Account Management
-            </Link>
-          </li>
-          <li>
-            <Link to="/parent/screentime" onClick={() => setSidebarOpen(false)}>
-              <FaClock />
-              Screen Time Report
-            </Link>
-          </li>
-        </ul>
-        <LogoutButton />
-      </div>
 
-      {/* Main Content */}
-      <div className="main-content">
-        <h3 className="section-title">Children's Account</h3>
-        <div className="card-container">
-          {children.map((child, index) => (
-            <ChildCard
-              key={index}
-              name={child.childUser?.firstName || "Unknown"}
-              age={child.age}
-              userGroup={child.userGroup}
-              avatarUrl={child.avatarPath}
-              onUpdate={(updatedFields) =>
-                handleUpdateChild({ ...updatedFields, id: child.id })
-              }
-              onDelete={() => handleDeleteChild(child.id)}
-            />
-          ))}
-          <div
-            className="child-card add-card"
-            onClick={() => setShowModal(true)}
-          >
-            <FaPlus className="add-icon" />
-            <p>Add Child</p>
-          </div>
-        </div>
+     
 
         {/* Modal */}
         {showModal && (
@@ -292,7 +259,7 @@ const ChildAccounts = () => {
             </div>
           </div>
         )}
-      </div>
+    
     </div>
   );
 };

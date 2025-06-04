@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import LogoutButton from "../../Components/LogoutButton";
-import Navbar from "../../Components/Navbar";
 import { AuthContext } from "../../Context/AuthContext"; // ✅ Add this
 import "./Books.css";
 
 const Books = () => {
-  const { user } = useContext(AuthContext); // ✅ Get the logged-in user
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
 
@@ -18,7 +16,7 @@ const Books = () => {
           "http://localhost:3000/api/child/content",
           {
             headers: {
-              Authorization: `Bearer ${user.token}`, // ✅ Send token
+              Authorization: `Bearer ${user.token}`,
             },
             params: { type: "book" },
           }
@@ -74,41 +72,18 @@ const Books = () => {
   };
 
   return (
-    <div className="container">
-      <div className="sidebar">
-        <div className="logo">Kuncho</div>
-        <ul>
-          <li>
-            <Link to="/child/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/child/videos">Videos</Link>
-          </li>
-          <li className="active">Books</li>
-          <li>
-            <Link to="/child/audios">Audio</Link>
-          </li>
-          <li>
-            <Link to="/child/games">Games</Link>
-          </li>
-        </ul>
-        <LogoutButton className="logout-button"/>
-      </div>
-
-      <div className="main-content">
-         <button className="back-button" onClick={() => navigate(-1)}>
-    ← Back
-  </button>
-        <Navbar pageName="Books" />
-
-        <section className="cards-wrapper">
-          <h2 className="cards-title">Books Available</h2>
+  
+      <div className="child-content">
+          
+          <h2 className="section-title">Recommended Books for your Age group</h2>
           <div className="cards-section">
             {books.map((book) => (
               <div
                 key={book.id}
                 className="card glassmorphic"
-                onClick={() => navigate(`/child/books/${book.id}`)}
+                onClick={() =>
+                  navigate(`/child/books/${book.id}`, { state: { book } })
+                }
               >
                 <img
                   src={book.thumbnail}
@@ -125,9 +100,8 @@ const Books = () => {
               </div>
             ))}
           </div>
-        </section>
       </div>
-    </div>
+  
   );
 };
 

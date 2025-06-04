@@ -27,49 +27,9 @@ const SubAccountManagement = () => {
   };
 
   return (
-    <div className="dashboard-wrapper">
-      <div className="back-arrow" onClick={() => navigate("/parent/dashboard")}>
-        <FaArrowLeft className="back-icon" />
-        <span>Back</span>
-      </div>
-
-      <div className="greeting-section">
-        <div className="greeting-text">
-          <h2>Hello {user.firstName},</h2>
-          <p>Your Child activities and progress are updated here</p>
-        </div>
-
-        <div className="greeting-actions">
-          <div className="top-actions">
-            <div className="search-bar">
-              <input type="text" placeholder="Search..." />
-              <FaSearch className="search-icon" />
-            </div>
-            <div className="notification-wrapper">
-              <FaBell
-                className="notification-icon"
-                onClick={handleNotificationClick}
-              />
-              {showNotifications && (
-                <div className="notification-popup">
-                  {notifications.length === 0 ? (
-                    <p className="empty-text">No notifications</p>
-                  ) : (
-                    notifications.map((note) => (
-                      <div key={note.id} className="notification-item">
-                        {note.message}
-                      </div>
-                    ))
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
+    
       <ChildAccounts />
-    </div>
+ 
   );
 };
 

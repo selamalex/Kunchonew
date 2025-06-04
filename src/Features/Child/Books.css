@@ -14,20 +14,7 @@
   height: 100%;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #431b06;
 
-  padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
 
 .menu-icon {
   font-size: 1.5rem;
@@ -41,11 +28,6 @@
   font-weight: bold;
 }
 
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
 
 .search-input {
   padding: 0.5rem;
@@ -79,94 +61,6 @@
   border-radius: 50%;
   padding: 5px;
 }
-
-/* .logo {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    margin: 10px 0;
-}
-
-.logout-button {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: brown;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-.main-content {
-    flex: 1;
-    padding: 20px;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #eee;
-    padding: 10px 20px;
-}
-
-.videos-header {
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-}
-
-.header-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1.5rem;
-}
-
-.page-title {
-    display: flex;
-    align-items: center;
-}
-
-.page-title h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #333;
-    margin: 0;
-} */
-
-/* .content {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-.card {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    width: 200px;
-    margin: 30px;
-}
-
-.card img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-.card h2 {
-    margin-top: 10px;
-} */
 
 .cards-wrapper {
   text-align: center;

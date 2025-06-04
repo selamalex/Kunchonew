@@ -1,8 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import anim from '../../Assets/images/lion.png';
 import bg from '../../Assets/images/trendinganim.jpg';
-import LogoutButton from '../../Components/LogoutButton';
-import Navbar from "../../Components/Navbar";
 import './Games.css';
 
 
@@ -64,34 +62,8 @@ const Games = () => {
   };
 
   return (
-    <div className="games-dashboard">
-      <div className="sidebar">
+      <div className="child-content">
         
-        <div className="logo">Kuncho</div>
-        <ul>
-          <li>
-            <Link to="/child/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/child/videos">Videos</Link>
-          </li>
-          <li>
-            <Link to="/child/books">Books</Link>
-          </li>
-          <li>
-            <Link to="/child/audios">Audio</Link>
-          </li>
-          <li className="active">Games</li>
-        </ul>
-        <LogoutButton/>
-      </div>
-
-      {/* Main Content */}
-      <div className="main-content">
-        <button className="back-button" onClick={handleBack}>⬅ Back</button>
-        <Navbar pageName="Videos" />
-        
-        {/* Trending Game Section */}
         <div className="trending-game" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.3), url(${bg})` }}>
           <div className="trending-content">
             <h2 className="game-name">Trending Game: Animal Edition</h2>
@@ -127,7 +99,8 @@ const Games = () => {
           ))}
         </div>
       </div>
-    </div>
+      
+
   );
 };
 
