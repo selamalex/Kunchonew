@@ -83,40 +83,7 @@ const ScreenTime = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar */}
-      <div className="sidebar">
-        <div className="logo">
-          <img src={logo} alt="Kuncho Logo" className="logo-img" />
-        </div>
-        <ul>
-          <li>
-            <Link to="/parent/subaccounts">
-              <FaTachometerAlt />
-              Sub Account Management
-            </Link>
-          </li>
-          <li>
-            <Link to="/parent/screentime" className="active-link">
-              <FaClock />
-              Screen Time Report
-            </Link>
-          </li>
-        </ul>
-        <LogoutButton />
-      </div>
-
-      {/* Main Content */}
-      <div className="main-content screen-time-section">
-        <div
-          className="back-arrow"
-          onClick={() => navigate("/parent/dashboard")}
-        >
-          <FaArrowLeft className="back-icon" />
-          <span>Back</span>
-        </div>
-
-        <h3 className="section-title">Screen Time</h3>
-        <p className="subtitle">Children’s Info</p>
+      
 
         {loading ? (
           <p>Loading...</p>
@@ -223,7 +190,7 @@ const ScreenTime = () => {
           </div>
         )}
       </div>
-    </div>
+
   );
 };
 
