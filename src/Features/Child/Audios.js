@@ -1,32 +1,31 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { AuthContext } from "../../Context/AuthContext";
 import "./Audios.css";
 
 const Audios = () => {
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
   const [songs, setSongs] = useState([]);
   const [playingId, setPlayingId] = useState(null);
-  const [audioRefs, setAudioRefs] = useState({});
   const [likes, setLikes] = useState({});
   const [ratings, setRatings] = useState({});
+  const navigate = useNavigate();
   const { audioId } = useParams();
+
+  // refs for audios
+  const [audioRefs, setAudioRefs] = useState({});
 
   useEffect(() => {
     const fetchAudios = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/api/child/content",
-          {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
-            params: { type: "audio" },
-          }
-        );
+        const response = await axios.get("http://localhost:3000/api/child/content", {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+          params: { type: "audio" },
+        });
 
         const audioItems = response.data
           .filter((item) => item.type === "audio")
@@ -36,14 +35,15 @@ const Audios = () => {
             artist: item.artist || "Unknown Artist",
             cover: item.cover || "/default-cover.jpg",
             duration: item.duration || "Unknown",
+            thumbnail: item.thumbnail || "/default-cover.jpg",
           }));
 
         setSongs(audioItems);
 
-        // Create refs for each audio
+        // Create refs dynamically
         const refs = {};
         audioItems.forEach((song) => {
-          refs[song.id] = React.createRef();
+          refs[song.id] = new Audio(song.audio);
         });
         setAudioRefs(refs);
       } catch (error) {
@@ -55,30 +55,30 @@ const Audios = () => {
   }, [user.token]);
 
   const handlePlayPause = (songId) => {
-    const audio = audioRefs[songId]?.current;
-    if (!audio) return;
+    const currentAudio = audioRefs[songId];
+    if (!currentAudio) return;
 
     if (playingId === songId) {
-      audio.pause();
+      currentAudio.pause();
       setPlayingId(null);
     } else {
-      // Pause any currently playing audio
       if (playingId && audioRefs[playingId]) {
-        audioRefs[playingId].current.pause();
+        audioRefs[playingId].pause();
       }
-
-      audio.play();
+      currentAudio.play();
       setPlayingId(songId);
     }
   };
+
   const handleForward = (songId) => {
-    const audio = audioRefs[songId]?.current;
+    const audio = audioRefs[songId];
     if (audio) {
       audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
     }
   };
+
   const handleBackward = (songId) => {
-    const audio = audioRefs[songId]?.current;
+    const audio = audioRefs[songId];
     if (audio) {
       audio.currentTime = Math.max(0, audio.currentTime - 10);
     }
@@ -93,74 +93,61 @@ const Audios = () => {
   };
 
   return (
-     
+    <div className="child-content">
+      <h3 className="section-title">Recommended Audio for your Age group</h3>
+      <div className="audio-grid">
+        {songs.map((song) => (
+          <div
+            key={song.id}
+            className="audio-card"
+            onClick={() => navigate(`/child/audios/${song.id}`)}
+            style={{ cursor: "pointer" }}
+          >
+            <div className="thumbnail-container">
+              <img
+                src={song.thumbnail
+                  ? `http://localhost:3000${song.thumbnail}`
+                      : "/images/video-placeholder.png"
+                }
+                alt={song.title}
+                className="audio-thumbnail"
+              />
+              <div className="audio-duration">{song.duration}</div>
+            </div>
+            <div className="audio-details">
+              <h4 className="audio-title">{song.title}</h4>
+              <p className="audio-artist">{song.artist}</p>
+              <div className="audio-controls">
+                <button onClick={(e) => { e.stopPropagation(); handleBackward(song.id); }}>
+  ◀ 10s
+</button>
+<button onClick={(e) => { e.stopPropagation(); handlePlayPause(song.id); }}>
+  {playingId === song.id ? "⏸ Pause" : "▶ Play"}
+</button>
+<button onClick={(e) => { e.stopPropagation(); handleForward(song.id); }}>
+  10s ▶
+</button>
 
-      <div className="child-content">
-       
-       <h3 className="section-title">Recommended Audio for your Age group</h3>
-        {songs.length > 0 && (
-          <div className="player-container">
-            {songs.map((song) => (
-              <div
-                className="player-song"
-                key={song.id}
-                onClick={() => navigate(`/child/audios/${song.id}`)}
-                style={{ cursor: "pointer" }}
-              >
-                <div
-                  className="player-cover clickable"
-                  onClick={() => navigate(`/child/audios/${song.id}`)}
-                >
-                  <img src={song.cover} alt="Album Cover" />
-                </div>
-
-                <div className="player-details">
-                  <div className="song-title">{song.title}</div>
-                  <div className="song-artist">{song.artist}</div>
-                  <div className="song-duration">{song.duration}</div>
-                </div>
-                <audio ref={audioRefs[song.id]} src={song.audio} />
-                <button
-                  className="play-button"
-                  onClick={() => handlePlayPause(song.id)}
-                >
-                  {playingId === song.id ? "⏸ Pause" : "▶️ Play"}
-                </button>
-                <button
-                  className="forward-button"
-                  onClick={() => handleForward(song.id)}
-                >
-                  ⏩ Forward 10s
-                </button>
-                <button
-                  className="backward-button"
-                  onClick={() => handleBackward(song.id)}
-                >
-                  ⏪ Back 10s
-                </button>
-                <div className="rating">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span
-                      key={star}
-                      onClick={() => handleRating(song.id, star)}
-                      className={
-                        star <= (ratings[song.id] || 0) ? "filled" : ""
-                      }
-                    >
-                      {star <= (ratings[song.id] || 0) ? "⭐" : "☆"}
-                    </span>
-                  ))}
-                </div>
-                <button
-                  className={`like-button ${likes[song.id] ? "liked" : ""}`}
-                  onClick={() => handleLike(song.id)}
-                ></button>
               </div>
-            ))}
+              <div className="rating">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRating(song.id, star);
+                    }}
+                    className={star <= (ratings[song.id] || 0) ? "filled" : ""}
+                  >
+                    {star <= (ratings[song.id] || 0) ? "⭐" : "☆"}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
-        )}
+        ))}
       </div>
-   
+    </div>
   );
 };
 
