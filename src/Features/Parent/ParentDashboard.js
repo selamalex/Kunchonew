@@ -1,8 +1,5 @@
 import { useContext } from "react";
-import {
-  FaClock,
-  FaTachometerAlt
-} from "react-icons/fa";
+import { FaClock, FaTachometerAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import logo from "../../Assets/images/logo.png";
 import LogoutButton from "../../Components/LogoutButton";
@@ -12,10 +9,10 @@ import "./Sidebar.css";
 
 const ParentDashboard = () => {
   const { user } = useContext(AuthContext);
- 
+
   return (
     <div className="dashboard-container">
-       <p>Your child's activities and progress are updated here.</p>
+      <p>Your child's activities and progress are updated here.</p>
     </div>
   );
 };

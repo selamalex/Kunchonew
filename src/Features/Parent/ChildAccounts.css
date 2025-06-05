@@ -325,3 +325,16 @@ p {
     position: relative;
   }
 }
+@media (max-width: 768px) {
+  .card-container {
+    flex-direction: column;
+    gap: 1.5rem; /* vertical spacing between cards */
+    overflow-x: visible; /* disable horizontal scroll */
+  }
+
+  .child-card {
+    max-width: 100%; /* make each card full width */
+    width: 100%; /* stretch full container width */
+    margin: 0; /* reset margin */
+  }
+}
