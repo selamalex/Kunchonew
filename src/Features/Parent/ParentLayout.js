@@ -56,9 +56,7 @@ const ParentLayout = () => {
         {/* 3️⃣ Top Bar with Title and Greeting */}
         <div className="top-bar">
           <h3 className="section-title">{currentTitle}</h3>
-          <div className="greeting-text">
-            <h2>Hello {user?.firstName}</h2>
-          </div>
+          <div className="greeting-text"></div>
         </div>
 
         {/* 4️⃣ Outlet for child pages */}
