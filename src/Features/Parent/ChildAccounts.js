@@ -10,7 +10,6 @@ import {
 import axios from "axios";
 
 import ChildCard from "./ChildCard";
-import LogoutButton from "../../Components/LogoutButton";
 import { AuthContext } from "../../Context/AuthContext";
 import logo from "../../Assets/images/logo.png";
 
@@ -120,6 +119,7 @@ const ChildAccounts = () => {
         screentime: "",
         avatarPath: "",
       });
+      setFormErrors({});
       setShowModal(false);
 
       const refreshed = await axios.get(
@@ -132,7 +132,40 @@ const ChildAccounts = () => {
       setChildren(refreshed.data);
     } catch (error) {
       console.error("Error creating child:", error);
-      alert(error.response?.data?.error || "Failed to create child");
+
+      const errorMsg = error.response?.data?.error || "Something went wrong";
+      const errors = {};
+
+      const fieldKeywords = {
+        firstName: ["first name", "firstname"],
+        lastName: ["last name", "lastname"],
+        email: ["email"],
+        password: ["password"],
+        confirmPassword: ["confirm password", "confirm"],
+        age: ["age"],
+        screentime: ["screentime", "screen time"],
+      };
+
+      // Try to assign the error to the right field
+      const lowerError = errorMsg.toLowerCase();
+
+      let matched = false;
+      for (const [field, keywords] of Object.entries(fieldKeywords)) {
+        for (const keyword of keywords) {
+          if (lowerError.includes(keyword)) {
+            errors[field] = errorMsg;
+            matched = true;
+            break;
+          }
+        }
+        if (matched) break;
+      }
+
+      if (!matched) {
+        errors.general = errorMsg;
+      }
+
+      setFormErrors(errors);
     }
   };
 
@@ -162,12 +195,9 @@ const ChildAccounts = () => {
 
   const handleDeleteChild = async (childId) => {
     try {
-      await axios.delete(
-        `http://localhost:3000/api/parent/childs/${user.id}/${childId}`,
-        {
-          headers: { Authorization: `Bearer ${user.token}` },
-        }
-      );
+      await axios.delete(`http://localhost:3000/api/parent/childs/${childId}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
       setChildren(children.filter((child) => child.id !== childId));
     } catch (err) {
       console.error("Failed to delete child:", err);
@@ -183,6 +213,7 @@ const ChildAccounts = () => {
             name={child.childUser?.firstName || "Unknown"}
             age={child.age}
             userGroup={child.userGroup}
+            screentime={child.screentime}
             avatarUrl={child.avatarPath}
             onUpdate={(updatedFields) =>
               handleUpdateChild({ ...updatedFields, id: child.id })
@@ -196,70 +227,71 @@ const ChildAccounts = () => {
         </div>
       </div>
 
+      {/* Modal */}
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowModal(false)}>
+              <FaTimes />
+            </button>
+            <h2>Add New Child</h2>
+            <form onSubmit={handleSubmit}>
+              {[
+                { label: "First Name", name: "firstName", type: "text" },
+                { label: "Last Name", name: "lastName", type: "text" },
+                { label: "Email", name: "email", type: "email" },
+                { label: "Password", name: "password", type: "password" },
+                {
+                  label: "Confirm Password",
+                  name: "confirmPassword",
+                  type: "password",
+                },
+                {
+                  label: "Age",
+                  name: "age",
+                  type: "number",
+                  min: 3,
+                  max: 12,
+                },
+                {
+                  label: "Screentime (minutes/day)",
+                  name: "screentime",
+                  type: "number",
+                  min: 0,
+                },
+              ].map(({ label, name, type, min, max }) => (
+                <div className="form-group" key={name}>
+                  <label>{label}</label>
+                  <input
+                    type={type}
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleInputChange}
+                    min={min}
+                    max={max}
+                  />
+                  {formErrors[name] && (
+                    <p className="error-text">{formErrors[name]}</p>
+                  )}
+                </div>
+              ))}
+              {formErrors.general && (
+                <p className="error-text" style={{ marginBottom: "1rem" }}>
+                  {formErrors.general}
+                </p>
+              )}
 
-     
-
-        {/* Modal */}
-        {showModal && (
-          <div className="modal-overlay" onClick={() => setShowModal(false)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <button className="close-btn" onClick={() => setShowModal(false)}>
-                <FaTimes />
+              <button
+                type="submit"
+                className="register-btn"
+                style={{ backgroundColor: "#f5a12b" }}
+              >
+                Register
               </button>
-              <h2>Add New Child</h2>
-              <form onSubmit={handleSubmit}>
-                {[
-                  { label: "First Name", name: "firstName", type: "text" },
-                  { label: "Last Name", name: "lastName", type: "text" },
-                  { label: "Email", name: "email", type: "email" },
-                  { label: "Password", name: "password", type: "password" },
-                  {
-                    label: "Confirm Password",
-                    name: "confirmPassword",
-                    type: "password",
-                  },
-                  {
-                    label: "Age",
-                    name: "age",
-                    type: "number",
-                    min: 3,
-                    max: 12,
-                  },
-                  {
-                    label: "Screentime (minutes/day)",
-                    name: "screentime",
-                    type: "number",
-                    min: 0,
-                  },
-                ].map(({ label, name, type, min, max }) => (
-                  <div className="form-group" key={name}>
-                    <label>{label}</label>
-                    <input
-                      type={type}
-                      name={name}
-                      value={formData[name]}
-                      onChange={handleInputChange}
-                      required
-                      min={min}
-                      max={max}
-                    />
-                    {formErrors[name] && (
-                      <p className="error-text">{formErrors[name]}</p>
-                    )}
-                  </div>
-                ))}
-                <button
-                  type="submit"
-                  className="register-btn"
-                  style={{ backgroundColor: "#f5a12b" }}
-                >
-                  Register
-                </button>
-              </form>
-            </div>
+            </form>
           </div>
-        )}
-    
+        </div>
+      )}
     </div>
   );
 };

@@ -148,7 +148,7 @@ const ChildCard = ({
                   <input
                     type="number"
                     name="screentime"
-                    value={childData.timerMinutes}
+                    value={childData.screentime}
                     onChange={handleInputChange}
                     min="1"
                   />

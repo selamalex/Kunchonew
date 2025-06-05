@@ -14,7 +14,7 @@ const SubAccountManagement = () => {
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get("/api/notifications"); // adjust as needed
+      const res = await axios.get("/api/notifications");
       setNotifications(res.data);
     } catch (err) {
       console.error("Failed to load notifications", err);
@@ -26,11 +26,7 @@ const SubAccountManagement = () => {
     if (!showNotifications) fetchNotifications();
   };
 
-  return (
-    
-      <ChildAccounts />
- 
-  );
+  return <ChildAccounts />;
 };
 
 export default SubAccountManagement;
