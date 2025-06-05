@@ -103,7 +103,7 @@ const Audios = () => {
             onClick={() => navigate(`/child/audios/${song.id}`)}
             style={{ cursor: "pointer" }}
           >
-            <div className="thumbnail-container">
+            <div className="song-thumbnail-container">
               <img
                 src={song.thumbnail
                   ? `http://localhost:3000${song.thumbnail}`
