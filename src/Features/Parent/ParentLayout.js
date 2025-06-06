@@ -190,9 +190,7 @@ const ParentLayout = () => {
                   <div className="dropdown-item username">
                     {user.firstName} {user.lastName}
                   </div>
-                  <div className="dropdown-item">
-                    <LogoutButton />
-                  </div>
+
                   <div
                     className="dropdown-item delete-btn"
                     onClick={handleDeleteAccount}

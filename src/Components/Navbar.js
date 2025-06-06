@@ -81,6 +81,7 @@ export default function Navbar({ pageName }) {
       <div className="page-name">{pageName}</div>
 
       <div className="search-container" ref={dropdownRef}>
+        <div>
         <input
           type="text"
           placeholder="Search..."
@@ -89,6 +90,8 @@ export default function Navbar({ pageName }) {
           onKeyDown={handleKeyDown}
           className="search-input"
         />
+        </div>
+        <div>
         <button
           className="search-btn"
           onClick={handleSearchSubmit}
@@ -96,8 +99,10 @@ export default function Navbar({ pageName }) {
         >
           🔍
         </button>
+        </div>
 
         {results.length > 0 && (
+          <div>
           <ul className="search-results-dropdown">
             {results.map((item) => (
               <li
@@ -109,6 +114,7 @@ export default function Navbar({ pageName }) {
               </li>
             ))}
           </ul>
+          </div>
         )}
       </div>
 

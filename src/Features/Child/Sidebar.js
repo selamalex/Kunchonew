@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Sidebar.css";
 import LogoutButton from "../../Components/LogoutButton";
+import "./Sidebar.css";
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -20,27 +20,27 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div className={`sidebar ${sidebarOpen ? "active" : ""}`}>
-         <div className="sidebar">
+      
                 <div className="logo">Kuncho</div>
                 <ul>
-                  <li>
+                  <li onClick={() => setSidebarOpen(false)}>
                     <Link to="/child/dashboard">Dashboard</Link>
                   </li>
-                  <li>
+                  <li onClick={() => setSidebarOpen(false)}>
                     <Link to="/child/videos">Videos</Link>
                   </li>
-                  <li>
+                  <li onClick={() => setSidebarOpen(false)}>
                     <Link to="/child/books">Books</Link>
                   </li>
-                  <li>
+                  <li onClick={() => setSidebarOpen(false)}>
                     <Link to="/child/audios">Audios</Link>
                   </li>
-                  <li>
+                  <li onClick={() => setSidebarOpen(false)}>
                     <Link to="/child/games">Games</Link>
                   </li>
                 </ul>
                 <LogoutButton className="logout-button" />
-              </div>
+             
       </div>
     </div>
   );
