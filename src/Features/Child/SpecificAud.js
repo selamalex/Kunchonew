@@ -33,8 +33,27 @@ const SpecificAudio = () => {
       }
     };
 
+    const fetchRating = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/child/content/rating/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+        if (response.data.myRating) {
+          setUserRating(response.data.myRating.rating);
+        }
+      } catch (error) {
+        console.error("Failed to fetch rating:", error);
+      }
+    };
+
     fetchAudio();
-  }, [id]);
+    fetchRating();
+  }, [id, user.token]);
 
   const recordView = async () => {
     try {
@@ -49,7 +68,7 @@ const SpecificAudio = () => {
       );
       console.log("Audio view recorded!");
     } catch (error) {
-      console.error("Failed to record audio view:", error);
+      console.error("Failed to record view:", error);
     }
   };
 
@@ -78,14 +97,34 @@ const SpecificAudio = () => {
     audioRef.current.currentTime = seekTime;
   };
 
-  const handleRating = (rating) => {
-    setUserRating(rating);
-    console.log(`Rated audio ${id} with ${rating} stars`);
+  const handleRating = async (rating) => {
+    try {
+      setUserRating(rating);
+      await axios.post(
+        `http://localhost:3000/api/child/content/rating`,
+        {
+          contentId: id,
+          rating: rating,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      console.log(`Successfully rated audio ${id} with ${rating} stars`);
+    } catch (error) {
+      console.error("Failed to submit rating:", error);
+    }
   };
 
   if (!audio) {
     return <div className="specific-vid-container">Loading audio...</div>;
   }
+
+  const thumbnailUrl = audio.thumbnail?.startsWith("http")
+    ? audio.thumbnail
+    : `http://localhost:3000${audio.thumbnail}`;
 
   return (
     <div className="specific-vid-container">
@@ -95,17 +134,26 @@ const SpecificAudio = () => {
 
       <div className="video-player-container">
         <div className="video-wrapper">
+          <img
+            src={thumbnailUrl}
+            alt={audio.title}
+            className="audio-thumbnail-large"
+            onError={(e) => {
+              e.target.src = "/images/video-placeholder.png";
+            }}
+          />
+
           <audio
             ref={audioRef}
             src={`http://localhost:3000${audio.filePath}`}
             onTimeUpdate={handleProgress}
             className="cute-video-player"
           />
+
           <div className="video-controls">
             <button className="control-button" onClick={togglePlay}>
               {isPlaying ? "⏸️" : "▶️"}
             </button>
-
             <input
               type="range"
               min="0"
@@ -114,7 +162,6 @@ const SpecificAudio = () => {
               onChange={handleSeek}
               className="progress-bar"
             />
-
             <span className="time-display">
               {formatTime(audioRef.current?.currentTime || 0)} / --:--
             </span>
@@ -155,10 +202,10 @@ const SpecificAudio = () => {
             </div>
             <p className="rating-feedback">
               {userRating > 0
-                ? `You gave ${userRating} star${
+                ? `You rated this ${userRating} star${
                     userRating > 1 ? "s" : ""
-                  }! Thank you! 💖`
-                : "Tap the stars to rate!"}
+                  }! 💖`
+                : "Rate this?"}
             </p>
           </div>
         </div>

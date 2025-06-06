@@ -7,6 +7,7 @@ import "../Child/Videos.css";
 const Videos = () => {
   const { user } = useContext(AuthContext);
   const [videos, setVideos] = useState([]);
+  const [ratingsMap, setRatingsMap] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,12 +24,37 @@ const Videos = () => {
             },
           }
         );
+
         const filteredVideos = response.data.filter(
           (item) => item.type === "video"
         );
         setVideos(filteredVideos);
+
+        // Fetch average rating for each video
+        const ratingsResults = await Promise.all(
+          filteredVideos.map((video) =>
+            axios
+              .get(
+                `http://localhost:3000/api/child/content/rating/${video.id}`,
+                {
+                  headers: { Authorization: `Bearer ${user.token}` },
+                }
+              )
+              .then((res) => ({
+                id: video.id,
+                avgRating: res.data.averageRating || 0,
+              }))
+              .catch(() => ({ id: video.id, avgRating: 0 }))
+          )
+        );
+
+        const ratingsObj = {};
+        ratingsResults.forEach(({ id, avgRating }) => {
+          ratingsObj[id] = avgRating;
+        });
+        setRatingsMap(ratingsObj);
       } catch (error) {
-        console.error("Failed to fetch videos:", error);
+        console.error("Failed to fetch videos or ratings:", error);
       }
     };
 
@@ -60,12 +86,12 @@ const Videos = () => {
   };
 
   return (
-  
-      <div className="child-content">
-       
-        <h3 className="section-title">Recommended Videos for your Age group</h3>
-        <div className="video-grid">
-          {videos.map((video) => (
+    <div className="child-content">
+      <h3 className="section-title">Recommended Videos for your Age group</h3>
+      <div className="video-grid">
+        {videos.map((video) => {
+          const myRating = ratingsMap[video.id];
+          return (
             <div
               key={video.id}
               className="video-card"
@@ -88,11 +114,15 @@ const Videos = () => {
               <div className="video-details">
                 <h4 className="video-title">{video.title}</h4>
                 <p className="video-views">{video.ageGroup}+ age group</p>
-                {renderStars(Math.random() * 2 + 3)}
+                <p className="child-rating">
+                  Average Rating: {renderStars(Number(myRating) || 0)}
+                </p>
               </div>
             </div>
-          ))}
-        </div> </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 

@@ -14,35 +14,81 @@ const Audios = () => {
   const navigate = useNavigate();
   const { audioId } = useParams();
 
-  // refs for audios
   const [audioRefs, setAudioRefs] = useState({});
 
   useEffect(() => {
     const fetchAudios = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/child/content", {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-          params: { type: "audio" },
+        const response = await axios.get(
+          "http://localhost:3000/api/child/content",
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+            params: { type: "audio" },
+          }
+        );
+
+        const audioItems = response.data.filter(
+          (item) => item.type === "audio"
+        );
+
+        const ratedAudios = await Promise.all(
+          audioItems.map(async (item) => {
+            const audioUrl = `http://localhost:3000${item.filePath}`;
+
+            let thumbnailUrl = "/images/video-placeholder.png";
+            if (item.thumbnail) {
+              thumbnailUrl = item.thumbnail.startsWith("http")
+                ? item.thumbnail
+                : `http://localhost:3000${item.thumbnail}`;
+            }
+
+            try {
+              const ratingRes = await axios.get(
+                `http://localhost:3000/api/child/content/rating/${item.id}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${user.token}`,
+                  },
+                }
+              );
+
+              return {
+                ...item,
+                audio: audioUrl,
+                thumbnail: thumbnailUrl,
+                artist: item.artist || "Unknown Artist",
+                duration: item.duration || "Unknown",
+                rating: ratingRes.data.averageRating || 0,
+              };
+            } catch (err) {
+              console.error(
+                `Failed to fetch rating for audio ${item.id}:`,
+                err
+              );
+              return {
+                ...item,
+                audio: audioUrl,
+                thumbnail: thumbnailUrl,
+                artist: item.artist || "Unknown Artist",
+                duration: item.duration || "Unknown",
+                rating: 0,
+              };
+            }
+          })
+        );
+
+        setSongs(ratedAudios);
+
+        const initialRatings = {};
+        ratedAudios.forEach((song) => {
+          initialRatings[song.id] = song.rating;
         });
+        setRatings(initialRatings);
 
-        const audioItems = response.data
-          .filter((item) => item.type === "audio")
-          .map((item) => ({
-            ...item,
-            audio: `http://localhost:3000${item.filePath}`,
-            artist: item.artist || "Unknown Artist",
-            cover: item.cover || "/default-cover.jpg",
-            duration: item.duration || "Unknown",
-            thumbnail: item.thumbnail || "/default-cover.jpg",
-          }));
-
-        setSongs(audioItems);
-
-        // Create refs dynamically
         const refs = {};
-        audioItems.forEach((song) => {
+        ratedAudios.forEach((song) => {
           refs[song.id] = new Audio(song.audio);
         });
         setAudioRefs(refs);
@@ -88,10 +134,6 @@ const Audios = () => {
     setLikes((prev) => ({ ...prev, [songId]: !prev[songId] }));
   };
 
-  const handleRating = (songId, rating) => {
-    setRatings((prev) => ({ ...prev, [songId]: rating }));
-  };
-
   return (
     <div className="child-content">
       <h3 className="section-title">Recommended Audio for your Age group</h3>
@@ -105,12 +147,12 @@ const Audios = () => {
           >
             <div className="song-thumbnail-container">
               <img
-                src={song.thumbnail
-                  ? `http://localhost:3000${song.thumbnail}`
-                      : "/images/video-placeholder.png"
-                }
+                src={song.thumbnail}
                 alt={song.title}
                 className="audio-thumbnail"
+                onError={(e) => {
+                  e.target.src = "/images/video-placeholder.png";
+                }}
               />
               <div className="audio-duration">{song.duration}</div>
             </div>
@@ -118,30 +160,43 @@ const Audios = () => {
               <h4 className="audio-title">{song.title}</h4>
               <p className="audio-artist">{song.artist}</p>
               <div className="audio-controls">
-                <button onClick={(e) => { e.stopPropagation(); handleBackward(song.id); }}>
-  ◀ 10s
-</button>
-<button onClick={(e) => { e.stopPropagation(); handlePlayPause(song.id); }}>
-  {playingId === song.id ? "⏸ Pause" : "▶ Play"}
-</button>
-<button onClick={(e) => { e.stopPropagation(); handleForward(song.id); }}>
-  10s ▶
-</button>
-
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleBackward(song.id);
+                  }}
+                >
+                  ◀ 10s
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePlayPause(song.id);
+                  }}
+                >
+                  {playingId === song.id ? "⏸ Pause" : "▶ Play"}
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleForward(song.id);
+                  }}
+                >
+                  10s ▶
+                </button>
               </div>
               <div className="rating">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
                     key={star}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRating(song.id, star);
-                    }}
-                    className={star <= (ratings[song.id] || 0) ? "filled" : ""}
+                    className={star <= (song.rating || 0) ? "filled" : ""}
                   >
-                    {star <= (ratings[song.id] || 0) ? "⭐" : "☆"}
+                    {star <= (song.rating || 0) ? "⭐" : "☆"}
                   </span>
                 ))}
+                <span className="rating-value">
+                  ({(song.rating || 0).toFixed(1)})
+                </span>
               </div>
             </div>
           </div>

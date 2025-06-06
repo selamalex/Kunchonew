@@ -34,7 +34,27 @@ const SpecificVid = () => {
       }
     };
 
+    const fetchRating = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/child/content/rating/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+
+        if (response.data.myRating) {
+          setUserRating(response.data.myRating.rating);
+        }
+      } catch (error) {
+        console.error("Failed to fetch rating:", error);
+      }
+    };
+
     fetchVideo();
+    fetchRating();
   }, [id]);
 
   const recordView = async () => {
@@ -79,9 +99,27 @@ const SpecificVid = () => {
     videoRef.current.currentTime = seekTime;
   };
 
-  const handleRating = (rating) => {
-    setUserRating(rating);
-    console.log(`Rated video ${id} with ${rating} stars`);
+  const handleRating = async (rating) => {
+    try {
+      setUserRating(rating);
+
+      await axios.post(
+        "http://localhost:3000/api/child/content/rating",
+        {
+          contentId: id,
+          rating: rating,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      console.log(`Successfully rated video ${id} with ${rating} stars`);
+    } catch (error) {
+      console.error("Failed to submit rating:", error);
+    }
   };
 
   if (!video) {
@@ -160,10 +198,10 @@ const SpecificVid = () => {
             </div>
             <p className="rating-feedback">
               {userRating > 0
-                ? `You gave ${userRating} star${
+                ? `You rated this ${userRating} star${
                     userRating > 1 ? "s" : ""
-                  }! Thank you! 💖`
-                : "Tap the stars to rate!"}
+                  }! 💖`
+                : "Rate this?"}
             </p>
           </div>
         </div>

@@ -5,15 +5,15 @@ const categories = [
   { value: "book", label: "Books" },
   { value: "audio", label: "Audio" },
   { value: "video", label: "Videos" },
-  { value: "other", label: "Others" },
+  { value: "game", label: "Games" },
 ];
 
 const Contents = () => {
   const { user } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("all");
   const [contents, setContents] = useState([]);
-const [showEditModal, setShowEditModal] = useState(false);
-const [editingContent, setEditingContent] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingContent, setEditingContent] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({
@@ -90,56 +90,61 @@ const [editingContent, setEditingContent] = useState(null);
       alert("An error occurred while deleting the content.");
     }
   };
-const handleEditClick = (content) => {
-  setEditingContent(content);
-  setShowEditModal(true);
-};
+  const handleEditClick = (content) => {
+    setEditingContent(content);
+    setShowEditModal(true);
+  };
 
-const handleEditChange = (e) => {
-  const { name, value } = e.target;
-  setEditingContent((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-};
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditingContent((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-const handleUpdate = async (e) => {
-  e.preventDefault();
-  const { id, title, category, status, ageGroup, date } = editingContent;
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const { id, title, category, status, ageGroup, date } = editingContent;
 
-  try {
-    const response = await fetch(`http://localhost:3000/api/admin/content/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-      body: JSON.stringify({
-        title,
-        type: category,
-        ageGroup,
-        status,
-        createdAt: date,
-      }),
-    });
-
-    if (response.ok) {
-      setContents((prev) =>
-        prev.map((item) =>
-          item.id === id ? { ...item, title, category, status, ageGroup, date } : item
-        )
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/admin/content/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({
+            title,
+            type: category,
+            ageGroup,
+            status,
+            createdAt: date,
+          }),
+        }
       );
-      setShowEditModal(false);
-      setEditingContent(null);
-    } else {
-      const result = await response.json();
-      alert("Update failed: " + (result.message || "Unknown error"));
+
+      if (response.ok) {
+        setContents((prev) =>
+          prev.map((item) =>
+            item.id === id
+              ? { ...item, title, category, status, ageGroup, date }
+              : item
+          )
+        );
+        setShowEditModal(false);
+        setEditingContent(null);
+      } else {
+        const result = await response.json();
+        alert("Update failed: " + (result.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Edit error:", error);
+      alert("Error while updating content.");
     }
-  } catch (error) {
-    console.error("Edit error:", error);
-    alert("Error while updating content.");
-  }
-};
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -168,7 +173,12 @@ const handleUpdate = async (e) => {
 
     const { title, category, ageGroup, date, file, thumbnail } = newContent;
 
-    if (!title || !date || !file || !thumbnail) {
+    if (
+      !title ||
+      !date ||
+      (!file && newContent.category !== "game") ||
+      !thumbnail
+    ) {
       alert(
         "Please fill in Title, Date, upload a File, and upload a Thumbnail"
       );
@@ -329,7 +339,7 @@ const handleUpdate = async (e) => {
                         cursor: "pointer",
                         marginRight: "5px",
                       }}
-                       onClick={() => handleEditClick(content)}
+                      onClick={() => handleEditClick(content)}
                     >
                       Edit
                     </button>
@@ -382,7 +392,7 @@ const handleUpdate = async (e) => {
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: "12px" }}>
                 <label style={{ color: "#000" }}>Title</label>
-                                <input
+                <input
                   type="text"
                   name="title"
                   value={newContent.title}
@@ -408,8 +418,6 @@ const handleUpdate = async (e) => {
                 </select>
               </div>
 
-          
-
               <div style={{ marginBottom: "12px" }}>
                 <label style={{ color: "#000" }}>Date</label>
                 <input
@@ -422,17 +430,24 @@ const handleUpdate = async (e) => {
                 />
               </div>
 
-              <div style={{ marginBottom: "12px" }}>
-                <label style={{ color: "#000" }}>Upload File</label>
-                <input
-                  type="file"
-                  name="file"
-                  accept=".pdf,.mp3,.mp4,.zip"
-                  onChange={handleFileChange}
-                  style={{ width: "100%", padding: "8px" }}
-                  required
-                />
-              </div>
+              {newContent.category !== "game" ? (
+                <div style={{ marginBottom: "12px" }}>
+                  <label style={{ color: "#000" }}>Upload File</label>
+                  <input
+                    type="file"
+                    name="file"
+                    accept=".pdf,.mp3,.mp4,.zip"
+                    onChange={handleFileChange}
+                    style={{ width: "100%", padding: "8px" }}
+                    required
+                  />
+                </div>
+              ) : (
+                <div style={{ marginBottom: "12px", color: "gray" }}>
+                  No file required for games.
+                </div>
+              )}
+
               <div style={{ marginBottom: "12px" }}>
                 <label style={{ color: "#000" }}>Upload Thumbnail</label>
                 <input
@@ -466,114 +481,113 @@ const handleUpdate = async (e) => {
         </div>
       )}
       {showEditModal && editingContent && (
-  <div
-    style={{
-      position: "fixed",
-      inset: 0,
-      backgroundColor: "rgba(0,0,0,0.5)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 1000,
-    }}
-    onClick={() => setShowEditModal(false)}
-  >
-    <div
-      onClick={(e) => e.stopPropagation()}
-      style={{
-        backgroundColor: "white",
-        padding: "25px",
-        borderRadius: "10px",
-        width: "350px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-      }}
-    >
-      <h2>Edit Content</h2>
-      <form onSubmit={handleUpdate}>
-        <div style={{ marginBottom: "12px" }}>
-          <label>Title</label>
-          <input
-            type="text"
-            name="title"
-            value={editingContent.title}
-            onChange={handleEditChange}
-            style={{ width: "100%", padding: "8px" }}
-            required
-          />
-        </div>
-
-        <div style={{ marginBottom: "12px" }}>
-          <label>Category</label>
-          <select
-            name="category"
-            value={editingContent.category}
-            onChange={handleEditChange}
-            style={{ width: "100%", padding: "8px" }}
-          >
-            {categories.map((cat) => (
-              <option key={cat.value} value={cat.value}>
-                {cat.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div style={{ marginBottom: "12px" }}>
-          <label>Status</label>
-          <select
-            name="status"
-            value={editingContent.status}
-            onChange={handleEditChange}
-            style={{ width: "100%", padding: "8px" }}
-          >
-            <option value="Draft">Draft</option>
-            <option value="Published">Published</option>
-          </select>
-        </div>
-
-        <div style={{ marginBottom: "12px" }}>
-          <label>Date</label>
-          <input
-            type="date"
-            name="date"
-            value={editingContent.date}
-            onChange={handleEditChange}
-            style={{ width: "100%", padding: "8px" }}
-          />
-        </div>
-
-        <div style={{ textAlign: "right" }}>
-          <button
-            type="button"
-            onClick={() => setShowEditModal(false)}
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+          onClick={() => setShowEditModal(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
             style={{
-              marginRight: "10px",
-              padding: "8px 12px",
-              backgroundColor: "#ccc",
-              border: "none",
-              borderRadius: "4px",
+              backgroundColor: "white",
+              padding: "25px",
+              borderRadius: "10px",
+              width: "350px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
             }}
           >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            style={{
-              padding: "8px 12px",
-              backgroundColor: "#007bff",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-            }}
-          >
-            Save
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-)}
+            <h2>Edit Content</h2>
+            <form onSubmit={handleUpdate}>
+              <div style={{ marginBottom: "12px" }}>
+                <label>Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={editingContent.title}
+                  onChange={handleEditChange}
+                  style={{ width: "100%", padding: "8px" }}
+                  required
+                />
+              </div>
 
+              <div style={{ marginBottom: "12px" }}>
+                <label>Category</label>
+                <select
+                  name="category"
+                  value={editingContent.category}
+                  onChange={handleEditChange}
+                  style={{ width: "100%", padding: "8px" }}
+                >
+                  {categories.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div style={{ marginBottom: "12px" }}>
+                <label>Status</label>
+                <select
+                  name="status"
+                  value={editingContent.status}
+                  onChange={handleEditChange}
+                  style={{ width: "100%", padding: "8px" }}
+                >
+                  <option value="Draft">Draft</option>
+                  <option value="Published">Published</option>
+                </select>
+              </div>
+
+              <div style={{ marginBottom: "12px" }}>
+                <label>Date</label>
+                <input
+                  type="date"
+                  name="date"
+                  value={editingContent.date}
+                  onChange={handleEditChange}
+                  style={{ width: "100%", padding: "8px" }}
+                />
+              </div>
+
+              <div style={{ textAlign: "right" }}>
+                <button
+                  type="button"
+                  onClick={() => setShowEditModal(false)}
+                  style={{
+                    marginRight: "10px",
+                    padding: "8px 12px",
+                    backgroundColor: "#ccc",
+                    border: "none",
+                    borderRadius: "4px",
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  style={{
+                    padding: "8px 12px",
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "4px",
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
