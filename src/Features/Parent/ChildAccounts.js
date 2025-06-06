@@ -13,6 +13,8 @@ import ChildCard from "./ChildCard";
 import { AuthContext } from "../../Context/AuthContext";
 import logo from "../../Assets/images/logo.png";
 
+import LogoutButton from "../../Components/LogoutButton"; // <-- Import LogoutButton here
+
 import "./Sidebar.css";
 import "./ChildAccounts.css";
 
@@ -34,6 +36,7 @@ const ChildAccounts = () => {
   });
   const [formErrors, setFormErrors] = useState({});
 
+  // Fetch children
   useEffect(() => {
     const fetchChildren = async () => {
       try {
@@ -132,7 +135,6 @@ const ChildAccounts = () => {
       setChildren(refreshed.data);
     } catch (error) {
       console.error("Error creating child:", error);
-
       const errorMsg = error.response?.data?.error || "Something went wrong";
       const errors = {};
 
@@ -146,9 +148,7 @@ const ChildAccounts = () => {
         screentime: ["screentime", "screen time"],
       };
 
-      // Try to assign the error to the right field
       const lowerError = errorMsg.toLowerCase();
-
       let matched = false;
       for (const [field, keywords] of Object.entries(fieldKeywords)) {
         for (const keyword of keywords) {
@@ -161,9 +161,7 @@ const ChildAccounts = () => {
         if (matched) break;
       }
 
-      if (!matched) {
-        errors.general = errorMsg;
-      }
+      if (!matched) errors.general = errorMsg;
 
       setFormErrors(errors);
     }
@@ -205,93 +203,147 @@ const ChildAccounts = () => {
   };
 
   return (
-    <div className="child-accounts-section">
-      <div className="card-container">
-        {children.map((child, index) => (
-          <ChildCard
-            key={index}
-            name={child.childUser?.firstName || "Unknown"}
-            age={child.age}
-            userGroup={child.userGroup}
-            screentime={child.screentime}
-            avatarUrl={child.avatarPath}
-            onUpdate={(updatedFields) =>
-              handleUpdateChild({ ...updatedFields, id: child.id })
-            }
-            onDelete={() => handleDeleteChild(child.id)}
-          />
-        ))}
-        <div className="child-card add-card" onClick={() => setShowModal(true)}>
-          <FaPlus className="add-icon" />
-          <p>Add Child</p>
+    <div className="dashboard-container">
+      <button
+        className="sidebar-hamburger"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        {sidebarOpen ? <FaTimes /> : <FaBars />}
+      </button>
+
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <div className={`sidebar ${sidebarOpen ? "active" : ""}`}>
+        <div className="logo">
+          <img src={logo} alt="Kuncho Logo" className="logo-img" />
+        </div>
+        <ul className="sidebar-menu">
+          <li>
+            <Link to="/parent/dashboard" onClick={() => setSidebarOpen(false)}>
+              <FaTachometerAlt />
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/parent/subaccounts"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <FaTachometerAlt />
+              Sub Account Management
+            </Link>
+          </li>
+          <li>
+            <Link to="/parent/screentime" onClick={() => setSidebarOpen(false)}>
+              <FaClock />
+              Screen Time Report
+            </Link>
+          </li>
+        </ul>
+
+        {/* Add logout button here */}
+        <div className="logout">
+          <LogoutButton />
         </div>
       </div>
 
-      {/* Modal */}
-      {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setShowModal(false)}>
-              <FaTimes />
-            </button>
-            <h2>Add New Child</h2>
-            <form onSubmit={handleSubmit}>
-              {[
-                { label: "First Name", name: "firstName", type: "text" },
-                { label: "Last Name", name: "lastName", type: "text" },
-                { label: "Email", name: "email", type: "email" },
-                { label: "Password", name: "password", type: "password" },
-                {
-                  label: "Confirm Password",
-                  name: "confirmPassword",
-                  type: "password",
-                },
-                {
-                  label: "Age",
-                  name: "age",
-                  type: "number",
-                  min: 3,
-                  max: 12,
-                },
-                {
-                  label: "Screentime (minutes/day)",
-                  name: "screentime",
-                  type: "number",
-                  min: 0,
-                },
-              ].map(({ label, name, type, min, max }) => (
-                <div className="form-group" key={name}>
-                  <label>{label}</label>
-                  <input
-                    type={type}
-                    name={name}
-                    value={formData[name]}
-                    onChange={handleInputChange}
-                    min={min}
-                    max={max}
-                  />
-                  {formErrors[name] && (
-                    <p className="error-text">{formErrors[name]}</p>
-                  )}
-                </div>
-              ))}
-              {formErrors.general && (
-                <p className="error-text" style={{ marginBottom: "1rem" }}>
-                  {formErrors.general}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                className="register-btn"
-                style={{ backgroundColor: "#f5a12b" }}
-              >
-                Register
-              </button>
-            </form>
+      <div className="main-content">
+        <div className="child-accounts-section">
+          <div className="card-container">
+            {children.map((child, index) => (
+              <ChildCard
+                key={index}
+                name={child.childUser?.firstName || "Unknown"}
+                age={child.age}
+                userGroup={child.userGroup}
+                screentime={child.screentime}
+                avatarUrl={child.avatarPath}
+                onUpdate={(updatedFields) =>
+                  handleUpdateChild({ ...updatedFields, id: child.id })
+                }
+                onDelete={() => handleDeleteChild(child.id)}
+              />
+            ))}
+            <div
+              className="child-card add-card"
+              onClick={() => setShowModal(true)}
+            >
+              <FaPlus className="add-icon" />
+              <p>Add Child</p>
+            </div>
           </div>
         </div>
-      )}
+
+        {showModal && (
+          <div className="modal-overlay" onClick={() => setShowModal(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <button className="close-btn" onClick={() => setShowModal(false)}>
+                <FaTimes />
+              </button>
+              <h2>Add New Child</h2>
+              <form onSubmit={handleSubmit}>
+                {[
+                  { label: "First Name", name: "firstName", type: "text" },
+                  { label: "Last Name", name: "lastName", type: "text" },
+                  { label: "Email", name: "email", type: "email" },
+                  { label: "Password", name: "password", type: "password" },
+                  {
+                    label: "Confirm Password",
+                    name: "confirmPassword",
+                    type: "password",
+                  },
+                  {
+                    label: "Age",
+                    name: "age",
+                    type: "number",
+                    min: 3,
+                    max: 12,
+                  },
+                  {
+                    label: "Screentime (minutes/day)",
+                    name: "screentime",
+                    type: "number",
+                    min: 0,
+                  },
+                ].map(({ label, name, type, min, max }) => (
+                  <div className="form-group" key={name}>
+                    <label>{label}</label>
+                    <input
+                      type={type}
+                      name={name}
+                      value={formData[name]}
+                      onChange={handleInputChange}
+                      min={min}
+                      max={max}
+                    />
+                    {formErrors[name] && (
+                      <p className="error-text">{formErrors[name]}</p>
+                    )}
+                  </div>
+                ))}
+                {formErrors.general && (
+                  <p className="error-text" style={{ marginBottom: "1rem" }}>
+                    {formErrors.general}
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  className="register-btn"
+                  style={{ backgroundColor: "#f5a12b" }}
+                >
+                  Register
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

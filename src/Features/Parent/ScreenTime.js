@@ -1,11 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
+import {
+  FaArrowLeft,
+  FaTachometerAlt,
+  FaClock,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
-import { FaArrowLeft, FaTachometerAlt, FaClock } from "react-icons/fa";
 import LogoutButton from "../../Components/LogoutButton";
 import logo from "../../Assets/images/logo.png";
 import { AuthContext } from "../../Context/AuthContext";
 import abushImage from "../../Assets/images/Abush.png";
-import moment from "moment"; 
+import moment from "moment";
 import "./ScreenTime.css";
 import "./Sidebar.css";
 
@@ -16,6 +22,7 @@ const ScreenTime = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [expandedChildIndex, setExpandedChildIndex] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const fetchScreenTime = async () => {
@@ -41,7 +48,7 @@ const ScreenTime = () => {
     };
 
     fetchScreenTime();
-  }, []);
+  }, [user.token]);
 
   const toggleExpand = async (index, childId) => {
     if (expandedChildIndex === index) {
@@ -60,7 +67,6 @@ const ScreenTime = () => {
         if (!res.ok) throw new Error("Failed to fetch viewed content");
 
         const data = await res.json();
-
         const updatedChildren = [...screenData.children];
         const matchedChild = data.children.find((c) => c.id === childId);
         if (matchedChild) {
@@ -83,8 +89,59 @@ const ScreenTime = () => {
 
   return (
     <div className="dashboard-container">
-      
+      {/* Hamburger (Mobile) */}
+      <button
+        className="sidebar-hamburger"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        {sidebarOpen ? <FaTimes /> : <FaBars />}
+      </button>
 
+      {/* Overlay (Mobile) */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`sidebar ${sidebarOpen ? "active" : ""}`}>
+        <div className="logo">
+          <img src={logo} alt="Kuncho Logo" className="logo-img" />
+        </div>
+
+        <ul className="sidebar-menu">
+          <li>
+            <Link to="/parent/dashboard" onClick={() => setSidebarOpen(false)}>
+              <FaTachometerAlt />
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/parent/subaccounts"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <FaTachometerAlt />
+              Sub Account Management
+            </Link>
+          </li>
+          <li>
+            <Link to="/parent/screentime" onClick={() => setSidebarOpen(false)}>
+              <FaClock />
+              Screen Time Report
+            </Link>
+          </li>
+        </ul>
+
+        <div className="logout">
+          <LogoutButton />
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="main-content">
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
@@ -100,7 +157,7 @@ const ScreenTime = () => {
                   className="child-avatar"
                 />
                 <span className="child-name" id="childs">
-                  Child{" "}
+                  Child
                 </span>
               </div>
               <div className="time-box">
@@ -114,7 +171,7 @@ const ScreenTime = () => {
               </div>
             </div>
 
-            {/* Total Summary */}
+            {/* Summary */}
             <div className="screen-card">
               <div className="child-profile">
                 <span className="child-name">All</span>
@@ -128,7 +185,7 @@ const ScreenTime = () => {
               <div className="time-box"></div>
             </div>
 
-            {/* Per-child */}
+            {/* Children */}
             {screenData.children?.map((child, index) => (
               <div key={index}>
                 <div className="screen-card">
@@ -163,7 +220,6 @@ const ScreenTime = () => {
                     <p>
                       <strong>Weekly:</strong> {child.week} views
                     </p>
-
                     <h4>Viewed Content:</h4>
                     {child.viewedContent && child.viewedContent.length > 0 ? (
                       <ul className="content-list">
@@ -190,7 +246,7 @@ const ScreenTime = () => {
           </div>
         )}
       </div>
-
+    </div>
   );
 };
 
