@@ -1,6 +1,6 @@
 // ChildDashboard.js
-import { useContext, useState} from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 import Abush from "../../Assets/images/Abush.png";
 import Bitiko from "../../Assets/images/Bitiko.png";
 import Mitu from "../../Assets/images/Mitu.png";
@@ -11,7 +11,6 @@ import game from "../../Assets/images/game.jpg";
 import hen from "../../Assets/images/hen.png";
 import music from "../../Assets/images/musicbg.png";
 import video from "../../Assets/images/videosbg.png";
-import LogoutButton from "../../Components/LogoutButton";
 
 import { AuthContext } from "../../Context/AuthContext";
 import "./ChildDashboard.css";
@@ -25,7 +24,7 @@ const ChildDashboard = () => {
       <div className="child-content">
        
         <h1>Hello, {user.firstName}</h1>
-        <p>Explore fun videos, exciting books, cool music, and awesome games.</p>
+        <p className="additionaltext">Explore fun videos, exciting books, cool music, and awesome games.</p>
 
         <h2>Our Characters</h2>
        <div className="character-container">
