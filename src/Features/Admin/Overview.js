@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../../Context/AuthContext";  
+import { AuthContext } from "../../Context/AuthContext";
 import './admin.css';
 import './Sidebar.css';
 import { Line, Bar } from "react-chartjs-2";
@@ -26,93 +26,93 @@ ChartJS.register(
   Legend
 );
 
+const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 const Overview = () => {
   const { user } = useContext(AuthContext);
+
   const [userStats, setUserStats] = useState({
     totalUsers: 0,
-    admins: 9,
+    admins: 0,
     parents: 0,
     children: 0,
   });
 
-  // Fetch user stats from backend
+  const [monthlyUsers, setMonthlyUsers] = useState([]);
+  const [contentStats, setContentStats] = useState([]);
+
   useEffect(() => {
-    if (!user?.token) return; // wait for token
+    if (!user?.token) return;
 
-    const fetchUserStats = async () => {
+    const fetchStats = async () => {
       try {
-        const res = await fetch(
-          "http://localhost:3000/api/admins/users/count",
-          {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
-          }
-        );
+        const headers = { Authorization: `Bearer ${user.token}` };
 
-        const contentType = res.headers.get("content-type");
+        // Fetch user role stats
+        const userRes = await fetch("http://localhost:3000/api/admins/users/count", { headers });
+        if (!userRes.ok) throw new Error(`User counts fetch failed: ${userRes.status}`);
+        const userData = await userRes.json();
+        console.log("User counts data:", userData);
+        setUserStats(userData);
 
-        if (!res.ok) {
-          const text = await res.text();
-          console.error("API error response:", text); // Logs the HTML or error
-          return;
-        }
+        // Fetch monthly registrations
+        const monthRes = await fetch("http://localhost:3000/api/admins/users/per-month", { headers });
+        if (!monthRes.ok) throw new Error(`Monthly users fetch failed: ${monthRes.status}`);
+        const monthData = await monthRes.json();
+        console.log("Monthly users data:", monthData);
+        setMonthlyUsers(monthData);
 
-        if (contentType && contentType.includes("application/json")) {
-          const data = await res.json();
-          console.log("Parsed user stats:", data);
-          setUserStats(data);
-        } else {
-          const text = await res.text();
-          console.error("Expected JSON but got:", text);
-        }
-      } catch (error) {
-        console.error("Failed to fetch user stats:", error);
+        // Fetch content stats
+        const contentRes = await fetch("http://localhost:3000/api/admins/content/type", { headers });
+        if (!contentRes.ok) throw new Error(`Content stats fetch failed: ${contentRes.status}`);
+        const contentData = await contentRes.json();
+        console.log("Content stats data:", contentData);
+        setContentStats(contentData);
+      } catch (err) {
+        console.error("Error fetching stats:", err);
       }
     };
 
-    fetchUserStats();
-  }, [user]); // 👈 important dependency
+    fetchStats();
+  }, [user]);
+
+  // Prepare monthly user data for line chart
+  const groupedByMonth = new Array(12).fill(0);
+  monthlyUsers.forEach(item => {
+    // Defensive check in case month or count missing or invalid
+    const monthIndex = item.month ? Number(item.month) - 1 : null;
+    const count = item.count ? Number(item.count) : 0;
+    if (monthIndex >= 0 && monthIndex < 12) {
+      groupedByMonth[monthIndex] = count;
+    }
+  });
 
   const lineChartData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    labels: monthsShort,
     datasets: [
       {
-        label: "This year",
-        data: [50, 30, 60, 70, 90, 80, 90],
+        label: "Users Registered",
+        data: groupedByMonth,
         borderColor: "rgb(75, 192, 192)",
         tension: 0.4,
-      },
-      {
-        label: "Last year",
-        data: [30, 40, 35, 50, 49, 60, 70],
-        borderColor: "rgb(153, 102, 255)",
-        tension: 0.4,
-        borderDash: [5, 5],
+        fill: false,
       },
     ],
   };
 
   const lineChartOptions = {
     responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-    },
-    scales: {
-      y: {
-        min: 0,
-      },
-    },
+    plugins: { legend: { position: "top" } },
+    scales: { y: { beginAtZero: true, precision: 0 } },
   };
 
+  // Prepare content chart data for bar chart
   const barChartData = {
-    labels: ["Books", "Music", "Others", "Videos"],
+    labels: contentStats.map(c => c.type || "Unknown"),
     datasets: [
       {
         label: "Content Count",
-        data: [150, 220, 180, 250], // Replace with backend data if needed
+        data: contentStats.map(c => Number(c.count) || 0),
         backgroundColor: [
           "rgba(153, 102, 255, 0.6)",
           "rgba(75, 192, 192, 0.6)",
@@ -125,21 +125,12 @@ const Overview = () => {
 
   const barChartOptions = {
     responsive: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-      },
-    },
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, precision: 0 } },
   };
 
   return (
     <div className="admin-container">
-  
       <div className="page-container">
         <h1 className="page-header">Overview</h1>
 
@@ -163,7 +154,7 @@ const Overview = () => {
         </div>
 
         <div className="chart-container">
-          <h2 className="chart-header">Total Users</h2>
+          <h2 className="chart-header">Monthly User Registrations</h2>
           <div style={{ height: "300px" }}>
             <Line data={lineChartData} options={lineChartOptions} />
           </div>

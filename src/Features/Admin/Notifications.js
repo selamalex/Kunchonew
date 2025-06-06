@@ -261,6 +261,32 @@ const Notifications = () => {
             <h2 style={{ color: "#000" }}>Create Notification</h2>
 
             <label style={{ color: "#000" }}>
+<<<<<<< HEAD
+              Admin Name
+              <input
+                type="text"
+                name="adminName"
+                onChange={handleChange}
+                placeholder="Enter admin name"
+                className="notif-popup-input"
+              />
+            </label>
+
+            <label style={{ color: "#000" }}>
+  Type
+  <select
+    name="type"
+    onChange={handleChange}
+    className="notif-popup-input"
+    defaultValue=""
+  >
+    <option value="" disabled>Select type</option>
+    <option value="email">Email</option>
+    <option value="in-app">In-app</option>
+  </select>
+</label>
+
+=======
               Type
               <input
                 type="text"
@@ -271,6 +297,7 @@ const Notifications = () => {
                 className="notif-popup-input"
               />
             </label>
+>>>>>>> 4c16bd54cf083d97497501dbc09f990a20b74a9d
 
             <label style={{ color: "#000" }}>
               Message
