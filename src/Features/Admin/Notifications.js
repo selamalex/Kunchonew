@@ -1,50 +1,80 @@
 "use client";
 import "./admin.css";
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../Context/AuthContext";
+
 const Notifications = () => {
   const { user } = useContext(AuthContext);
   const [statusMessage, setStatusMessage] = useState("");
   const [statusType, setStatusType] = useState("");
-
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      adminName: "Admin A",
-      type: "System Update",
-      message: "The system will be updated on June 15th.",
-      timestamp: "2023-06-10",
-    },
-    {
-      id: 2,
-      adminName: "Admin B",
-      type: "New Content",
-      message: "Check out our new educational videos!",
-      timestamp: "2023-06-20",
-    },
-    {
-      id: 3,
-      adminName: "Admin C",
-      type: "Maintenance",
-      message: "Brief maintenance scheduled for tomorrow.",
-      timestamp: "2023-06-12",
-    },
-  ]);
-
+  const [notifications, setNotifications] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
   const [showPopup, setShowPopup] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
+  const [inAppCount, setInAppCount] = useState(0);
+  const [emailCount, setEmailCount] = useState(0);
   const [newNotification, setNewNotification] = useState({
-    adminName: "",
     type: "",
     message: "",
-    timestamp: "",
   });
 
-  const handleDeleteNotification = (id) => {
-    setNotifications(
-      notifications.filter((notification) => notification.id !== id)
-    );
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/admins/notifications",
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      console.log("Fetched notifications response:", response.data);
+
+      // Ensure notifications is set to an array
+      const notiArray = Array.isArray(response.data)
+        ? response.data
+        : response.data.notifications || [];
+
+      setNotifications(notiArray);
+      setTotalCount(notiArray.length);
+      setInAppCount(notiArray.filter((n) => n.type === "in-app").length);
+      setEmailCount(notiArray.filter((n) => n.type === "email").length);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const handleDeleteNotification = async (id) => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/admins/notifications/${id}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      setNotifications((prev) => {
+        const updated = prev.filter((n) => n.id !== id);
+        setTotalCount(updated.length);
+        setInAppCount(updated.filter((n) => n.type === "in-app").length);
+        setEmailCount(updated.filter((n) => n.type === "email").length);
+        return updated;
+      });
+      setStatusMessage("Notification deleted successfully!");
+      setStatusType("success");
+    } catch (error) {
+      console.error("Error deleting notification:", error);
+      setStatusMessage("Failed to delete notification.");
+      setStatusType("error");
+    }
   };
 
   const openPopup = () => setShowPopup(true);
@@ -73,23 +103,18 @@ const Notifications = () => {
         }
       );
 
-      const newId = notifications.length + 1;
       const today = new Date().toISOString().split("T")[0];
+      const newNoti = {
+        id: response.data.id || notifications.length + 1,
+        adminName: `${user.firstName} ${user.lastName}`,
+        type: newNotification.type,
+        message: newNotification.message,
+        timestamp: today,
+      };
 
-      setNotifications([
-        ...notifications,
-        {
-          id: newId,
-          adminName: `${user.firstName} ${user.lastName}`,
-          type: newNotification.type,
-          message: newNotification.message,
-          timestamp: today,
-        },
-      ]);
-
-      setNewNotification({ type: "", message: "", timestamp: "" });
+      setNotifications((prev) => [...prev, newNoti]);
+      setNewNotification({ type: "", message: "" });
       setShowPopup(false);
-
       setStatusMessage("Notification sent to all parents successfully!");
       setStatusType("success");
     } catch (error) {
@@ -98,6 +123,9 @@ const Notifications = () => {
       setStatusType("error");
     }
   };
+  const filteredNotifications = notifications.filter((n) =>
+    activeTab === "all" ? true : n.type === activeTab
+  );
 
   return (
     <>
@@ -107,7 +135,15 @@ const Notifications = () => {
         <div className="stats-container">
           <div className="stat-card">
             <div className="stat-title">Total Notifications</div>
-            <div className="stat-value">{notifications.length}</div>
+            <div className="stat-value">{totalCount}</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-title">In-App Notifications</div>
+            <div className="stat-value">{inAppCount}</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-title">Email Notifications</div>
+            <div className="stat-value">{emailCount}</div>
           </div>
         </div>
 
@@ -118,6 +154,18 @@ const Notifications = () => {
               onClick={() => setActiveTab("all")}
             >
               All
+            </div>
+            <div
+              className={`tab ${activeTab === "in-app" ? "active" : ""}`}
+              onClick={() => setActiveTab("in-app")}
+            >
+              In-App
+            </div>
+            <div
+              className={`tab ${activeTab === "email" ? "active" : ""}`}
+              onClick={() => setActiveTab("email")}
+            >
+              Email
             </div>
           </div>
 
@@ -139,6 +187,7 @@ const Notifications = () => {
               style={{ width: "250px" }}
             />
           </div>
+
           {statusMessage && (
             <div
               className={`status-message ${
@@ -174,7 +223,7 @@ const Notifications = () => {
               </tr>
             </thead>
             <tbody>
-              {notifications.map((notification) => (
+              {filteredNotifications.map((notification) => (
                 <tr key={notification.id}>
                   <td>
                     <input type="checkbox" />
@@ -182,7 +231,7 @@ const Notifications = () => {
                   <td>{notification.adminName}</td>
                   <td>{notification.type}</td>
                   <td>{notification.message}</td>
-                  <td>{notification.timestamp}</td>
+                  <td>{new Date(notification.createdAt).toLocaleString()}</td>
                   <td>
                     <button
                       className="action-button"
@@ -206,7 +255,6 @@ const Notifications = () => {
         </div>
       </div>
 
-      {/* Notification Popup Modal */}
       {showPopup && (
         <div className="notif-popup-overlay" onClick={closePopup}>
           <div className="notif-popup" onClick={(e) => e.stopPropagation()}>
@@ -217,6 +265,7 @@ const Notifications = () => {
               <input
                 type="text"
                 name="type"
+                value={newNotification.type}
                 onChange={handleChange}
                 placeholder="Enter type"
                 className="notif-popup-input"
@@ -227,19 +276,10 @@ const Notifications = () => {
               Message
               <textarea
                 name="message"
+                value={newNotification.message}
                 onChange={handleChange}
                 placeholder="Enter message"
                 className="notif-popup-textarea"
-              />
-            </label>
-
-            <label style={{ color: "#000" }}>
-              Timestamp
-              <input
-                type="date"
-                name="timestamp"
-                onChange={handleChange}
-                className="notif-popup-input"
               />
             </label>
 
