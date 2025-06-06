@@ -29,6 +29,7 @@
   flex-wrap: wrap;
   margin-top: 30px;
   overflow-x: auto;
+  margin-left: -50px;
 }
 
 .child-card {
@@ -40,6 +41,9 @@
   text-align: center;
   border: 1px solid #eee;
   transition: transform 0.3s;
+}
+.child-accounts-section {
+  margin-left: -195px;
 }
 
 .child-card:hover {
@@ -323,5 +327,22 @@ p {
 
   .dashboard-wrapper {
     position: relative;
+  }
+}
+@media (max-width: 768px) {
+  .card-container {
+    margin-left: 120px;
+    flex-direction: column;
+    align-items: center; /* Center cards horizontally */
+    gap: 1rem;
+    padding: 0.5rem 0; /* Vertical padding only */
+  }
+
+  .child-card {
+    width: 85%; /* Reduced width (adjust percentage as needed) */
+    max-width: 320px; /* Optional: Set maximum width in pixels */
+    margin: 0 auto; /* Center the card horizontally */
+    padding: 1rem; /* Maintain internal padding */
+    box-sizing: border-box; /* Include padding in width calculation */
   }
 }

@@ -1,3 +1,4 @@
+/* Sidebar Base Styles (preserved from your original) */
 .sidebar {
   width: 250px;
   background-color: #431b06;
@@ -8,25 +9,19 @@
   position: fixed;
   top: 0;
   left: 0;
-  padding: 1rem;
+  padding: 1rem 0; /* Keep your horizontal padding removal */
   transition: transform 0.3s ease-in-out;
   z-index: 1000;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  -ms-overflow-style: auto;
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-    position: fixed;
-  }
-
-  .sidebar.active {
-    transform: translateX(0);
-  }
-}
-
+/* Logo Section (adjusted structure but preserved your styling) */
 .logo {
   text-align: center;
-  margin-bottom: 1rem;
+  padding: 1rem;
+  margin-bottom: 2rem; /* Increased for better spacing */
 }
 
 .logo-img {
@@ -34,10 +29,12 @@
   height: auto;
 }
 
+/* Navigation Links (structure improved but styling preserved) */
 .sidebar ul {
   list-style: none;
-  padding: 0;
+  padding: 0 1rem; /* Added horizontal padding */
   margin: 0;
+  flex: 1; /* Takes remaining space */
 }
 
 .sidebar ul li {
@@ -51,6 +48,7 @@
   color: #ffffff;
   text-decoration: none;
   padding: 0.7rem 1rem;
+  padding-left: 0.5rem; /* Pushed content left as requested */
   border-radius: 8px;
   transition: background-color 0.3s ease;
 }
@@ -60,12 +58,15 @@
   color: #431b06;
 }
 
+/* Logout Section (structure improved but styling preserved) */
 .logout {
   margin-top: auto;
   border-top: 1px solid #f5a12b;
-  padding-top: 1rem;
+  padding: 1rem;
+  padding-left: 1.5rem; /* Aligned with nav links */
 }
 
+/* Main Content Area (preserved exactly) */
 .dashboard-container {
   display: flex;
   flex-direction: row;
@@ -78,17 +79,19 @@
   transition: margin-left 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .dashboard-container {
-    flex-direction: column;
-  }
-
-  .main-content {
-    margin-left: 0;
-    padding: 1.5rem;
-  }
+/* Mobile Overlay (preserved exactly) */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
 }
 
+/* Hamburger Icon (preserved exactly) */
 .sidebar-hamburger {
   position: fixed;
   top: 15px;
@@ -102,8 +105,162 @@
   cursor: pointer;
 }
 
+/* Mobile Responsiveness (preserved your original with small improvements) */
 @media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 1.5rem;
+    padding-top: 4rem; /* Space for hamburger */
+  }
+
   .sidebar-hamburger {
     display: block;
   }
+
+  /* Fix for left alignment of links */
+  .sidebar ul {
+    padding: 0 0.5rem; /* Reduce padding on mobile */
+  }
+
+  .sidebar ul li a {
+    padding-left: 0.5rem; /* Consistent left padding */
+    margin-left: 0; /* Remove any negative margin */
+  }
+}
+
+/* Top Bar Styles (preserved exactly) */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: #431b06;
+  margin: 0;
+}
+
+.greeting-text {
+  color: #666;
+  font-size: 1rem;
+}
+
+.page-content {
+  padding: 1rem 0;
+}
+.sidebar {
+  height: 100vh;
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.delete-account-text {
+  background: none;
+  border: none;
+  color: #d9534f;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.delete-account-text:hover {
+  text-decoration: underline;
+}
+.confirm-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.confirm-modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.confirm-modal h3 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.cancel-btn,
+.confirm-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.cancel-btn {
+  background-color: #ddd;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background-color: #bbb;
+}
+
+.confirm-btn {
+  background-color: #d9534f;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #c9302c;
 }

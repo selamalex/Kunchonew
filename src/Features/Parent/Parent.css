@@ -13,3 +13,6 @@
   max-width: calc(100% - 250px);
   box-sizing: border-box;
 }
+.main-content1 {
+  margin-left: -5px;
+}

@@ -1,21 +1,33 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { FaArrowLeft, FaTachometerAlt, FaClock } from "react-icons/fa";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import {
+  FaArrowLeft,
+  FaTachometerAlt,
+  FaClock,
+  FaBars,
+  FaTimes,
+  FaTrashAlt,
+} from "react-icons/fa";
 import LogoutButton from "../../Components/LogoutButton";
 import logo from "../../Assets/images/logo.png";
 import { AuthContext } from "../../Context/AuthContext";
 import abushImage from "../../Assets/images/Abush.png";
-import moment from "moment"; 
+import moment from "moment";
 import "./ScreenTime.css";
 import "./Sidebar.css";
 
 const ScreenTime = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [screenData, setScreenData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [expandedChildIndex, setExpandedChildIndex] = useState(null);
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     const fetchScreenTime = async () => {
@@ -41,7 +53,7 @@ const ScreenTime = () => {
     };
 
     fetchScreenTime();
-  }, []);
+  }, [user.token]);
 
   const toggleExpand = async (index, childId) => {
     if (expandedChildIndex === index) {
@@ -81,10 +93,87 @@ const ScreenTime = () => {
     }
   };
 
+  const handleDeleteAccount = () => {
+    // TODO: Add actual delete account logic here
+    console.log("Account deleted");
+    setShowConfirmModal(false);
+  };
+
   return (
     <div className="dashboard-container">
-      
+      {/* Hamburger button */}
+      <button
+        className="sidebar-hamburger"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        {sidebarOpen ? <FaTimes /> : <FaBars />}
+      </button>
 
+      {/* Overlay to close sidebar on mobile */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`sidebar ${sidebarOpen ? "active" : ""}`}>
+        <div className="logo">
+          <img src={logo} alt="Kuncho Logo" className="logo-img" />
+        </div>
+        <ul className="sidebar-menu">
+          <li className="sidebar-title">
+            <Link
+              to="/parent/dashboard"
+              onClick={() => setSidebarOpen(false)}
+              className={
+                location.pathname === "/parent/dashboard" ? "active" : ""
+              }
+            >
+              <FaTachometerAlt />
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/parent/subaccounts"
+              onClick={() => setSidebarOpen(false)}
+              className={
+                location.pathname === "/parent/subaccounts" ? "active" : ""
+              }
+            >
+              <FaTachometerAlt />
+              Sub Account Management
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/parent/screentime"
+              onClick={() => setSidebarOpen(false)}
+              className={
+                location.pathname === "/parent/screentime" ? "active" : ""
+              }
+            >
+              <FaClock />
+              Screen Time Report
+            </Link>
+          </li>
+        </ul>
+        <div className="sidebar-footer">
+          <LogoutButton />
+          <button
+            className="delete-account-text"
+            onClick={() => setShowConfirmModal(true)}
+          >
+            <FaTrashAlt style={{ marginRight: "8px" }} />
+            Delete Account
+          </button>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="main-content">
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
@@ -191,6 +280,27 @@ const ScreenTime = () => {
         )}
       </div>
 
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal">
+            <h3>Are you sure you want to delete your account?</h3>
+            <p>This action cannot be undone.</p>
+            <div className="modal-actions">
+              <button
+                className="cancel-btn"
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancel
+              </button>
+              <button className="confirm-btn" onClick={handleDeleteAccount}>
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
