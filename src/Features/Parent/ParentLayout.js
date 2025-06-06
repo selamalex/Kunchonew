@@ -6,6 +6,7 @@ import { FaTachometerAlt, FaClock, FaBell, FaUserCircle } from "react-icons/fa";
 import logo from "../../Assets/images/logo.png";
 import "./Sidebar.css";
 import "./ParentLayout.css";
+import axios from "axios";
 
 const ParentLayout = () => {
   const { user } = useContext(AuthContext);
@@ -23,14 +24,60 @@ const ParentLayout = () => {
   const currentTitle = pageTitles[location.pathname] || "";
 
   useEffect(() => {
-    setNotifications([
-      { id: 1, message: "Screen time reached 2 hrs" },
-      { id: 2, message: "New update available" },
-    ]);
-  }, []);
+    const fetchNotifications = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:3000/api/parents/notifications",
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`, // ensure this is the correct token
+            },
+          }
+        );
+
+        setNotifications(res.data.notifications || []);
+      } catch (error) {
+        console.error("Failed to fetch notifications:", error);
+      }
+    };
+
+    fetchNotifications();
+  }, [user.token]);
+  useEffect(() => {
+    const handleClickOutside = async (event) => {
+      const notifWrapper = document.querySelector(".notification-wrapper");
+      if (notifWrapper && !notifWrapper.contains(event.target)) {
+        setShowNotifications(false);
+
+        if (notifications.length > 0) {
+          try {
+            await axios.put(
+              "http://localhost:3000/api/parents/notifications/mark-read",
+              {},
+              {
+                headers: {
+                  Authorization: `Bearer ${user.token}`,
+                },
+              }
+            );
+            setNotifications([]);
+          } catch (error) {
+            console.error("Failed to mark notifications as read:", error);
+          }
+        }
+      }
+    };
+
+    if (showNotifications) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showNotifications, notifications, user.token]);
 
   const handleDeleteAccount = () => {
-    // Add backend request here
     alert("Account deletion triggered.");
   };
 
@@ -73,10 +120,52 @@ const ParentLayout = () => {
             <div className="notification-wrapper">
               <FaBell
                 className="icon"
-                onClick={() => setShowNotifications(!showNotifications)}
+                onClick={() => setShowNotifications((prev) => !prev)}
               />
+
+              {notifications.length > 0 && (
+                <span className="notification-count">
+                  {notifications.length}
+                </span>
+              )}
               {showNotifications && (
                 <div className="dropdown notification-popup">
+                  <span
+                    onClick={async () => {
+                      setShowNotifications(false);
+
+                      if (notifications.length > 0) {
+                        try {
+                          await axios.put(
+                            "http://localhost:3000/api/parents/notifications/mark-read",
+                            {},
+                            {
+                              headers: {
+                                Authorization: `Bearer ${user.token}`,
+                              },
+                            }
+                          );
+                          setNotifications([]);
+                        } catch (error) {
+                          console.error(
+                            "Failed to mark notifications as read:",
+                            error
+                          );
+                        }
+                      }
+                    }}
+                    style={{
+                      position: "absolute",
+                      top: "5px",
+                      right: "10px",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                      fontSize: "18px",
+                    }}
+                  >
+                    ×
+                  </span>
+
                   {notifications.length === 0 ? (
                     <p className="empty-msg">No notifications</p>
                   ) : (
