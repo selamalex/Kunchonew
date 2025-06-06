@@ -258,13 +258,6 @@ const ChildAccounts = () => {
 
         <div className="sidebar-footer">
           <LogoutButton />
-          <button
-            className="delete-account-text"
-            onClick={() => setShowConfirmModal(true)}
-          >
-            <FaTrashAlt style={{ marginRight: "8px" }} />
-            Delete Account
-          </button>
         </div>
       </div>
 

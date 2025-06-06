@@ -51,7 +51,7 @@
 
 .right-section {
   display: flex;
-  align-items: center;
+  align-items: left;
   gap: 1rem;
 }
 
@@ -59,10 +59,10 @@
   font-size: 1.5rem;
   font-weight: 500;
   color: #f5a12b;
-  justify-content: center;
+  align-items: left;
   border-radius: 8px;
   padding: 0.4rem 0.8rem;
-  margin-right: 300px;
+  margin-left: 300px;
 }
 
 /* Icons */
@@ -72,6 +72,7 @@
   cursor: pointer;
   gap: 4rem;
   align-items: left;
+  margin-top: 10px;
 }
 
 .icon:hover {
@@ -172,4 +173,61 @@
   text-align: center;
   padding: 10px;
   color: #888;
+}
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 10px;
+  }
+
+  .greeting {
+    font-size: 1rem;
+    padding: 0.4rem 0.6rem;
+    margin: 10px 0;
+    margin-right: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .right-section {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 10px;
+  }
+
+  .icon {
+    font-size: 1.2rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .greeting-text h2 {
+    font-size: 1rem;
+  }
+
+  .page-content {
+    padding: 10px;
+  }
+
+  .back-arrow {
+    font-size: 0.9rem;
+    gap: 4px;
+  }
+
+  .notification-popup,
+  .dropdown {
+    width: 180px;
+    top: 45px;
+    right: 10px;
+  }
+
+  .notification-item,
+  .dropdown-item {
+    font-size: 0.85rem;
+  }
 }
