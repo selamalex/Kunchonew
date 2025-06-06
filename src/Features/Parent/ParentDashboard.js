@@ -94,7 +94,7 @@ const ParentDashboard = () => {
         </div>
       </div>
 
-      <div className="main-content">
+      <div className="main-content1">
         <p>Your child's activities and progress are updated here.</p>
         <Outlet />
       </div>
