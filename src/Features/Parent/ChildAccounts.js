@@ -6,6 +6,7 @@ import {
   FaPlus,
   FaTimes,
   FaBars,
+  FaTrashAlt,
 } from "react-icons/fa";
 import axios from "axios";
 
@@ -13,7 +14,7 @@ import ChildCard from "./ChildCard";
 import { AuthContext } from "../../Context/AuthContext";
 import logo from "../../Assets/images/logo.png";
 
-import LogoutButton from "../../Components/LogoutButton"; // <-- Import LogoutButton here
+import LogoutButton from "../../Components/LogoutButton";
 
 import "./Sidebar.css";
 import "./ChildAccounts.css";
@@ -23,6 +24,7 @@ const ChildAccounts = () => {
   const [children, setChildren] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -202,6 +204,13 @@ const ChildAccounts = () => {
     }
   };
 
+  // Delete Account handler (show confirmation modal)
+  const handleDeleteAccount = () => {
+    // Implement your actual delete account logic here
+    console.log("Account deleted");
+    setShowConfirmModal(false);
+  };
+
   return (
     <div className="dashboard-container">
       <button
@@ -218,6 +227,7 @@ const ChildAccounts = () => {
         />
       )}
 
+      {/* Sidebar */}
       <div className={`sidebar ${sidebarOpen ? "active" : ""}`}>
         <div className="logo">
           <img src={logo} alt="Kuncho Logo" className="logo-img" />
@@ -246,9 +256,15 @@ const ChildAccounts = () => {
           </li>
         </ul>
 
-        {/* Add logout button here */}
-        <div className="logout">
+        <div className="sidebar-footer">
           <LogoutButton />
+          <button
+            className="delete-account-text"
+            onClick={() => setShowConfirmModal(true)}
+          >
+            <FaTrashAlt style={{ marginRight: "8px" }} />
+            Delete Account
+          </button>
         </div>
       </div>
 
@@ -320,30 +336,45 @@ const ChildAccounts = () => {
                       onChange={handleInputChange}
                       min={min}
                       max={max}
+                      required
                     />
                     {formErrors[name] && (
-                      <p className="error-text">{formErrors[name]}</p>
+                      <span className="error-text">{formErrors[name]}</span>
                     )}
                   </div>
                 ))}
                 {formErrors.general && (
-                  <p className="error-text" style={{ marginBottom: "1rem" }}>
-                    {formErrors.general}
-                  </p>
+                  <div className="error-text">{formErrors.general}</div>
                 )}
-
-                <button
-                  type="submit"
-                  className="register-btn"
-                  style={{ backgroundColor: "#f5a12b" }}
-                >
-                  Register
+                <button type="submit" className="submit-btn">
+                  Add Child
                 </button>
               </form>
             </div>
           </div>
         )}
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="confirm-modal-overlay">
+          <div className="confirm-modal">
+            <h3>Are you sure you want to delete your account?</h3>
+            <p>This action cannot be undone.</p>
+            <div className="modal-actions">
+              <button
+                className="cancel-btn"
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancel
+              </button>
+              <button className="confirm-btn" onClick={handleDeleteAccount}>
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
