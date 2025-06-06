@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { getDocument } from "pdfjs-dist";
@@ -16,6 +16,8 @@ const SlideBook = () => {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [book, setBook] = useState(null);
+
+  const startTimeRef = useRef(Date.now());
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -57,7 +59,33 @@ const SlideBook = () => {
     };
 
     fetchBook();
-  }, [bookId, user.token]);
+
+    return () => {
+      const endTime = Date.now();
+      const durationInSeconds = Math.floor(
+        (endTime - startTimeRef.current) / 1000
+      );
+
+      axios
+        .post(
+          "http://localhost:3000/api/child/screentime",
+          {
+            childId: user.id,
+            screenTime: durationInSeconds,
+            contentType: "book",
+            contentId: bookId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        )
+        .catch((err) => {
+          console.error("Failed to log screen time:", err);
+        });
+    };
+  }, [bookId, user.token, user.id]);
 
   useEffect(() => {
     const fetchRating = async () => {

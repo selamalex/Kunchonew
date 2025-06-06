@@ -10,12 +10,66 @@ const SpecificVid = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const videoRef = useRef(null);
+  const playStartRef = useRef(null); // Start time of current play session
+  const totalPlayTimeRef = useRef(0); // Total watched duration
+
   const [video, setVideo] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasViewed, setHasViewed] = useState(false);
   const [progress, setProgress] = useState(0);
   const [userRating, setUserRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+
+  useEffect(() => {
+    const checkScreentime = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/child/screentime/status`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+
+        const { dailyLimitMinutes, currentUsageMinutes, enforcedAt } = res.data;
+
+        const isLocked =
+          enforcedAt ||
+          (dailyLimitMinutes > 0 && currentUsageMinutes >= dailyLimitMinutes);
+
+        if (isLocked) {
+          navigate("/child/locked");
+        }
+      } catch (err) {
+        console.error("Failed to check screentime:", err);
+      }
+    };
+
+    checkScreentime();
+  }, []);
+  useEffect(() => {
+    const startTime = Date.now();
+
+    return () => {
+      const endTime = Date.now();
+      const durationInSeconds = Math.floor((endTime - startTime) / 1000);
+      const token = localStorage.getItem("token");
+      const childId = localStorage.getItem("childId");
+
+      if (durationInSeconds >= 10) {
+        axios
+          .post(
+            `http://localhost:3000/api/child/screentime/record/${childId}`,
+            { duration: durationInSeconds },
+            { headers: { Authorization: `Bearer ${token}` } }
+          )
+          .catch((err) => {
+            console.error("Failed to record usage:", err);
+          });
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const fetchVideo = async () => {
@@ -55,7 +109,7 @@ const SpecificVid = () => {
 
     fetchVideo();
     fetchRating();
-  }, [id]);
+  }, [id, user.token]);
 
   const recordView = async () => {
     try {
@@ -68,12 +122,12 @@ const SpecificVid = () => {
           },
         }
       );
-
       console.log("View recorded!");
     } catch (error) {
       console.error("Failed to record view:", error);
     }
   };
+
   const togglePlay = () => {
     if (!hasViewed) {
       recordView();
@@ -81,10 +135,19 @@ const SpecificVid = () => {
     }
 
     if (isPlaying) {
+      // Stop timer
+      if (playStartRef.current) {
+        const elapsed = Date.now() - playStartRef.current;
+        totalPlayTimeRef.current += Math.floor(elapsed / 1000);
+        playStartRef.current = null;
+      }
       videoRef.current.pause();
     } else {
+      // Start timer
+      playStartRef.current = Date.now();
       videoRef.current.play();
     }
+
     setIsPlaying(!isPlaying);
   };
 
@@ -121,6 +184,36 @@ const SpecificVid = () => {
       console.error("Failed to submit rating:", error);
     }
   };
+
+  // Record screen time on unmount
+  useEffect(() => {
+    return () => {
+      // Finalize play time
+      if (playStartRef.current) {
+        const elapsed = Date.now() - playStartRef.current;
+        totalPlayTimeRef.current += Math.floor(elapsed / 1000);
+        playStartRef.current = null;
+      }
+
+      const totalSeconds = totalPlayTimeRef.current;
+      if (totalSeconds > 5) {
+        axios
+          .post(
+            `http://localhost:3000/api/child/screentime/usage/${user.id}`,
+            { duration: totalSeconds },
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          )
+          .then(() =>
+            console.log(`Recorded ${totalSeconds} sec of screen time`)
+          )
+          .catch((err) => console.error("Failed to record screen time", err));
+      }
+    };
+  }, [user.id, user.token]);
 
   if (!video) {
     return <div className="specific-vid-container">Loading video...</div>;

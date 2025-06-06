@@ -96,12 +96,7 @@ const Games = () => {
       >
         <div className="trending-content">
           <h2 className="game-name">Trending Game: Animal Edition</h2>
-          <div className="trending-rating">
-            {renderStars(ratings[5]?.averageRating || 4.7)}{" "}
-            <span className="plays-count">
-              ({ratings[5]?.totalRatings || "2.3K"} plays)
-            </span>
-          </div>
+
           <button
             className="play-now"
             onClick={() => navigate("/child/games/animal")}

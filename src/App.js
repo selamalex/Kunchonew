@@ -42,6 +42,7 @@ import Vegetables from "./Features/Child/Vegetables";
 import Objects from "./Features/Child/Objects";
 import SlideBook from "./Features/Child/SlideBook";
 import ChildLayout from "./Features/Child/ChildLayout";
+import LockScreen from "./Features/Child/LockScreen";
 
 const ProtectedRoute = ({ role, children }) => {
   const { user } = useAuth();
@@ -65,51 +66,50 @@ function App() {
 
         {/* Admin Routes */}
         {user?.role === "admin" && (
-        
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Overview />} /> 
-        <Route path="overview" element={<Overview />} />
-        <Route path="users" element={<UserManagement />} />
-        <Route path="content" element={<ContentManagement />} />
-        <Route path="settings" element={<Settings />} />
-        <Route path="reports" element={<Reports />} />
-         <Route path="notifications" element={<Notifications />} />
-      </Route>
-
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Overview />} />
+            <Route path="overview" element={<Overview />} />
+            <Route path="users" element={<UserManagement />} />
+            <Route path="content" element={<ContentManagement />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="notifications" element={<Notifications />} />
+          </Route>
         )}
 
         {/* Parent Routes */}
         {/* Parent Routes */}
-{user?.role === "parent" && (
-  <Route path="/parent" element={<ParentLayout />}>
-    <Route path="dashboard" element={<ParentDashboard />} />
-    <Route path="subaccounts" element={<SubAccountManagement />} />
-    <Route path="screentime" element={<ScreenTimeReport />} />
-  </Route>
-)}
+        {user?.role === "parent" && (
+          <Route path="/parent" element={<ParentLayout />}>
+            <Route path="dashboard" element={<ParentDashboard />} />
+            <Route path="subaccounts" element={<SubAccountManagement />} />
+            <Route path="screentime" element={<ScreenTimeReport />} />
+          </Route>
+        )}
 
-{user?.role === "child" && (
-  <Route
-    path="/child"
-    element={
-      <ProtectedRoute role="child">
-        <ChildLayout />
-      </ProtectedRoute>
-    }
-  >
-    <Route path="dashboard" element={<ChildDashboard />} />
-    <Route path="videos" element={<Videos />} />
-    <Route path="videos/:id" element={<SpecificVid />} />
-    <Route path="books" element={<Books />} />
-    <Route path="books/:bookId" element={<SlideBook />} />
-    <Route path="audios" element={<Audios />} />
-    <Route path="audios/:id" element={<SpecificAud />} />
-    <Route path="games" element={<Games />} />
-    <Route path="games/animal" element={<Animals />} />
-    <Route path="games/vegetable" element={<Vegetables />} />
-    <Route path="games/object" element={<Objects />} />
-  </Route>
-)}
+        {user?.role === "child" && (
+          <Route
+            path="/child"
+            element={
+              <ProtectedRoute role="child">
+                <ChildLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="dashboard" element={<ChildDashboard />} />
+            <Route path="videos" element={<Videos />} />
+            <Route path="videos/:id" element={<SpecificVid />} />
+            <Route path="books" element={<Books />} />
+            <Route path="books/:bookId" element={<SlideBook />} />
+            <Route path="audios" element={<Audios />} />
+            <Route path="audios/:id" element={<SpecificAud />} />
+            <Route path="games" element={<Games />} />
+            <Route path="games/animal" element={<Animals />} />
+            <Route path="games/vegetable" element={<Vegetables />} />
+            <Route path="games/object" element={<Objects />} />
+            <Route path="locked" element={<LockScreen />} />
+          </Route>
+        )}
 
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" />} />

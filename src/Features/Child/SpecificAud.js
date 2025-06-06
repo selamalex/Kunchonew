@@ -15,6 +15,8 @@ const SpecificAudio = () => {
   const [progress, setProgress] = useState(0);
   const [userRating, setUserRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const screenTimeRef = useRef(0); // stores total seconds
+  const intervalRef = useRef(null); // stores setInterval ID
 
   useEffect(() => {
     const fetchAudio = async () => {
@@ -22,9 +24,7 @@ const SpecificAudio = () => {
         const response = await axios.get(
           `http://localhost:3000/api/child/content/${id}`,
           {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
+            headers: { Authorization: `Bearer ${user.token}` },
           }
         );
         setAudio(response.data);
@@ -38,9 +38,7 @@ const SpecificAudio = () => {
         const response = await axios.get(
           `http://localhost:3000/api/child/content/rating/${id}`,
           {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
+            headers: { Authorization: `Bearer ${user.token}` },
           }
         );
         if (response.data.myRating) {
@@ -53,7 +51,45 @@ const SpecificAudio = () => {
 
     fetchAudio();
     fetchRating();
+
+    return () => {
+      // Cleanup: send screen time when component unmounts
+      if (screenTimeRef.current > 0) {
+        sendScreenTime();
+      }
+      clearInterval(intervalRef.current);
+    };
   }, [id, user.token]);
+
+  const sendScreenTime = async () => {
+    try {
+      await axios.post(
+        `http://localhost:3000/api/child/content/screentime`,
+        {
+          contentId: id,
+          screenTime: screenTimeRef.current, // in seconds
+        },
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
+      console.log("Screen time submitted:", screenTimeRef.current, "seconds");
+    } catch (error) {
+      console.error("Failed to submit screen time:", error);
+    }
+  };
+
+  const startScreenTimer = () => {
+    if (intervalRef.current) return; // prevent multiple intervals
+    intervalRef.current = setInterval(() => {
+      screenTimeRef.current += 1;
+    }, 1000);
+  };
+
+  const stopScreenTimer = () => {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  };
 
   const recordView = async () => {
     try {
@@ -61,9 +97,7 @@ const SpecificAudio = () => {
         `http://localhost:3000/api/child/content/views/${id}`,
         {},
         {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+          headers: { Authorization: `Bearer ${user.token}` },
         }
       );
       console.log("Audio view recorded!");
@@ -80,8 +114,10 @@ const SpecificAudio = () => {
 
     if (isPlaying) {
       audioRef.current.pause();
+      stopScreenTimer();
     } else {
       audioRef.current.play();
+      startScreenTimer();
     }
     setIsPlaying(!isPlaying);
   };
@@ -107,9 +143,7 @@ const SpecificAudio = () => {
           rating: rating,
         },
         {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+          headers: { Authorization: `Bearer ${user.token}` },
         }
       );
       console.log(`Successfully rated audio ${id} with ${rating} stars`);
