@@ -161,15 +161,19 @@ const Notifications = () => {
             </label>
 
             <label style={{ color: "#000" }}>
-              Type
-              <input
-                type="text"
-                name="type"
-                onChange={handleChange}
-                placeholder="Enter type"
-                className="notif-popup-input"
-              />
-            </label>
+  Type
+  <select
+    name="type"
+    onChange={handleChange}
+    className="notif-popup-input"
+    defaultValue=""
+  >
+    <option value="" disabled>Select type</option>
+    <option value="email">Email</option>
+    <option value="in-app">In-app</option>
+  </select>
+</label>
+
 
             <label style={{ color: "#000" }}>
               Message
