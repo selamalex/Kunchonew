@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 
-import "./Books.css";
+import "../Child/Books.css";
 
 const Books = () => {
   const { user } = useContext(AuthContext);
@@ -97,6 +97,7 @@ const Books = () => {
 
   return (
     <div className="child-content">
+      <div className="bookspecific">
       <h2 className="section-title">Recommended Books for your Age group</h2>
       <div className="cards-section">
         {books.map((book) => (
@@ -120,6 +121,7 @@ const Books = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };
