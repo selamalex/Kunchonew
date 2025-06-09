@@ -1,8 +1,7 @@
-import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Sidebar from "./Sidebar";
 import Navbar from "../../Components/Navbar";
 import "./ChildLayout.css";
+import Sidebar from "./Sidebar";
 
 // Optional: dynamic page name from URL
 const getPageName = (pathname) => {
@@ -22,7 +21,7 @@ const ChildLayout = () => {
     <div className="child-layout">
       <Sidebar />
       <div className="child-content">
-        <Navbar pageName={pageName} />
+        <Navbar className="navbar" pageName={pageName} />
         <Outlet />
       </div>
     </div>
