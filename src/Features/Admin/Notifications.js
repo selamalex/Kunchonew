@@ -213,7 +213,7 @@ const Notifications = () => {
             <h2 style={{ color: "#000" }}>Create Notification</h2>
 
             <label style={{ color: "#000" }}>
-<<<<<<< HEAD
+
               Admin Name
               <input
                 type="text"
@@ -238,7 +238,7 @@ const Notifications = () => {
   </select>
 </label>
 
-=======
+<label>
               Type
               <input
                 type="text"
@@ -248,7 +248,7 @@ const Notifications = () => {
                 className="notif-popup-input"
               />
             </label>
->>>>>>> 4c16bd54cf083d97497501dbc09f990a20b74a9d
+
 
             <label style={{ color: "#000" }}>
               Message
