@@ -15,8 +15,8 @@ const SpecificAudio = () => {
   const [progress, setProgress] = useState(0);
   const [userRating, setUserRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
-  const screenTimeRef = useRef(0); // stores total seconds
-  const intervalRef = useRef(null); // stores setInterval ID
+  const screenTimeRef = useRef(0);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     const fetchAudio = async () => {
@@ -53,7 +53,6 @@ const SpecificAudio = () => {
     fetchRating();
 
     return () => {
-      // Cleanup: send screen time when component unmounts
       if (screenTimeRef.current > 0) {
         sendScreenTime();
       }
@@ -61,29 +60,106 @@ const SpecificAudio = () => {
     };
   }, [id, user.token]);
 
+  useEffect(() => {
+    const checkScreentime = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/parent/childs/screen-time/${user.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+
+        const { dailyLimitMinutes, currentUsageMinutes, enforcedAt } = res.data;
+        const isLocked =
+          enforcedAt ||
+          (dailyLimitMinutes > 0 && currentUsageMinutes >= dailyLimitMinutes);
+
+        if (isLocked) {
+          navigate("/child/locked");
+        }
+      } catch (err) {
+        console.error("Failed to check screentime:", err);
+      }
+    };
+
+    checkScreentime();
+  }, [navigate, user.id, user.token]);
+
   const sendScreenTime = async () => {
     try {
       await axios.post(
         `http://localhost:3000/api/child/content/screentime`,
         {
           contentId: id,
-          screenTime: screenTimeRef.current, // in seconds
+          screenTime: screenTimeRef.current,
         },
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
       );
-      console.log("Screen time submitted:", screenTimeRef.current, "seconds");
-    } catch (error) {
-      console.error("Failed to submit screen time:", error);
+
+      await axios.post(
+        `http://localhost:3000/api/parent/childs/screen-time/record`,
+        {
+          duration: screenTimeRef.current,
+          childId: user.id,
+        },
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
+      console.log("Screen time recorded successfully");
+    } catch (err) {
+      console.error("Failed to record screen time:", err);
     }
   };
 
   const startScreenTimer = () => {
-    if (intervalRef.current) return; // prevent multiple intervals
-    intervalRef.current = setInterval(() => {
-      screenTimeRef.current += 1;
-    }, 1000);
+    if (intervalRef.current) return;
+
+    intervalRef.current = setInterval(async () => {
+      screenTimeRef.current += 10;
+
+      try {
+        await axios.post(
+          `http://localhost:3000/api/parent/childs/screen-time/record`,
+          {
+            duration: 10,
+            childId: user.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+
+        const res = await axios.get(
+          `http://localhost:3000/api/parent/childs/screen-time/${user.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+
+        const { dailyLimitMinutes, currentUsageMinutes, enforcedAt } = res.data;
+        const isLocked =
+          enforcedAt ||
+          (dailyLimitMinutes > 0 && currentUsageMinutes >= dailyLimitMinutes);
+
+        if (isLocked) {
+          if (audioRef.current) audioRef.current.pause();
+          stopScreenTimer();
+          navigate("/child/locked");
+        }
+      } catch (err) {
+        console.error("Screen time check or record failed:", err);
+      }
+    }, 10000); // every 10 seconds
   };
 
   const stopScreenTimer = () => {
