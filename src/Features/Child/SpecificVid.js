@@ -49,6 +49,41 @@ const SpecificVid = () => {
     checkScreentime();
   }, []);
   useEffect(() => {
+    let intervalId;
+
+    if (isPlaying) {
+      intervalId = setInterval(async () => {
+        try {
+          const res = await axios.get(
+            "http://localhost:3000/api/child/screentime/status",
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
+
+          const { dailyLimitMinutes, currentUsageMinutes, enforcedAt } =
+            res.data;
+
+          const isLocked =
+            enforcedAt ||
+            (dailyLimitMinutes > 0 && currentUsageMinutes >= dailyLimitMinutes);
+
+          if (isLocked) {
+            if (videoRef.current) videoRef.current.pause();
+            navigate("/child/locked");
+          }
+        } catch (err) {
+          console.error("Failed to check screen time during playback:", err);
+        }
+      }, 10000);
+    }
+
+    return () => clearInterval(intervalId);
+  }, [isPlaying, navigate, user.token]);
+
+  useEffect(() => {
     const startTime = Date.now();
 
     return () => {

@@ -13,6 +13,7 @@ import GeneralHome from "./Pages/GeneralHome";
 // Login/Signup
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
+import ForgotPassword from "./Pages/ForgotPassword";
 
 // Admin pages
 import ContentManagement from "./Features/Admin/ContentManagement";
@@ -63,6 +64,7 @@ function App() {
         <Route path="/" element={<GeneralHome />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Admin Routes */}
         {user?.role === "admin" && (
