@@ -33,7 +33,6 @@ const ParentDashboard = () => {
   };
 
   const handleDeleteAccount = () => {
-    // TODO: Actual delete logic
     console.log("Account deleted");
     setShowConfirmModal(false);
   };
