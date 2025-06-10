@@ -343,11 +343,14 @@
     }
 
     .trending-game {
-        height: 200px;
+        height: 130px;
+        margin-top: 140px;
+        background-color: #431b06;
     }
 
     .game-name {
         font-size: 24px;
+        color: #d59c38;
     }
 }
 
@@ -359,8 +362,12 @@
 
     .trending-content {
         padding: 20px;
+        margin-top: 140px;
     }
 
+    .game-name {
+        font-size: smaller;
+    }
 
     .search-input {
         flex-grow: 1;

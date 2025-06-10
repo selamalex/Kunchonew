@@ -31,10 +31,38 @@ const ChildCard = ({
     setShowDetails(true);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (isEditing) {
       onUpdate(childData);
+
+      try {
+        if (childData.screentime) {
+          const response = await fetch(
+            `/api/parent/childs/screen-time/${childData.id}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+              body: JSON.stringify({
+                dailyLimit: parseInt(childData.screentime),
+              }),
+            }
+          );
+
+          const data = await response.json();
+          if (!response.ok) {
+            console.error("Failed to update screen time:", data.error);
+          } else {
+            console.log("Screen time updated successfully");
+          }
+        }
+      } catch (error) {
+        console.error("Error while updating screen time:", error);
+      }
     }
+
     setIsEditing(!isEditing);
   };
 

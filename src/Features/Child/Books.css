@@ -1,6 +1,6 @@
 * {
-    margin: 0px;
-    padding: 0px;
+  margin: 0px;
+  padding: 0px;
 }
 
 .container {
@@ -118,4 +118,11 @@
 
 .large-card {
   transform: scale(1.2);
+}
+
+
+@media (max-width: 768px) {
+  .bookspecific {
+    margin-top: 150px;
+  }
 }

@@ -1,5 +1,3 @@
-
-
 .featured-video {
     margin-bottom: 30px;
 }
@@ -184,6 +182,11 @@
         font-size: 16px;
     }
 
+    .section-title {
+
+        margin-top: 150px;
+    }
+
     .logout-button {
         order: 2;
         margin-left: auto;
@@ -194,7 +197,7 @@
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
 
-   
+
 }
 
 @media (max-width: 576px) {

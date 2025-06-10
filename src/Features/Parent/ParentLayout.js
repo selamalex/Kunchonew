@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import LogoutButton from "../../Components/LogoutButton";
 import { FaTachometerAlt, FaClock, FaBell, FaUserCircle } from "react-icons/fa";
@@ -11,9 +11,15 @@ import axios from "axios";
 const ParentLayout = () => {
   const { user } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
+
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [notifications, setNotifications] = useState([]);
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
 
   const pageTitles = {
     "/parent/dashboard": "Dashboard",
@@ -30,11 +36,10 @@ const ParentLayout = () => {
           "http://localhost:3000/api/parents/notifications",
           {
             headers: {
-              Authorization: `Bearer ${user.token}`, // ensure this is the correct token
+              Authorization: `Bearer ${user.token}`,
             },
           }
         );
-
         setNotifications(res.data.notifications || []);
       } catch (error) {
         console.error("Failed to fetch notifications:", error);
@@ -43,6 +48,7 @@ const ParentLayout = () => {
 
     fetchNotifications();
   }, [user.token]);
+
   useEffect(() => {
     const handleClickOutside = async (event) => {
       const notifWrapper = document.querySelector(".notification-wrapper");
@@ -77,8 +83,32 @@ const ParentLayout = () => {
     };
   }, [showNotifications, notifications, user.token]);
 
-  const handleDeleteAccount = () => {
-    alert("Account deletion triggered.");
+  const handleDeleteAccount = async () => {
+    // TODO: Replace these with values collected from a proper UI form or modal
+    const email = ""; // Example: from a form input
+    const password = "";
+
+    if (!email || !password) {
+      console.warn("Email and password are required to delete account.");
+      return;
+    }
+
+    try {
+      const res = await axios.delete(
+        "http://localhost:3000/api/parents/account",
+        {
+          data: { email, password },
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      console.log("Account deleted:", res.data.message);
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to delete account:", error);
+    }
   };
 
   return (
@@ -116,13 +146,12 @@ const ParentLayout = () => {
           <div className="right-section">
             <span className="greeting">Hello, {user.firstName}!</span>
 
-            {/* Notification icon */}
+            {/* Notification Icon */}
             <div className="notification-wrapper">
               <FaBell
                 className="icon"
                 onClick={() => setShowNotifications((prev) => !prev)}
               />
-
               {notifications.length > 0 && (
                 <span className="notification-count">
                   {notifications.length}
@@ -133,7 +162,6 @@ const ParentLayout = () => {
                   <span
                     onClick={async () => {
                       setShowNotifications(false);
-
                       if (notifications.length > 0) {
                         try {
                           await axios.put(
@@ -165,7 +193,6 @@ const ParentLayout = () => {
                   >
                     ×
                   </span>
-
                   {notifications.length === 0 ? (
                     <p className="empty-msg">No notifications</p>
                   ) : (
@@ -179,7 +206,7 @@ const ParentLayout = () => {
               )}
             </div>
 
-            {/* Profile icon */}
+            {/* Profile Icon */}
             <div className="profile-wrapper">
               <FaUserCircle
                 className="icon"
@@ -190,10 +217,9 @@ const ParentLayout = () => {
                   <div className="dropdown-item username">
                     {user.firstName} {user.lastName}
                   </div>
-
                   <div
                     className="dropdown-item delete-btn"
-                    onClick={handleDeleteAccount}
+                    onClick={() => setShowDeleteModal(true)}
                   >
                     Delete Account
                   </div>
@@ -205,6 +231,52 @@ const ParentLayout = () => {
 
         <div className="page-content">
           <Outlet />
+          {showDeleteModal && (
+            <div className="modal-overlay">
+              <div className="modal">
+                <h3>Confirm Account Deletion</h3>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                />
+                <button
+                  onClick={async () => {
+                    if (!emailInput || !passwordInput) return;
+
+                    try {
+                      const res = await axios.delete(
+                        "http://localhost:3000/api/parents/account",
+                        {
+                          data: { email: emailInput, password: passwordInput },
+                          headers: {
+                            Authorization: `Bearer ${user.token}`,
+                          },
+                        }
+                      );
+
+                      console.log("Account deleted:", res.data.message);
+                      navigate("/");
+                    } catch (error) {
+                      console.error("Failed to delete account:", error);
+                    }
+                  }}
+                >
+                  Confirm Delete
+                </button>
+                <button onClick={() => setShowDeleteModal(false)}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -10,6 +10,10 @@ const SpecificVid = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const videoRef = useRef(null);
+  const playStartRef = useRef(null);
+  const totalPlayTimeRef = useRef(0);
+  const intervalRef = useRef(null);
+
   const [video, setVideo] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasViewed, setHasViewed] = useState(false);
@@ -18,44 +22,95 @@ const SpecificVid = () => {
   const [hoverRating, setHoverRating] = useState(0);
 
   useEffect(() => {
-    const fetchVideo = async () => {
+    const checkScreentime = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/child/content/${id}`,
+        const res = await axios.get(
+          `http://localhost:3000/api/parent/childs/screen-time/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
             },
           }
         );
-        setVideo(response.data);
-      } catch (error) {
-        console.error("Failed to fetch video:", error);
+
+        const { dailyLimitMinutes, currentUsageMinutes, enforcedAt } = res.data;
+        const isLocked =
+          enforcedAt ||
+          (dailyLimitMinutes > 0 && currentUsageMinutes >= dailyLimitMinutes);
+
+        if (isLocked) {
+          navigate("/child/locked");
+        }
+      } catch (err) {
+        console.error("Failed to check screentime:", err);
+      }
+    };
+
+    checkScreentime();
+  }, [user.id, user.token, navigate]);
+
+  // Record final time on unmount
+  useEffect(() => {
+    return () => {
+      if (playStartRef.current) {
+        const elapsed = Date.now() - playStartRef.current;
+        totalPlayTimeRef.current += Math.floor(elapsed / 1000);
+      }
+
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+
+      const totalSeconds = totalPlayTimeRef.current;
+      if (totalSeconds > 5) {
+        axios
+          .post(
+            "http://localhost:3000/api/parent/childs/screen-time/record",
+            { duration: totalSeconds },
+            {
+              headers: { Authorization: `Bearer ${user.token}` },
+            }
+          )
+          .catch((err) => console.error("Failed to record screen time", err));
+      }
+    };
+  }, [user.token]);
+
+  // Fetch video + rating
+  useEffect(() => {
+    const fetchVideo = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/child/content/${id}`,
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
+        setVideo(res.data);
+      } catch (err) {
+        console.error("Failed to fetch video:", err);
       }
     };
 
     const fetchRating = async () => {
       try {
-        const response = await axios.get(
+        const res = await axios.get(
           `http://localhost:3000/api/child/content/rating/${id}`,
           {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
+            headers: { Authorization: `Bearer ${user.token}` },
           }
         );
-
-        if (response.data.myRating) {
-          setUserRating(response.data.myRating.rating);
+        if (res.data.myRating) {
+          setUserRating(res.data.myRating.rating);
         }
-      } catch (error) {
-        console.error("Failed to fetch rating:", error);
+      } catch (err) {
+        console.error("Failed to fetch rating:", err);
       }
     };
 
     fetchVideo();
     fetchRating();
-  }, [id]);
+  }, [id, user.token]);
 
   const recordView = async () => {
     try {
@@ -63,17 +118,14 @@ const SpecificVid = () => {
         `http://localhost:3000/api/child/content/views/${id}`,
         {},
         {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+          headers: { Authorization: `Bearer ${user.token}` },
         }
       );
-
-      console.log("View recorded!");
-    } catch (error) {
-      console.error("Failed to record view:", error);
+    } catch (err) {
+      console.error("Failed to record view:", err);
     }
   };
+
   const togglePlay = () => {
     if (!hasViewed) {
       recordView();
@@ -81,53 +133,115 @@ const SpecificVid = () => {
     }
 
     if (isPlaying) {
+      if (playStartRef.current) {
+        const elapsed = Date.now() - playStartRef.current;
+        totalPlayTimeRef.current += Math.floor(elapsed / 1000);
+        playStartRef.current = null;
+      }
       videoRef.current.pause();
     } else {
+      playStartRef.current = Date.now();
       videoRef.current.play();
     }
+
     setIsPlaying(!isPlaying);
   };
 
   const handleProgress = () => {
-    const duration = videoRef.current.duration;
-    const currentTime = videoRef.current.currentTime;
-    setProgress((currentTime / duration) * 100);
+    const current = videoRef.current.currentTime;
+    const total = videoRef.current.duration || 1;
+    setProgress((current / total) * 100);
   };
 
   const handleSeek = (e) => {
     const seekTime = (e.target.value / 100) * videoRef.current.duration;
     videoRef.current.currentTime = seekTime;
   };
+  const handlePlay = () => {
+    playStartRef.current = Date.now();
+    setIsPlaying(true);
+
+    // Start interval to track time every 30s
+    if (!intervalRef.current) {
+      intervalRef.current = setInterval(() => {
+        if (playStartRef.current) {
+          const elapsed = Date.now() - playStartRef.current;
+          const seconds = Math.floor(elapsed / 1000);
+          totalPlayTimeRef.current += seconds;
+          playStartRef.current = Date.now();
+
+          if (seconds > 0) {
+            axios
+              .post(
+                "http://localhost:3000/api/parent/childs/screen-time/record",
+                { duration: seconds },
+                {
+                  headers: { Authorization: `Bearer ${user.token}` },
+                }
+              )
+              .catch((err) =>
+                console.error("Failed to record screen time", err)
+              );
+          }
+        }
+      }, 30000); // every 30s
+    }
+  };
+
+  const handlePause = () => {
+    if (playStartRef.current) {
+      const elapsed = Date.now() - playStartRef.current;
+      const seconds = Math.floor(elapsed / 1000);
+      totalPlayTimeRef.current += seconds;
+      playStartRef.current = null;
+
+      if (seconds > 0) {
+        axios
+          .post(
+            "http://localhost:3000/api/parent/childs/screen-time/record",
+            { duration: seconds },
+            {
+              headers: { Authorization: `Bearer ${user.token}` },
+            }
+          )
+          .catch((err) => console.error("Failed to record screen time", err));
+      }
+    }
+
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+
+    setIsPlaying(false);
+  };
 
   const handleRating = async (rating) => {
     try {
       setUserRating(rating);
-
       await axios.post(
         "http://localhost:3000/api/child/content/rating",
+        { contentId: id, rating },
         {
-          contentId: id,
-          rating: rating,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+          headers: { Authorization: `Bearer ${user.token}` },
         }
       );
-
-      console.log(`Successfully rated video ${id} with ${rating} stars`);
-    } catch (error) {
-      console.error("Failed to submit rating:", error);
+    } catch (err) {
+      console.error("Failed to rate:", err);
     }
   };
 
-  if (!video) {
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
+
+  if (!video)
     return <div className="specific-vid-container">Loading video...</div>;
-  }
 
   return (
     <div className="specific-vid-container">
+      <Header />
+
       <button className="back-button" onClick={() => navigate(-1)}>
         <span className="arrow">⬅️</span> Back to Videos
       </button>
@@ -139,7 +253,9 @@ const SpecificVid = () => {
             src={`http://localhost:3000${video.filePath}`}
             poster="/images/video-placeholder.png"
             onTimeUpdate={handleProgress}
-            onClick={togglePlay}
+            onPlay={handlePlay}
+            onPause={handlePause}
+            onEnded={handlePause}
             className="cute-video-player"
             controls
           />
@@ -209,11 +325,5 @@ const SpecificVid = () => {
     </div>
   );
 };
-
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-}
 
 export default SpecificVid;

@@ -1,11 +1,10 @@
-/* ===== BASE RESET ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ===== NAVBAR STYLES ===== */
+
 .navbar {
   display: flex;
   align-items: center;
@@ -73,7 +72,7 @@
   color: #333;
 }
 
-/* ===== RESPONSIVE BREAKPOINTS ===== */
+
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;

@@ -20,9 +20,9 @@ const Login = () => {
 
   const validatePassword = (password) => {
     // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
-   // const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    // const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     //return re.test(password);
-    return true
+    return true;
   };
 
   const handleSubmit = async (e) => {
@@ -123,7 +123,7 @@ const Login = () => {
             <label>
               <input type="checkbox" /> Remember me
             </label>
-            <a href="#" className="forgot-link">
+            <a href="/forgot-password" className="forgot-link">
               Forgot password?
             </a>
           </div>

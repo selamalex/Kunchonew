@@ -1,0 +1,11 @@
+/* LockScreen.css */
+.lock-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #ffeeee;
+  color: #333;
+  text-align: center;
+}

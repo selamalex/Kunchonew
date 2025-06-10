@@ -1,13 +1,14 @@
 import { useState } from "react";
+import Abush from "../../Assets/images/Abush.png";
+import Bitiko from "../../Assets/images/Bitiko.png";
+import Mitu from "../../Assets/images/Mitu.png";
+import Birabiro from "../../Assets/images/butterfly.png";
+import Wero from "../../Assets/images/catface.jpg";
+import Buch from "../../Assets/images/dog.png";
+import Kuku from "../../Assets/images/hen.png";
 import "./Avatar.css";
-
 const avatarOptions = [
-  "https://i.pravatar.cc/80?img=5",
-  "https://i.pravatar.cc/80?img=6",
-  "https://i.pravatar.cc/80?img=7",
-  "https://i.pravatar.cc/80?img=8",
-  "https://i.pravatar.cc/80?img=9",
-  "https://i.pravatar.cc/80?img=10",
+  Bitiko, Abush, Mitu, Kuku, Buch, Wero, Birabiro
 ];
 
 export default function Avatar({ onChange }) {

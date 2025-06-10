@@ -150,6 +150,7 @@
     justify-content: center;
     padding-bottom: 20px;
     padding-top: 20px;
+
 }
 
 .character {
@@ -351,10 +352,11 @@
 
 @media (max-width: 768px) {
 
-    /* Mobile landscape/small tablets */
+
     .dashboard-container {
 
         flex-direction: column;
+
     }
 
     .child-content {
