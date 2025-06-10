@@ -1,12 +1,12 @@
 import { NavLink } from "react-router-dom";
 import LogoutButton from "../../../Components/LogoutButton";
 
-import './Sidebarr.css';
+import "./Sidebarr.css";
 
 const Sidebar = () => {
   return (
     <div className="sidebarr">
-      <div className="logoo">KUNCHO</div> 
+      <div className="logoo">KUNCHO</div>
 
       <div className="admin-info">
         <div className="admin-avatar">
@@ -18,7 +18,12 @@ const Sidebar = () => {
       <div className="sidebar-section">
         <div className="sidebar-section-title">Dashboards</div>
         <nav className="sidebar-nav">
-          <NavLink to="/admin/overview" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+          <NavLink
+            to="/admin/overview"
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
+          >
             <div className="sidebar-icon">
               <i className="fas fa-chart-pie"></i>
             </div>
@@ -27,7 +32,9 @@ const Sidebar = () => {
 
           <NavLink
             to="/admin/users"
-            className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
           >
             <div className="sidebar-icon">
               <i className="fas fa-users"></i>
@@ -35,7 +42,12 @@ const Sidebar = () => {
             <span>User Management</span>
           </NavLink>
 
-          <NavLink to="/admin/content" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+          <NavLink
+            to="/admin/content"
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
+          >
             <div className="sidebar-icon">
               <i className="fas fa-file-alt"></i>
             </div>
@@ -44,7 +56,9 @@ const Sidebar = () => {
 
           <NavLink
             to="/admin/notification"
-            className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
           >
             <div className="sidebar-icon">
               <i className="fas fa-bell"></i>
@@ -52,14 +66,24 @@ const Sidebar = () => {
             <span>Notifications</span>
           </NavLink>
 
-          <NavLink to="/admin/reports" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+          <NavLink
+            to="/admin/reports"
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
+          >
             <div className="sidebar-icon">
               <i className="fas fa-chart-bar"></i>
             </div>
             <span>Reports</span>
           </NavLink>
 
-          <NavLink to="/admin/settings" className={({ isActive }) => (isActive ? "sidebar-link active" : "sidebar-link")}>
+          <NavLink
+            to="/admin/settings"
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
+          >
             <div className="sidebar-icon">
               <i className="fas fa-cog"></i>
             </div>
@@ -69,9 +93,8 @@ const Sidebar = () => {
       </div>
 
       <div className="logout-container">
-  <LogoutButton />
-</div>
-
+        <LogoutButton />
+      </div>
     </div>
   );
 };
