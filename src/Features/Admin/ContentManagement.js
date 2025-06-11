@@ -14,6 +14,7 @@ const Contents = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingContent, setEditingContent] = useState(null);
   const [formError, setFormError] = useState("");
+  const [selectedAgeGroup, setSelectedAgeGroup] = useState("all");
 
   const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({
@@ -25,6 +26,8 @@ const Contents = () => {
     file: null,
     thumbnail: null,
   });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     const fetchContents = async () => {
@@ -64,6 +67,40 @@ const Contents = () => {
 
     fetchContents();
   }, [user.token]);
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/child/content/search?query=${encodeURIComponent(
+          searchQuery
+        )}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const formatted = data.map((item) => ({
+          id: item.id,
+          title: item.title,
+          category: item.type.toLowerCase(),
+          ageGroup: item.ageGroup,
+          date: new Date(item.createdAt).toISOString().split("T")[0],
+        }));
+        setContents(formatted);
+      } else {
+        alert("Search failed: " + (data.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+      alert("An error occurred while searching.");
+    }
+  };
 
   const handleDeleteContent = async (id) => {
     try {
@@ -308,7 +345,21 @@ const Contents = () => {
             className="search-input"
             placeholder="Search"
             style={{ width: "250px" }}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
+          <button className="button button-primary" onClick={handleSearch}>
+            Search
+          </button>
+          <select
+            value={selectedAgeGroup}
+            onChange={(e) => setSelectedAgeGroup(e.target.value)}
+            style={{ marginLeft: "10px", padding: "5px" }}
+          >
+            <option value="all">All Age Groups</option>
+            <option value="1">Group 1</option>
+            <option value="2">Group 2</option>
+          </select>
         </div>
 
         <table className="table">
@@ -326,10 +377,14 @@ const Contents = () => {
           </thead>
           <tbody>
             {contents
-              .filter(
-                (content) =>
-                  activeTab === "all" || content.category === activeTab
-              )
+              .filter((content) => {
+                const categoryMatch =
+                  activeTab === "all" || content.category === activeTab;
+                const ageGroupMatch =
+                  selectedAgeGroup === "all" ||
+                  content.ageGroup === selectedAgeGroup;
+                return categoryMatch && ageGroupMatch;
+              })
               .map((content) => (
                 <tr key={content.id}>
                   <td>
