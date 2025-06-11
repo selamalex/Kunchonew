@@ -13,8 +13,8 @@ const ChildActivitySummary = () => {
         <p>Engaging stories and learning sounds.</p>
       </div>
       <div className="child-card">
-        <h3>❓ Quizzes</h3>
-        <p>Simple quizzes to reinforce learning.</p>
+        <h3>🎥 Videos</h3>
+        <p>Educational and entertaining videos for kids.</p>
       </div>
 
       <div className="tip-card">
