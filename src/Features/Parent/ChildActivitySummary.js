@@ -63,7 +63,7 @@ const ChildActivitySummary = () => {
         </ul>
       </div>
 
-      <div className="child-card">
+      <div className="childd-card">
         <h3>⭐ Highest Rated Content</h3>
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}

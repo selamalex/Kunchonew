@@ -79,3 +79,53 @@
   display: flex;
   align-items: center;
 }
+.childd-card {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.1)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  color: #431b06;
+}
+
+.childd-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.childd-card img {
+  width: 100%;
+  max-width: 120px;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.childd-card p {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.childd-card ul {
+  padding-left: 0;
+}
+
+@media (max-width: 768px) {
+  .childd-card {
+    padding: 1rem;
+  }
+
+  .childd-card img {
+    max-width: 100%;
+  }
+
+  .childd-card p {
+    font-size: 0.9rem;
+  }
+}
