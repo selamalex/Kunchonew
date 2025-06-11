@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../../Assets/images/logokuncho.png";
 import LogoutButton from "../../Components/LogoutButton";
 import "./Sidebar.css";
 
@@ -21,7 +22,7 @@ const Sidebar = () => {
       {/* Sidebar */}
       <div className={`sidebar ${sidebarOpen ? "active" : ""}`}>
       
-                <div className="logo">Kuncho</div>
+                <div className="logo"><img src={logo}/></div>
                 <ul>
                   <li onClick={() => setSidebarOpen(false)}>
                     <Link to="/child/dashboard">Dashboard</Link>

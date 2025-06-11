@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import obj from "../../Assets/images/chair.png";
+import veg from "../../Assets/images/chilli.png";
 import anim from "../../Assets/images/lion.png";
 import bg from "../../Assets/images/trendinganim.jpg";
 import "./Games.css";
@@ -19,13 +21,13 @@ const Games = () => {
     {
       id: 6, // Example IDs — update to match real backend content IDs
       title: "Vegetable Edition",
-      image: anim,
+      image: veg,
       route: "/child/games/vegetable",
     },
     {
       id: 7,
       title: "Objects Edition",
-      image: anim,
+      image: obj,
       route: "/child/games/object",
     },
   ];
@@ -118,10 +120,7 @@ const Games = () => {
             <img src={game.image} alt={game.title} className="game-img" />
             <div className="game-info">
               <h3>{game.title}</h3>
-              {renderStars(ratings[game.id]?.averageRating || 0)}
-              <p className="plays">
-                {ratings[game.id]?.totalRatings || "—"} plays
-              </p>
+              <button className="play" >Play</button>
             </div>
           </div>
         ))}
