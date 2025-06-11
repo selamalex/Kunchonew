@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../Context/AuthContext";
 import Abush from "../../Assets/images/Abush.png";
@@ -12,7 +12,6 @@ import "./Avatar.css";
 
 const avatarOptions = [Bitiko, Abush, Mitu, Kuku, Buch, Wero, Birabiro];
 
-// This should match the file path your backend stores (relative path or public URL)
 const avatarPaths = [
   "/Abush.png",
   "/Bitiko.png",
@@ -26,12 +25,31 @@ const avatarPaths = [
 export default function Avatar({ childId, currentPath, token }) {
   const { user } = useContext(AuthContext);
   const [popupOpen, setPopupOpen] = useState(false);
-  const currentIndex = avatarPaths.findIndex((path) =>
-    currentPath?.includes(path)
-  );
-  const [currentAvatar, setCurrentAvatar] = useState(
-    currentIndex >= 0 ? currentIndex : 0
-  );
+  const [currentAvatar, setCurrentAvatar] = useState(0);
+
+  useEffect(() => {
+    const fetchChild = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/parent/childs/profile/${childId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+        const avatarPath = res.data.avatarPath;
+        const index = avatarPaths.findIndex((path) =>
+          avatarPath?.includes(path)
+        );
+        if (index >= 0) setCurrentAvatar(index);
+      } catch (error) {
+        console.error("Failed to fetch child profile:", error);
+      }
+    };
+
+    fetchChild();
+  }, [childId, token]);
 
   const togglePopup = () => setPopupOpen(!popupOpen);
 
@@ -53,8 +71,6 @@ export default function Avatar({ childId, currentPath, token }) {
       setPopupOpen(false);
     } catch (error) {
       console.error("Failed to change avatar:", error);
-      console.log("Response data:", error.response?.data);
-      console.log("Status code:", error.response?.status);
     }
   };
 
