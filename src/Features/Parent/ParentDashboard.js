@@ -12,6 +12,7 @@ import LogoutButton from "../../Components/LogoutButton";
 import { AuthContext } from "../../Context/AuthContext";
 import "../Parent/Parent.css";
 import "./Sidebar.css";
+import ChildActivitySummary from "./ChildActivitySummary";
 
 const ParentDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -88,6 +89,7 @@ const ParentDashboard = () => {
 
       <div className="main-content1">
         <p>Your child's activities and progress are updated here.</p>
+        <ChildActivitySummary />
         <Outlet />
       </div>
     </div>

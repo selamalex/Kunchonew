@@ -1,0 +1,73 @@
+.child-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+}
+
+.child-card {
+  flex: 1;
+  min-width: 220px;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  color: #431b06;
+}
+
+.child-card h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.child-card p {
+  font-size: 0.95rem;
+  color: #431b06;
+}
+
+/* Unique Parenting Tip Card */
+.tip-card {
+  flex-basis: 100%;
+  background: linear-gradient(135deg, #f4e1ba, #eee);
+  border-left: 6px solid #431b06;
+  border-radius: 16px;
+  padding: 1.5rem 1.2rem;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.07);
+  transition: transform 0.2s ease;
+}
+
+.tip-card:hover {
+  transform: translateY(-4px);
+}
+
+.tip-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.tip-icon {
+  font-size: 1.6rem;
+  margin-right: 0.6rem;
+}
+
+.tip-card h4 {
+  font-size: 1.1rem;
+  color: #431b06;
+  margin: 0;
+}
+
+.tip-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+}
+
+.tip-list li {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
