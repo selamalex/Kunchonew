@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import gomen from "../../Assets/images/gomen.png";
-import chilli from "../../Assets/images/lion.png";
+import chilli from "../../Assets/images/chilli.png";
 import salad from "../../Assets/images/salad.png";
 import "./Animals.css";
 import { AuthContext } from "../../Context/AuthContext";
@@ -171,7 +171,7 @@ const Vegetables = () => {
         className="game-container"
         style={{ textAlign: "center", padding: "10rem" }}
       >
-        <h2>Game Over 🎉</h2>
+        <h2>Game Over !!!</h2>
         <p>
           You got {score} out of {questions.length} right!
         </p>

@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import axios from "axios";
+import { AuthContext } from "../../Context/AuthContext";
 import Abush from "../../Assets/images/Abush.png";
 import Bitiko from "../../Assets/images/Bitiko.png";
 import Mitu from "../../Assets/images/Mitu.png";
@@ -7,20 +9,53 @@ import Wero from "../../Assets/images/catface.jpg";
 import Buch from "../../Assets/images/dog.png";
 import Kuku from "../../Assets/images/hen.png";
 import "./Avatar.css";
-const avatarOptions = [
-  Bitiko, Abush, Mitu, Kuku, Buch, Wero, Birabiro
+
+const avatarOptions = [Bitiko, Abush, Mitu, Kuku, Buch, Wero, Birabiro];
+
+// This should match the file path your backend stores (relative path or public URL)
+const avatarPaths = [
+  "/Bitiko.png",
+  "/Abush.png",
+  "/Mitu.png",
+  "/Kuku.png",
+  "/buchi.png",
+  "/wero.jpg",
+  "/birabiro.png",
 ];
 
-export default function Avatar({ onChange }) {
-  const [currentAvatar, setCurrentAvatar] = useState(0);
+export default function Avatar({ childId, currentPath, token }) {
+  const { user } = useContext(AuthContext);
   const [popupOpen, setPopupOpen] = useState(false);
+  const currentIndex = avatarPaths.findIndex((path) =>
+    currentPath?.includes(path)
+  );
+  const [currentAvatar, setCurrentAvatar] = useState(
+    currentIndex >= 0 ? currentIndex : 0
+  );
 
   const togglePopup = () => setPopupOpen(!popupOpen);
 
-  const selectAvatar = (index) => {
-    setCurrentAvatar(index);
-    setPopupOpen(false);
-    if (onChange) onChange(avatarOptions[index]);
+  const changeAvatar = async (index) => {
+    const newPath = avatarPaths[index];
+    try {
+      await axios.put(
+        `http://localhost:3000/api/parent/childs/change-avatar`,
+        { avatarPath: newPath },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setCurrentAvatar(index);
+      setPopupOpen(false);
+    } catch (error) {
+      console.error("Failed to change avatar:", error);
+      console.log("Response data:", error.response?.data);
+      console.log("Status code:", error.response?.status);
+    }
   };
 
   return (
@@ -43,11 +78,11 @@ export default function Avatar({ onChange }) {
                 <img
                   key={i}
                   src={avatar}
-                  alt={`Avatar option ${i + 1}`}
+                  alt={`Avatar ${i + 1}`}
                   className={`avatar-option ${
                     i === currentAvatar ? "selected" : ""
                   }`}
-                  onClick={() => selectAvatar(i)}
+                  onClick={() => changeAvatar(i)}
                 />
               ))}
             </div>

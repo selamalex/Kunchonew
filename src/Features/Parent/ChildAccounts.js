@@ -104,7 +104,7 @@ const ChildAccounts = () => {
           userGroup,
           age: ageNum,
           parentId: user.id,
-          avatarPath: "frontend/src/Assets/images/avatar1.png",
+          avatarPath: "/Abush.png",
         },
         {
           headers: {

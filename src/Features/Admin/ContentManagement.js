@@ -5,7 +5,6 @@ const categories = [
   { value: "book", label: "Books" },
   { value: "audio", label: "Audio" },
   { value: "video", label: "Videos" },
-  { value: "game", label: "Games" },
 ];
 
 const Contents = () => {
@@ -14,13 +13,14 @@ const Contents = () => {
   const [contents, setContents] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingContent, setEditingContent] = useState(null);
+  const [formError, setFormError] = useState("");
 
   const [showModal, setShowModal] = useState(false);
   const [newContent, setNewContent] = useState({
     title: "",
     category: "book",
     // status: "Draft",
-    ageGroup: "1",
+    ageGroup: "",
     date: "",
     file: null,
     thumbnail: null,
@@ -179,8 +179,8 @@ const Contents = () => {
       (!file && newContent.category !== "game") ||
       !thumbnail
     ) {
-      alert(
-        "Please fill in Title, Date, upload a File, and upload a Thumbnail"
+      setFormError(
+        "Please fill in Title, Date, upload a File, and upload a Thumbnail."
       );
       return;
     }
@@ -224,20 +224,32 @@ const Contents = () => {
           title: "",
           category: "book",
           // status: "Draft",
-          ageGroup: "1",
+          ageGroup: "",
           date: "",
           file: null,
         });
         setShowModal(false);
       } else {
-        alert(
-          "Failed to upload content: " + (result.message || "Unknown error")
+        setFormError(
+          result.error || result.message || "Unknown error occurred"
         );
       }
     } catch (err) {
       console.error("Upload error:", err);
-      alert("Error uploading content");
+      setFormError("An error occurred while uploading content.");
     }
+  };
+  const closeModal = () => {
+    setShowModal(false);
+    setFormError("");
+    setNewContent({
+      title: "",
+      category: "book",
+      ageGroup: "",
+      date: "",
+      file: null,
+      thumbnail: null,
+    });
   };
 
   return (
@@ -389,110 +401,111 @@ const Contents = () => {
           >
             <h2 style={{ color: "#000" }}>Add New Content</h2>
 
-           <form onSubmit={handleSubmit}>
-  <div style={{ marginBottom: "12px" }}>
-    <label style={{ color: "#000" }}>Title</label>
-    <input
-      type="text"
-      name="title"
-      value={newContent.title}
-      onChange={handleInputChange}
-      style={{ width: "100%", padding: "8px" }}
-      required
-    />
-  </div>
+            <form onSubmit={handleSubmit}>
+              <div style={{ marginBottom: "12px" }}>
+                <label style={{ color: "#000" }}>Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={newContent.title}
+                  onChange={handleInputChange}
+                  style={{ width: "100%", padding: "8px" }}
+                  required
+                />
+              </div>
 
-  <div style={{ marginBottom: "12px" }}>
-    <label>Category</label>
-    <select
-      name="category"
-      value={newContent.category}
-      onChange={handleInputChange}
-      style={{ width: "100%", padding: "8px" }}
-    >
-      {categories.map((cat) => (
-        <option key={cat.value} value={cat.value}>
-          {cat.label}
-        </option>
-      ))}
-    </select>
-  </div>
+              <div style={{ marginBottom: "12px" }}>
+                <label>Category</label>
+                <select
+                  name="category"
+                  value={newContent.category}
+                  onChange={handleInputChange}
+                  style={{ width: "100%", padding: "8px" }}
+                >
+                  {categories.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-  {/* New Dropdown for Content Type */}
-  <div style={{ marginBottom: "12px" }}>
-    <label style={{ color: "#000" }}>Content Type</label>
-    <select
-      name="type"
-      value={newContent.type}
-      onChange={handleInputChange}
-      style={{ width: "100%", padding: "8px" }}
-    >
-      <option value="">Select Type</option>
-      <option value="type1">Type 1</option>
-      <option value="type2">Type 2</option>
-    </select>
-  </div>
+              {/* New Dropdown for Content Type */}
+              <div style={{ marginBottom: "12px" }}>
+                <label style={{ color: "#000" }}>Age group</label>
+                <select
+                  name="ageGroup"
+                  required
+                  value={newContent.ageGroup}
+                  onChange={handleInputChange}
+                  style={{ width: "100%", padding: "8px" }}
+                >
+                  <option value="">Select Type</option>
+                  <option value="1">Group 1</option>
+                  <option value="2">Group 2</option>
+                </select>
+              </div>
 
-  <div style={{ marginBottom: "12px" }}>
-    <label style={{ color: "#000" }}>Date</label>
-    <input
-      type="date"
-      name="date"
-      value={newContent.date}
-      onChange={handleInputChange}
-      style={{ width: "100%", padding: "8px" }}
-      required
-    />
-  </div>
+              <div style={{ marginBottom: "12px" }}>
+                <label style={{ color: "#000" }}>Date</label>
+                <input
+                  type="date"
+                  name="date"
+                  value={newContent.date}
+                  onChange={handleInputChange}
+                  style={{ width: "100%", padding: "8px" }}
+                  required
+                />
+              </div>
 
-  {newContent.category !== "game" ? (
-    <div style={{ marginBottom: "12px" }}>
-      <label style={{ color: "#000" }}>Upload File</label>
-      <input
-        type="file"
-        name="file"
-        accept=".pdf,.mp3,.mp4,.zip"
-        onChange={handleFileChange}
-        style={{ width: "100%", padding: "8px" }}
-        required
-      />
-    </div>
-  ) : (
-    <div style={{ marginBottom: "12px", color: "gray" }}>
-      No file required for games.
-    </div>
-  )}
+              {newContent.category !== "game" ? (
+                <div style={{ marginBottom: "12px" }}>
+                  <label style={{ color: "#000" }}>Upload File</label>
+                  <input
+                    type="file"
+                    name="file"
+                    accept=".pdf,.mp3,.mp4,.zip"
+                    onChange={handleFileChange}
+                    style={{ width: "100%", padding: "8px" }}
+                    required
+                  />
+                </div>
+              ) : (
+                <div style={{ marginBottom: "12px", color: "gray" }}>
+                  No file required for games.
+                </div>
+              )}
 
-  <div style={{ marginBottom: "12px" }}>
-    <label style={{ color: "#000" }}>Upload Thumbnail</label>
-    <input
-      type="file"
-      name="thumbnail"
-      accept=".jpg,.png"
-      onChange={handleThumbnailChange}
-      style={{ width: "100%", padding: "8px" }}
-      required
-    />
-  </div>
+              <div style={{ marginBottom: "12px" }}>
+                <label style={{ color: "#000" }}>Upload Thumbnail</label>
+                <input
+                  type="file"
+                  name="thumbnail"
+                  accept=".jpg,.png"
+                  onChange={handleThumbnailChange}
+                  style={{ width: "100%", padding: "8px" }}
+                  required
+                />
+              </div>
+              {formError && (
+                <div style={{ color: "red", marginBottom: "12px" }}>
+                  {formError}
+                </div>
+              )}
 
-  <div style={{ textAlign: "right" }}>
-    <button
-      type="submit"
-      className="button button-primary"
-      style={{ marginRight: "10px" }}
-    >
-      Add
-    </button>
-    <button
-      type="button"
-      className="button"
-      onClick={() => setShowModal(false)}
-    >
-      Cancel
-    </button>
-  </div>
-</form>
-
+              <div style={{ textAlign: "right" }}>
+                <button
+                  type="submit"
+                  className="button button-primary"
+                  style={{ marginRight: "10px" }}
+                >
+                  Add
+                </button>
+                <button type="button" className="button" onClick={closeModal}>
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
