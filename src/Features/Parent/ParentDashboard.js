@@ -90,27 +90,6 @@ const ParentDashboard = () => {
         <p>Your child's activities and progress are updated here.</p>
         <Outlet />
       </div>
-
-      {/* Confirmation Modal */}
-      {showConfirmModal && (
-        <div className="confirm-modal-overlay">
-          <div className="confirm-modal">
-            <h3>Are you sure you want to delete your account?</h3>
-            <p>This action cannot be undone.</p>
-            <div className="modal-actions">
-              <button
-                className="cancel-btn"
-                onClick={() => setShowConfirmModal(false)}
-              >
-                Cancel
-              </button>
-              <button className="confirm-btn" onClick={handleDeleteAccount}>
-                Yes, Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
