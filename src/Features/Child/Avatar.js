@@ -14,8 +14,8 @@ const avatarOptions = [Bitiko, Abush, Mitu, Kuku, Buch, Wero, Birabiro];
 
 // This should match the file path your backend stores (relative path or public URL)
 const avatarPaths = [
-  "/Bitiko.png",
   "/Abush.png",
+  "/Bitiko.png",
   "/Mitu.png",
   "/Kuku.png",
   "/buchi.png",

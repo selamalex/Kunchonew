@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from '../Context/AuthContext';
+import { AuthContext } from "../Context/AuthContext";
 import Avatar from "../Features/Child/Avatar";
 import "./Navbar.css";
 
@@ -81,28 +81,25 @@ export default function Navbar({ pageName }) {
       <div className="page-name">{pageName}</div>
 
       <div className="search-container" ref={dropdownRef}>
-        <div>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          onKeyDown={handleKeyDown}
-          className="search-input"
-        />
-        </div>
-        <div>
-        <button
-          className="search-btn"
-          onClick={handleSearchSubmit}
-          aria-label="Search"
-        >
-          🔍
-        </button>
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyDown}
+            className="search-input"
+          />
+          <button
+            className="search-btn"
+            onClick={handleSearchSubmit}
+            aria-label="Search"
+          >
+            🔍
+          </button>
         </div>
 
         {results.length > 0 && (
-          <div>
           <ul className="search-results-dropdown">
             {results.map((item) => (
               <li
@@ -114,14 +111,12 @@ export default function Navbar({ pageName }) {
               </li>
             ))}
           </ul>
-          </div>
         )}
       </div>
 
       <div className="user-profile">
         <Avatar onClick={handleAvatarClick} />
-         <span className="user-name">{user?.firstName || "User"}</span>
-
+        <span className="user-name">{user?.firstName || "User"}</span>
       </div>
     </nav>
   );
