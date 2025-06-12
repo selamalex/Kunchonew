@@ -10,6 +10,7 @@ const Settings = () => {
   });
   const { user } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState("general");
+  const [resetEmail, setResetEmail] = useState("");
 
   const [generalSettings, setGeneralSettings] = useState({
     siteName: "Kuncho",
@@ -23,6 +24,11 @@ const Settings = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleResetPassword = async () => {
+    if (!resetEmail) {
+      alert("Please enter your email address.");
+      return;
+    }
+
     try {
       const response = await fetch(
         "http://localhost:3000/api/parents/forgot-password",
@@ -31,8 +37,7 @@ const Settings = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          // Send email or relevant data here if needed
-          body: JSON.stringify({}),
+          body: JSON.stringify({ email: resetEmail }),
         }
       );
 
@@ -146,6 +151,18 @@ const Settings = () => {
                 value={generalSettings.siteDescription}
                 onChange={handleGeneralSettingsChange}
                 rows={3}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="resetEmail">Reset Password Email</label>
+              <input
+                type="email"
+                id="resetEmail"
+                name="resetEmail"
+                className="search-input"
+                placeholder="Enter your email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
               />
             </div>
 
