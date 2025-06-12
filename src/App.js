@@ -27,12 +27,10 @@ import UserManagement from "./Features/Admin/UserManagement";
 // Parent pages
 import ParentDashboard from "./Features/Parent/ParentDashboard";
 import ParentLayout from "./Features/Parent/ParentLayout";
-<<<<<<< Updated upstream
-import Subscribe from "./Features/Parent/Subscribe";
-=======
 import ScreenTimeReport from "./Features/Parent/ScreenTimeReport";
 import SubAccountManagement from "./Features/Parent/SubAccountManagement";
->>>>>>> Stashed changes
+import Subscribe from "./Features/Parent/Subscribe";
+
 
 // Child pages
 import Animals from "./Features/Child/Animals";
