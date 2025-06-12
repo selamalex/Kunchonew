@@ -19,9 +19,17 @@ const ChildActivitySummary = () => {
             },
           }
         );
+
+        if (response.status === 404) {
+          // If there's no data, treat it as empty result (not an error)
+          setHighestRated([]);
+          return;
+        }
+
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
+
         const data = await response.json();
         setHighestRated(data);
       } catch (err) {
@@ -73,17 +81,24 @@ const ChildActivitySummary = () => {
         <ul>
           {highestRated.map((entry, index) => (
             <li key={index} style={{ marginBottom: "1rem", listStyle: "none" }}>
-              <strong>👧 {entry.child.name}</strong>
+              <strong>👧 {entry.child?.name || "Unknown Child"}</strong>
               {entry.highestRatedContent ? (
                 <div style={{ marginTop: "0.5rem" }}>
                   <img
-                    src={`http://localhost:3000${entry.highestRatedContent.thumbnail}`}
-                    alt={entry.highestRatedContent.title}
+                    src={
+                      entry.highestRatedContent.thumbnail
+                        ? `http://localhost:3000${entry.highestRatedContent.thumbnail}`
+                        : "/default-thumbnail.png"
+                    }
+                    alt={entry.highestRatedContent.title || "No title"}
                     style={{ width: "100px", borderRadius: "8px" }}
                   />
                   <p>
-                    <strong>{entry.highestRatedContent.title}</strong> -{" "}
-                    {entry.highestRatedContent.type} - {entry.rating}⭐
+                    <strong>
+                      {entry.highestRatedContent.title || "Untitled"}
+                    </strong>{" "}
+                    - {entry.highestRatedContent.type || "Unknown type"} -{" "}
+                    {entry.rating || 0}⭐
                   </p>
                 </div>
               ) : (

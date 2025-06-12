@@ -29,6 +29,7 @@ import ParentDashboard from "./Features/Parent/ParentDashboard";
 import SubAccountManagement from "./Features/Parent/SubAccountManagement";
 import ScreenTimeReport from "./Features/Parent/ScreenTimeReport";
 import ParentLayout from "./Features/Parent/ParentLayout";
+import Subscribe from "./Features/Parent/Subscribe";
 
 // Child pages
 import ChildDashboard from "./Features/Child/ChildDashboard";
@@ -86,6 +87,7 @@ function App() {
             <Route path="dashboard" element={<ParentDashboard />} />
             <Route path="subaccounts" element={<SubAccountManagement />} />
             <Route path="screentime" element={<ScreenTimeReport />} />
+            <Route path="subscribe" element={<Subscribe />} />
           </Route>
         )}
 

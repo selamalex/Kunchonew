@@ -218,6 +218,16 @@ const ParentLayout = () => {
                     {user.firstName} {user.lastName}
                   </div>
                   <div
+                    className="dropdown-item"
+                    onClick={() => {
+                      setShowProfileMenu(false);
+                      navigate("subscribe");
+                    }}
+                    style={{ color: "#007bef", cursor: "pointer" }}
+                  >
+                    🔔 Subscribe?
+                  </div>
+                  <div
                     className="dropdown-item delete-btn"
                     onClick={() => setShowDeleteModal(true)}
                   >
