@@ -98,10 +98,10 @@
 
 .childd-card ul {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   padding: 0.5rem 0;
   list-style: none;
-  overflow-x: auto;
   margin: 0;
 }
 
