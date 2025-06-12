@@ -64,7 +64,7 @@ const ChildActivitySummary = () => {
       </div>
 
       <div className="childd-card">
-        <h3>⭐ Highest Rated Content</h3>
+        <h3>⭐ Your children's highest Rated Content</h3>
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
         {!loading && !error && highestRated.length === 0 && (
@@ -87,7 +87,7 @@ const ChildActivitySummary = () => {
                   </p>
                 </div>
               ) : (
-                <p style={{ marginLeft: "1rem" }}>No ratings yet.</p>
+                <p style={{ marginLeft: "1rem" }}>Rated nothing yet.</p>
               )}
             </li>
           ))}

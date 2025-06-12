@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
-import './admin.css';
-import './Sidebar.css';
+import "./admin.css";
+import "./Sidebar.css";
 import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -26,7 +26,20 @@ ChartJS.register(
   Legend
 );
 
-const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const monthsShort = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 const Overview = () => {
   const { user } = useContext(AuthContext);
@@ -49,22 +62,38 @@ const Overview = () => {
         const headers = { Authorization: `Bearer ${user.token}` };
 
         // Fetch user role stats
-        const userRes = await fetch("http://localhost:3000/api/admins/users/count", { headers });
-        if (!userRes.ok) throw new Error(`User counts fetch failed: ${userRes.status}`);
+        const userRes = await fetch(
+          "http://localhost:3000/api/admins/users/count",
+          { headers }
+        );
+        if (!userRes.ok)
+          throw new Error(`User counts fetch failed: ${userRes.status}`);
         const userData = await userRes.json();
         console.log("User counts data:", userData);
         setUserStats(userData);
 
         // Fetch monthly registrations
-        const monthRes = await fetch("http://localhost:3000/api/admins/users/per-month", { headers });
-        if (!monthRes.ok) throw new Error(`Monthly users fetch failed: ${monthRes.status}`);
+        const monthRes = await fetch(
+          "http://localhost:3000/api/admins/reports/users-per-month",
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
+        if (!monthRes.ok)
+          throw new Error(`Monthly users fetch failed: ${monthRes.status}`);
         const monthData = await monthRes.json();
         console.log("Monthly users data:", monthData);
         setMonthlyUsers(monthData);
 
         // Fetch content stats
-        const contentRes = await fetch("http://localhost:3000/api/admins/content/type", { headers });
-        if (!contentRes.ok) throw new Error(`Content stats fetch failed: ${contentRes.status}`);
+        const contentRes = await fetch(
+          "http://localhost:3000/api/admins/reports/content-by-type",
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
+        if (!contentRes.ok)
+          throw new Error(`Content stats fetch failed: ${contentRes.status}`);
         const contentData = await contentRes.json();
         console.log("Content stats data:", contentData);
         setContentStats(contentData);
@@ -78,11 +107,11 @@ const Overview = () => {
 
   // Prepare monthly user data for line chart
   const groupedByMonth = new Array(12).fill(0);
-  monthlyUsers.forEach(item => {
-    // Defensive check in case month or count missing or invalid
-    const monthIndex = item.month ? Number(item.month) - 1 : null;
-    const count = item.count ? Number(item.count) : 0;
-    if (monthIndex >= 0 && monthIndex < 12) {
+
+  monthlyUsers.forEach((item) => {
+    if (item.month) {
+      const monthIndex = new Date(item.month).getMonth(); // getMonth() returns 0-11
+      const count = Number(item.count) || 0;
       groupedByMonth[monthIndex] = count;
     }
   });
@@ -108,11 +137,11 @@ const Overview = () => {
 
   // Prepare content chart data for bar chart
   const barChartData = {
-    labels: contentStats.map(c => c.type || "Unknown"),
+    labels: contentStats.map((c) => c.type || "Unknown"),
     datasets: [
       {
         label: "Content Count",
-        data: contentStats.map(c => Number(c.count) || 0),
+        data: contentStats.map((c) => Number(c.count) || 0),
         backgroundColor: [
           "rgba(153, 102, 255, 0.6)",
           "rgba(75, 192, 192, 0.6)",
