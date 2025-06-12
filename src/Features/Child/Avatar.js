@@ -1,6 +1,5 @@
-import { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../../Context/AuthContext";
+import { useContext, useEffect, useState } from "react";
 import Abush from "../../Assets/images/Abush.png";
 import Bitiko from "../../Assets/images/Bitiko.png";
 import Mitu from "../../Assets/images/Mitu.png";
@@ -8,9 +7,10 @@ import Birabiro from "../../Assets/images/butterfly.png";
 import Wero from "../../Assets/images/catface.jpg";
 import Buch from "../../Assets/images/dog.png";
 import Kuku from "../../Assets/images/hen.png";
+import { AuthContext } from "../../Context/AuthContext";
 import "./Avatar.css";
 
-const avatarOptions = [Bitiko, Abush, Mitu, Kuku, Buch, Wero, Birabiro];
+const avatarOptions = [Abush,Bitiko, Mitu, Kuku, Buch, Wero, Birabiro];
 
 const avatarPaths = [
   "/Abush.png",

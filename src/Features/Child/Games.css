@@ -219,6 +219,24 @@
     transform: translateY(-3px);
 }
 
+.play {
+    background-color: #f8d485;
+    color: #431b06;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.play:hover {
+    background-color: #ffeb99;
+    transform: translateY(-3px);
+}
+
 .others-title {
     color: #431b06;
     font-size: 24px;

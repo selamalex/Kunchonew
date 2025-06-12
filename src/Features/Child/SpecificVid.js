@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import "./SpacificVid.css";
+import { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
-import Header from "../../Components/Header";
+import "./SpacificVid.css";
 
 const SpecificVid = () => {
   const { user } = useContext(AuthContext);
@@ -240,7 +239,7 @@ const SpecificVid = () => {
 
   return (
     <div className="specific-vid-container">
-      <Header />
+    
 
       <button className="back-button" onClick={() => navigate(-1)}>
         <span className="arrow">⬅️</span> Back to Videos
