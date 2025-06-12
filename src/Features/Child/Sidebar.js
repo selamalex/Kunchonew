@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../../Assets/images/logokuncho.png";
+import logo from "../../Assets/images/logo.png";
 import LogoutButton from "../../Components/LogoutButton";
 import "./Sidebar.css";
 

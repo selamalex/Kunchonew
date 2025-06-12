@@ -1,50 +1,54 @@
 import { useAuth } from "./Context/AuthContext";
 
 import {
+  Navigate,
+  Route,
   BrowserRouter as Router,
   Routes,
-  Route,
-  Navigate,
 } from "react-router-dom";
 
 // General landing page
 import GeneralHome from "./Pages/GeneralHome";
 
 // Login/Signup
+import ForgotPassword from "./Pages/ForgotPassword";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
-import ForgotPassword from "./Pages/ForgotPassword";
 
 // Admin pages
+import AdminLayout from "./Features/Admin/adminlayout";
 import ContentManagement from "./Features/Admin/ContentManagement";
+import Notifications from "./Features/Admin/Notifications";
+import Overview from "./Features/Admin/Overview";
 import Reports from "./Features/Admin/Reports";
 import Settings from "./Features/Admin/Settings";
 import UserManagement from "./Features/Admin/UserManagement";
-import Overview from "./Features/Admin/Overview";
-import AdminLayout from "./Features/Admin/adminlayout";
-import Notifications from "./Features/Admin/Notifications";
 
 // Parent pages
 import ParentDashboard from "./Features/Parent/ParentDashboard";
-import SubAccountManagement from "./Features/Parent/SubAccountManagement";
-import ScreenTimeReport from "./Features/Parent/ScreenTimeReport";
 import ParentLayout from "./Features/Parent/ParentLayout";
+<<<<<<< Updated upstream
 import Subscribe from "./Features/Parent/Subscribe";
+=======
+import ScreenTimeReport from "./Features/Parent/ScreenTimeReport";
+import SubAccountManagement from "./Features/Parent/SubAccountManagement";
+>>>>>>> Stashed changes
 
 // Child pages
-import ChildDashboard from "./Features/Child/ChildDashboard";
-import Videos from "./Features/Child/Videos";
-import SpecificVid from "./Features/Child/SpecificVid";
-import Books from "./Features/Child/Books";
-import Audios from "./Features/Child/Audios";
-import SpecificAud from "./Features/Child/SpecificAud";
-import Games from "./Features/Child/Games";
 import Animals from "./Features/Child/Animals";
-import Vegetables from "./Features/Child/Vegetables";
+import Audios from "./Features/Child/Audios";
+import Books from "./Features/Child/Books";
+import ChildDashboard from "./Features/Child/ChildDashboard";
+import ChildLayout from "./Features/Child/ChildLayout";
+import Games from "./Features/Child/Games";
+import LockScreen from "./Features/Child/LockScreen";
 import Objects from "./Features/Child/Objects";
 import SlideBook from "./Features/Child/SlideBook";
-import ChildLayout from "./Features/Child/ChildLayout";
-import LockScreen from "./Features/Child/LockScreen";
+import SpecificAud from "./Features/Child/SpecificAud";
+import SpecificVid from "./Features/Child/SpecificVid";
+import Vegetables from "./Features/Child/Vegetables";
+import Videos from "./Features/Child/Videos";
+import Vocabulary from "./Features/Child/vocabulary";
 
 const ProtectedRoute = ({ role, children }) => {
   const { user } = useAuth();
@@ -111,6 +115,7 @@ function App() {
             <Route path="games/animal" element={<Animals />} />
             <Route path="games/vegetable" element={<Vegetables />} />
             <Route path="games/object" element={<Objects />} />
+            <Route path="games/vocabulary" element={<Vocabulary />} />
             <Route path="locked" element={<LockScreen />} />
           </Route>
         )}
