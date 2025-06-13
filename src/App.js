@@ -14,7 +14,6 @@ import GeneralHome from "./Pages/GeneralHome";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import ForgotPassword from "./Pages/ForgotPassword";
-import ResetPassword from "./Pages/ResetPassword";
 
 // Admin pages
 import ContentManagement from "./Features/Admin/ContentManagement";
@@ -67,7 +66,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Admin Routes */}
         {user?.role === "admin" && (

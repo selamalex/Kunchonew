@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import obj from "../../Assets/images/chair.png";
 import veg from "../../Assets/images/chilli.png";
+import bg from "../../Assets/images/hands.png";
 import anim from "../../Assets/images/lion.png";
-import bg from "../../Assets/images/trendinganim.jpg";
 import "./Games.css";
 
 const Games = () => {
@@ -29,6 +29,12 @@ const Games = () => {
       title: "Objects Edition",
       image: obj,
       route: "/child/games/object",
+    },
+    {
+      id: 17,
+      title: "Vocabulary Edition",
+      image: bg,
+      route: "/child/games/vocabulary",
     },
   ];
 
